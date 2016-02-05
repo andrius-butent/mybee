@@ -264,8 +264,10 @@ class NewReasonCommentForm extends AbstractFormInterceptor {
       if (BeeUtils.isEmpty(value)) {
         value = Localized.dictionary().filterNullLabel();
       } else {
-        value = ProjectsHelper.getDisplayValue(projectForm.getViewName(),
-            projectValidator.getColumnId(), value, null, new Callback<String>() {
+        value =
+            ProjectsHelper.getDisplayValue(projectForm.getViewName(),
+                projectValidator.getColumnId(), value, projectForm.getActiveRow(),
+                new Callback<String>() {
 
               @Override
               public void onSuccess(String result) {

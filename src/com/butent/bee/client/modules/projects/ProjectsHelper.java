@@ -226,6 +226,9 @@ public final class ProjectsHelper {
     } else if (info.hasRelation(column) && row != null) {
       result = BeeConst.STRING_EMPTY;
       for (ViewColumn vCol : info.getDescendants(column, false)) {
+        if (BeeUtils.same(ALS_OWNER_PERSON, vCol.getName())) {
+          continue;
+        }
         result =
             BeeUtils.joinWords(result, getDisplayValue(viewName, vCol.getName(), row.getString(info
                 .getColumnIndex(vCol.getName())), null));
