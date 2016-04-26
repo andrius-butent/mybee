@@ -13,8 +13,6 @@
 	<RelColumn name="Owner" />
 	<DataColumn name="StartDate" />
 	<DataColumn name="EndDate" />
-  <CalcColumn name="Slack" type="string" cellType="html" width="60"
-    caption="=crmTaskDelayPlannedShort" />
   <DataColumn name="Overdue" label="=prjOverduePercent" />
 	<DataColumn name="Progress" label="%" autoFit="true" />
 	<RelColumn name="Category" visible="false" />

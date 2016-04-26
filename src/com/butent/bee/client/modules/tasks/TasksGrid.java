@@ -143,7 +143,7 @@ class TasksGrid extends AbstractGridInterceptor {
       ((HasCellRenderer) column).setRenderer(new ModeRenderer());
 
     } else if (BeeUtils.same(columnId, NAME_SLACK) && column instanceof HasCellRenderer) {
-      ((HasCellRenderer) column).setRenderer(new TaskSlackRenderer(dataColumns));
+      ((HasCellRenderer) column).setRenderer(new SlackRenderer(dataColumns));
 
     } else if (BeeUtils.inListSame(columnId, COL_FINISH_TIME, COL_EXECUTOR)) {
       editableColumn.addCellValidationHandler(ValidationHelper.DO_NOT_VALIDATE);

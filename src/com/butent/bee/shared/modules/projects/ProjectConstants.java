@@ -170,7 +170,6 @@ public final class ProjectConstants {
 
   public static final String NAME_EXPECTED_TASKS_DURATION = "CalcExpectedTasksDuration";
   public static final String NAME_ACTUAL_TASKS_DURATION = "CalcActualTasksDuration";
-  public static final String NAME_SLACK = "Slack";
 
   public static final String PROP_USERS = "Users";
   public static final String PROP_TEMPLATE = "Template";

@@ -1,9 +1,11 @@
-package com.butent.bee.client.render;
+package com.butent.bee.client.modules.tasks;
 
+import com.butent.bee.client.render.AbstractCellRenderer;
 import com.butent.bee.shared.Assert;
 import com.butent.bee.shared.BeeConst;
 import com.butent.bee.shared.css.Colors;
 import com.butent.bee.shared.css.values.TextAlign;
+import com.butent.bee.shared.data.DataUtils;
 import com.butent.bee.shared.data.IsColumn;
 import com.butent.bee.shared.data.IsRow;
 import com.butent.bee.shared.export.XCell;
@@ -12,13 +14,15 @@ import com.butent.bee.shared.export.XSheet;
 import com.butent.bee.shared.export.XStyle;
 import com.butent.bee.shared.html.builder.elements.Div;
 import com.butent.bee.shared.modules.tasks.TaskConstants;
+import com.butent.bee.shared.modules.tasks.TaskConstants.TaskStatus;
 import com.butent.bee.shared.time.DateTime;
 import com.butent.bee.shared.time.TimeUtils;
 import com.butent.bee.shared.utils.BeeUtils;
+import com.butent.bee.shared.utils.EnumUtils;
 
 import java.util.List;
 
-public abstract class AbstractSlackRenderer extends AbstractCellRenderer {
+class SlackRenderer extends AbstractCellRenderer {
 
   private enum Kind {
     LATE, OPENING, ENDGAME, SCHEDULED;
@@ -42,7 +46,11 @@ public abstract class AbstractSlackRenderer extends AbstractCellRenderer {
     return bar.toString();
   }
 
-  private static Kind getKind(DateTime start, DateTime finish) {
+  private static Kind getKind(TaskStatus status, DateTime start, DateTime finish) {
+    if (status == null || status == TaskStatus.COMPLETED || status == TaskStatus.CANCELED
+        || status == TaskStatus.APPROVED) {
+      return null;
+    }
 
     DateTime now = TimeUtils.nowMinutes();
 
@@ -93,17 +101,18 @@ public abstract class AbstractSlackRenderer extends AbstractCellRenderer {
     }
   }
 
-  private final List<? extends IsColumn> isColumns;
+  private final int statusIndex;
 
-  protected AbstractSlackRenderer(List<? extends IsColumn> columns) {
+  private final int startIndex;
+  private final int finishIndex;
+
+  SlackRenderer(List<? extends IsColumn> columns) {
     super(null);
 
-    this.isColumns = columns;
+    this.statusIndex = DataUtils.getColumnIndex(TaskConstants.COL_STATUS, columns);
+    this.startIndex = DataUtils.getColumnIndex(TaskConstants.COL_START_TIME, columns);
+    this.finishIndex = DataUtils.getColumnIndex(TaskConstants.COL_FINISH_TIME, columns);
   }
-
-  public abstract DateTime getStartDateTime(List<? extends IsColumn> columns, IsRow row);
-
-  public abstract DateTime getFinishDateTime(List<? extends IsColumn> columns, IsRow row);
 
   @Override
   public XCell export(IsRow row, int cellIndex, Integer styleRef, XSheet sheet) {
@@ -111,10 +120,12 @@ public abstract class AbstractSlackRenderer extends AbstractCellRenderer {
       return null;
     }
 
-    DateTime start = getStartDateTime(isColumns, row);
-    DateTime finish = getFinishDateTime(isColumns, row);
+    TaskStatus status = EnumUtils.getEnumByIndex(TaskStatus.class, row.getInteger(statusIndex));
 
-    Kind kind = getKind(start, finish);
+    DateTime start = row.getDateTime(startIndex);
+    DateTime finish = row.getDateTime(finishIndex);
+
+    Kind kind = getKind(status, start, finish);
     if (kind == null) {
       return null;
     }
@@ -167,10 +178,12 @@ public abstract class AbstractSlackRenderer extends AbstractCellRenderer {
       return null;
     }
 
-    DateTime start = getStartDateTime(isColumns, row);
-    DateTime finish = getFinishDateTime(isColumns, row);
+    TaskStatus status = EnumUtils.getEnumByIndex(TaskStatus.class, row.getInteger(statusIndex));
 
-    Kind kind = getKind(start, finish);
+    DateTime start = row.getDateTime(startIndex);
+    DateTime finish = row.getDateTime(finishIndex);
+
+    Kind kind = getKind(status, start, finish);
     if (kind == null) {
       return BeeConst.STRING_EMPTY;
     }
