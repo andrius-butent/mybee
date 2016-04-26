@@ -3794,6 +3794,8 @@ public interface Dictionary {
 
   default String prjOverdue() {return g("prjOverdue");}
 
+  default String prjOverduePercent() {return g("prjOverduePercent");}
+
   default String prjParticipant() {return g("prjParticipant");}
 
   default String prjPersonRate() {return g("prjPersonRate");}

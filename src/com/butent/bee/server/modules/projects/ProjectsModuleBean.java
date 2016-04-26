@@ -9,6 +9,7 @@ import com.google.common.eventbus.Subscribe;
 import static com.butent.bee.shared.modules.projects.ProjectConstants.*;
 import static com.butent.bee.shared.modules.tasks.TaskConstants.*;
 
+import com.butent.bee.server.data.BeeView;
 import com.butent.bee.server.data.DataEvent.ViewQueryEvent;
 import com.butent.bee.server.data.DataEventHandler;
 import com.butent.bee.server.data.QueryServiceBean;
@@ -20,6 +21,7 @@ import com.butent.bee.server.modules.ParamHolderBean;
 import com.butent.bee.server.modules.administration.ExchangeUtils;
 import com.butent.bee.server.modules.tasks.TasksModuleBean;
 import com.butent.bee.server.news.NewsBean;
+import com.butent.bee.server.sql.HasConditions;
 import com.butent.bee.server.sql.IsCondition;
 import com.butent.bee.server.sql.IsExpression;
 import com.butent.bee.server.sql.SqlInsert;
@@ -210,7 +212,7 @@ public class ProjectsModuleBean implements BeeModule {
 
       @Subscribe
       @AllowConcurrentEvents
-      public void fillProjectsTimeUnits(ViewQueryEvent event) {
+      public void fillProjectsTimeUnitsAndOverdue(ViewQueryEvent event) {
         if (event.isAfter(VIEW_PROJECTS, VIEW_PROJECT_STAGES) && event.hasData()) {
           BeeRowSet viewRows = event.getRowset();
 
@@ -228,12 +230,61 @@ public class ProjectsModuleBean implements BeeModule {
 
           for (BeeRow row : viewRows) {
             row.setProperty(PROP_TIME_UNITS, unitsRs.serialize());
+            long startDate =
+                row.getDate(DataUtils.getColumnIndex(COL_DATES_START_DATE, viewRows.getColumns()))
+                    .getDateTime().getTime();
+            long finishDate =
+                row.getDate(DataUtils.getColumnIndex(COL_DATES_END_DATE, viewRows.getColumns()))
+                    .getDateTime().getTime();
+            long nowDate = new DateTime().getDateTime().getTime();
+            double overdue =
+                BeeUtils.round((100.0 * (nowDate - startDate) / (finishDate - startDate)) - 100.0,
+                    2);
+            if (overdue < 0) {
+              overdue = 0.0;
+            }
+            row.setValue(viewRows.getColumnIndex(COL_OVERDUE), Double.valueOf(overdue));
           }
         }
       }
     });
 
     news.registerUsageQueryProvider(Feed.PROJECT, new ProjectsUsageQueryProvider());
+
+    BeeView.registerConditionProvider(FILTER_OVERDUE_CREATION,
+        new BeeView.ConditionProvider() {
+
+          @Override
+          public IsCondition getCondition(BeeView view, List<String> args) {
+            Double lower = BeeUtils.toDoubleOrNull(BeeUtils.getQuietly(args, 0));
+            Double upper = BeeUtils.toDoubleOrNull(BeeUtils.getQuietly(args, 1));
+
+            HasConditions conditions = SqlUtils.and();
+
+            long nowDate = new JustDate().getTime();
+
+            IsExpression isExpression =
+                SqlUtils.minus(SqlUtils.divide(SqlUtils.multiply(SqlUtils.constant(100.0), SqlUtils
+                    .minus(nowDate, SqlUtils.field(TBL_PROJECTS, COL_DATES_START_DATE))), SqlUtils
+                    .minus(SqlUtils.field(TBL_PROJECTS, COL_DATES_END_DATE), SqlUtils.field(
+                        TBL_PROJECTS, COL_DATES_START_DATE))), SqlUtils.constant(100.0));
+
+            IsExpression expression =
+                SqlUtils.sqlIf(SqlUtils.lessEqual(isExpression, 0.0), 0.0, isExpression);
+
+            if (lower != null) {
+              IsCondition conditionLower = SqlUtils.moreEqual(expression, lower);
+              conditions.add(conditionLower);
+            }
+
+            if (upper != null) {
+              IsCondition conditionUpper = SqlUtils.less(expression, upper);
+              conditions.add(conditionUpper);
+            }
+
+            return conditions;
+          }
+        });
   }
 
   private static void fillUnitProperties(BeeRowSet units, long defUnit) {
