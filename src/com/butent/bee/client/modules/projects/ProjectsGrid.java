@@ -38,8 +38,8 @@ class ProjectsGrid extends AllProjectsGrid {
   @Override
   public AbstractFilterSupplier getFilterSupplier(String columnName,
       ColumnDescription columnDescription) {
-    if (BeeUtils.same(columnName, COL_OVERDUE)) {
-      return new OverdueFilterSupplier(columnDescription.getFilterOptions());
+    if (BeeUtils.same(columnName, NAME_SLACK)) {
+      return new ProjectSlackFilterSupplier(columnDescription.getFilterOptions());
     } else {
       return super.getFilterSupplier(columnName, columnDescription);
     }
@@ -55,7 +55,6 @@ class ProjectsGrid extends AllProjectsGrid {
     gridDescription.setFilter(getGridFilter());
     return true;
   }
-
 
   private static Filter getGridFilter() {
     Filter isOwner = Filter.equals(COL_PROJECT_OWNER, USER_ID);

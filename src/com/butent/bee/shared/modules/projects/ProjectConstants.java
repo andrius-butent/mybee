@@ -121,7 +121,6 @@ public final class ProjectConstants {
   public static final String COL_PROJECT_TIME_UNIT = "TimeUnit";
   public static final String COL_DESCRIPTION = "Description";
 
-  public static final String COL_OVERDUE = "Overdue";
   public static final String COL_PROJECT_TEMPLATE = "ProjectTemplate";
 
   public static final String COL_PSC_FOOTER_HEIGHT = "PSCFooterHeight";
@@ -144,8 +143,6 @@ public final class ProjectConstants {
 
   public static final String COL_USER_TYPE = "UserType";
   public static final String COL_RATE = "Rate";
-
-  public static final String FILTER_OVERDUE_CREATION = "overdue_creation";
 
   public static final String FORM_PROJECT = "Project";
   public static final String FORM_PROJECT_STAGE = "ProjectStage";

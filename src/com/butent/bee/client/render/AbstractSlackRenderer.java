@@ -101,8 +101,30 @@ public abstract class AbstractSlackRenderer extends AbstractCellRenderer {
     this.isColumns = columns;
   }
 
+  /**
+   * This method must return start DateTime which will be used in
+   * {@code export(IsRow, int, Integer, XSheet}, {@code render(IsRow)} and
+   * {@code getKind(DateTime, DateTime)} methods.
+   * 
+   * If null is returned then the calculations won't work.
+   * 
+   * @param columns are IsColumn columns.
+   * @param row is provided current IsRow.
+   * @return start DateTime which will be used for calculations.
+   */
   public abstract DateTime getStartDateTime(List<? extends IsColumn> columns, IsRow row);
 
+  /**
+   * This method must return end DateTime which will be used in
+   * {@code export(IsRow, int, Integer, XSheet}, {@code render(IsRow)} and
+   * {@code getKind(DateTime, DateTime)} methods.
+   * 
+   * If null is returned then the calculations won't work.
+   * 
+   * @param columns are IsColumn columns.
+   * @param row is provided current IsRow.
+   * @return end DateTime which will be used for calculations.
+   */
   public abstract DateTime getFinishDateTime(List<? extends IsColumn> columns, IsRow row);
 
   @Override
