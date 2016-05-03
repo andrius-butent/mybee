@@ -68,6 +68,27 @@
   border: 1px solid #f95654;
 }
 
+.bee-prj-FilterSupplier-Slack-all {
+  width: 65px;
+}
+
+.bee-prj-FilterSupplier-Slack-late,
+.bee-prj-FilterSupplier-Slack-notLate {
+  display: block;
+  color: white;
+  font-weight: bolder;
+  width: 140px;
+  height: 25px;
+  border-radius: 3px;
+  margin-bottom: 5px;
+}
+.bee-prj-FilterSupplier-Slack-late {
+  background-image: linear-gradient(to bottom, #DD4B39, #D14836);
+}
+.bee-prj-FilterSupplier-Slack-notLate {
+  background-image: linear-gradient(to bottom, #4D90FE, #4787ED);  
+}
+
 .bee-prj-stage-GridFieldOverSized {
   outline: 1px solid #f95654;
 }
