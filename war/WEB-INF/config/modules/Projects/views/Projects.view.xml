@@ -70,6 +70,9 @@
       <SimpleColumn name="Name" alias="CurrencyName" />
     </SimpleJoin>
     <SimpleColumn name="Description" />
+    <SimpleColumn name="Overdue">
+      <x:number>0</x:number>
+    </SimpleColumn>
     
     <SimpleColumn name="ExpectedTasksDuration" label="=prjExpectedTaskDuration">
       <x:number>0</x:number> 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<g:columns xmlns="http://www.butent.com/column" xmlns:g="http://www.butent.com/grid">
+<g:columns xmlns="http://www.butent.com/column" xmlns:g="http://www.butent.com/grid" xmlns:ui="http://www.butent.com/ui">
 	<IdColumn name="Id" />
 	<DataColumn name="Priority" visible="true" minWidth="70"
 		autoFit="true" />
@@ -13,6 +13,7 @@
 	<RelColumn name="Owner" />
 	<DataColumn name="StartDate" />
 	<DataColumn name="EndDate" />
+  <DataColumn name="Overdue" label="=prjOverduePercent" />
 	<DataColumn name="Progress" label="%" autoFit="true" />
 	<RelColumn name="Category" visible="false" />
 </g:columns>
