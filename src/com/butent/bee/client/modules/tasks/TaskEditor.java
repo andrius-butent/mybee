@@ -96,6 +96,8 @@ import com.butent.bee.shared.modules.documents.DocumentConstants;
 import com.butent.bee.shared.modules.projects.ProjectConstants;
 import com.butent.bee.shared.modules.projects.ProjectStatus;
 import com.butent.bee.shared.modules.tasks.TaskConstants;
+import com.butent.bee.shared.modules.tasks.TaskConstants.TaskEvent;
+import com.butent.bee.shared.modules.tasks.TaskConstants.TaskStatus;
 import com.butent.bee.shared.modules.tasks.TaskUtils;
 import com.butent.bee.shared.time.DateTime;
 import com.butent.bee.shared.time.TimeUtils;
@@ -134,6 +136,8 @@ class TaskEditor extends ProductSupportInterceptor {
 
   private static final String NAME_TASK_TREE = "TaskTree";
   private static final String NAME_ORDER = "TaskEventsOrder";
+
+  private static final String DEFAULT_PHOTO_IMAGE = "images/defaultUser.png";
 
   private static void addDurationCell(HtmlTable display, int row, int col, String value,
       String style) {
@@ -371,19 +375,24 @@ class TaskEditor extends ProductSupportInterceptor {
     Flow container = new Flow();
     container.addStyleName(STYLE_EVENT_ROW);
 
+    Flow colPhoto = new Flow();
+    colPhoto.addStyleName(STYLE_EVENT_COL + STYLE_PHOTO);
+    String photoUrl;
     if (renderPhoto) {
-      Flow colPhoto = new Flow();
-      colPhoto.addStyleName(STYLE_EVENT_COL + STYLE_PHOTO);
-
       Long photo = row.getLong(DataUtils.getColumnIndex(COL_PHOTO, columns));
-      if (DataUtils.isId(photo)) {
-        Image image = new Image(PhotoRenderer.getUrl(photo));
-        image.addStyleName(STYLE_EVENT + STYLE_PHOTO);
-        colPhoto.add(image);
+      if (!DataUtils.isId(photo)) {
+        photoUrl = DEFAULT_PHOTO_IMAGE;
+      } else {
+        photoUrl = PhotoRenderer.getUrl(photo);
       }
-
-      container.add(colPhoto);
+    } else {
+      photoUrl = DEFAULT_PHOTO_IMAGE;
     }
+
+    Image image = new Image(photoUrl);
+    image.addStyleName(STYLE_EVENT + STYLE_PHOTO);
+    colPhoto.add(image);
+    container.add(colPhoto);
 
     int c = 0;
     Flow col0 = new Flow();
@@ -442,7 +451,7 @@ class TaskEditor extends ProductSupportInterceptor {
       int idxExecutor = Data.getColumnIndex(VIEW_TASKS, COL_EXECUTOR);
       if (event == TaskEvent.COMMENT
           && (Objects.equals(taskRow.getLong(idxOwner), userId) || Objects.equals(taskRow
-          .getLong(idxExecutor), userId))) {
+              .getLong(idxExecutor), userId))) {
         FaLabel createTask = new FaLabel(TaskEvent.CREATE.getCommandIcon());
         createTask.setTitle(TaskEvent.CREATE.getCommandLabel());
         createTask.addClickHandler(new ClickHandler() {
@@ -960,7 +969,7 @@ class TaskEditor extends ProductSupportInterceptor {
 
         if (!BeeUtils.isEmpty(companyName)) {
           docRow.setValue(dataInfo
-                  .getColumnIndex(DocumentConstants.ALS_DOCUMENT_COMPANY_NAME),
+              .getColumnIndex(DocumentConstants.ALS_DOCUMENT_COMPANY_NAME),
               companyName);
           docRow.setValue(dataInfo
               .getColumnIndex(DocumentConstants.COL_DOCUMENT_COMPANY), row
@@ -1184,7 +1193,7 @@ class TaskEditor extends ProductSupportInterceptor {
           }
 
           Queries.update(VIEW_TASK_EVENTS, eventId, COL_EVENT_DATA, Value.getValue(Codec
-                  .beeSerialize(data)),
+              .beeSerialize(data)),
               new IntCallback() {
 
                 @Override
@@ -1203,7 +1212,7 @@ class TaskEditor extends ProductSupportInterceptor {
     relIds.addAll(DataUtils.parseIdList(taskIds));
 
     Queries.updateChildren(VIEW_TASKS, taskRow.getId(), Lists.newArrayList(RowChildren
-            .create(TBL_RELATIONS, COL_TASK, null, COL_TASK, DataUtils.buildIdList(relIds))),
+        .create(TBL_RELATIONS, COL_TASK, null, COL_TASK, DataUtils.buildIdList(relIds))),
         new RowCallback() {
 
           @Override
@@ -1389,10 +1398,10 @@ class TaskEditor extends ProductSupportInterceptor {
 
       if (event != null
           && Objects.equals(TaskEvent.COMMENT.ordinal(), event.getInteger(events
-          .getColumnIndex(TaskConstants.COL_EVENT)))) {
+              .getColumnIndex(TaskConstants.COL_EVENT)))) {
         description = BeeUtils.join(BeeConst.STRING_EOL
-                + BeeUtils.replicate(BeeConst.CHAR_MINUS, BeeConst.MAX_SCALE)
-                + BeeConst.STRING_EOL, description,
+            + BeeUtils.replicate(BeeConst.CHAR_MINUS, BeeConst.MAX_SCALE)
+            + BeeConst.STRING_EOL, description,
             BeeUtils.joinWords(event.getDateTime(events.getColumnIndex(COL_PUBLISH_TIME)),
                 BeeUtils.nvl(event.getString(events.getColumnIndex(ALS_PUBLISHER_FIRST_NAME)),
                     BeeConst.STRING_EMPTY),
@@ -1404,10 +1413,10 @@ class TaskEditor extends ProductSupportInterceptor {
       for (IsRow event : events) {
         if (event != null
             && Objects.equals(TaskEvent.COMMENT.ordinal(), event.getInteger(events
-            .getColumnIndex(TaskConstants.COL_EVENT)))) {
+                .getColumnIndex(TaskConstants.COL_EVENT)))) {
           description = BeeUtils.join(BeeConst.STRING_EOL
-                  + BeeUtils.replicate(BeeConst.CHAR_MINUS, BeeConst.MAX_SCALE)
-                  + BeeConst.STRING_EOL, description,
+              + BeeUtils.replicate(BeeConst.CHAR_MINUS, BeeConst.MAX_SCALE)
+              + BeeConst.STRING_EOL, description,
               BeeUtils.joinWords(event.getDateTime(events.getColumnIndex(COL_PUBLISH_TIME)),
                   BeeUtils.nvl(event.getString(events.getColumnIndex(ALS_PUBLISHER_FIRST_NAME)),
                       BeeConst.STRING_EMPTY),

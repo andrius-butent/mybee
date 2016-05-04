@@ -219,6 +219,7 @@ td.bee-crm-taskDialog-filesLabelCell{
   max-width: 100%;
   max-height: 100%;
   cursor: default;
+  border-radius: 50%;
 }
 
 .bee-crm-rt-cron-values {
