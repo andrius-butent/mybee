@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.butent.bee.shared.Service;
 import com.butent.bee.shared.data.BeeColumn;
 import com.butent.bee.shared.data.value.ValueType;
+import com.butent.bee.shared.i18n.Dictionary;
 import com.butent.bee.shared.i18n.Localized;
 import com.butent.bee.shared.i18n.SupportedLocale;
 import com.butent.bee.shared.imports.ImportType;
@@ -16,6 +17,7 @@ import com.butent.bee.shared.rights.RightsState;
 import com.butent.bee.shared.time.ScheduleDateMode;
 import com.butent.bee.shared.time.WorkdayTransition;
 import com.butent.bee.shared.ui.HasCaption;
+import com.butent.bee.shared.ui.HasLocalizedCaption;
 import com.butent.bee.shared.ui.UserInterface;
 import com.butent.bee.shared.utils.EnumUtils;
 
@@ -40,6 +42,38 @@ public final class AdministrationConstants {
     @Override
     public String getCaption() {
       return this.name().toLowerCase();
+    }
+  }
+
+  public enum ReminderDataField implements HasLocalizedCaption {
+    START_DATE {
+      @Override
+      public String getCaption(Dictionary constants) {
+        return constants.startingDate();
+      }
+    },
+
+    END_DATE {
+      @Override
+      public String getCaption(Dictionary constants) {
+        return constants.endingDate();
+      }
+    }
+  }
+
+  public enum ReminderDataIndicator implements HasLocalizedCaption {
+    BEFORE {
+      @Override
+      public String getCaption(Dictionary constants) {
+        return constants.before();
+      }
+    },
+
+    AFTER {
+      @Override
+      public String getCaption(Dictionary constants) {
+        return constants.after();
+      }
     }
   }
 
@@ -75,6 +109,9 @@ public final class AdministrationConstants {
     EnumUtils.register(ImportType.class);
     EnumUtils.register(Module.class);
     EnumUtils.register(SysObject.class);
+
+    EnumUtils.register(ReminderDataField.class);
+    EnumUtils.register(ReminderDataIndicator.class);
   }
 
   public static final String FILE_URL = "file";
@@ -219,6 +256,8 @@ public final class AdministrationConstants {
 
   public static final String VIEW_UI_THEMES = "UiThemes";
 
+  public static final String VIEW_USER_REMINDERS = "UserReminders";
+
   public static final String GRID_HISTORY = "History";
   public static final String GRID_USER_GROUP_MEMBERS = "UserGroupMembers";
 
@@ -272,6 +311,9 @@ public final class AdministrationConstants {
   public static final String COL_REMINDER_MINUTES = "Minutes";
   public static final String COL_REMINDER_TEMPLATE_CAPTION = "Caption";
   public static final String COL_REMINDER_TEMPLATE = "Template";
+  public static final String COL_REMINDER_MODULE = "Module";
+  public static final String COL_REMINDER_DATA_FIELD = "ReminderDataField";
+  public static final String COL_REMINDER_DATA_INDICATOR = "ReminderDataIndicator";
 
   public static final String COL_COLOR = "Color";
   public static final String COL_COLOR_NAME = "Name";
@@ -360,6 +402,13 @@ public final class AdministrationConstants {
   public static final String COL_EVENT_RESULT = "Result";
 
   public static final String COL_DICTIONARY_KEY = "Key";
+
+  public static final String COL_USER_REMINDER_OBJECT = "Object";
+  public static final String COL_USER_REMINDER_OBJECT_MODULE = "ObjectModule";
+  public static final String COL_USER_REMINDER_USER = "User";
+  public static final String COL_USER_REMINDER_TYPE = "ReminderType";
+  public static final String COL_USER_REMINDER_ACTIVE = "Active";
+  public static final String COL_USER_REMINDER_TIME = "ReminderTime";
 
   public static final String ALS_FILE_NAME = "FileName";
   public static final String ALS_FILE_SIZE = "FileSize";

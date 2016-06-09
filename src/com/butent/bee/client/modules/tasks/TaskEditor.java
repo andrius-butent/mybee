@@ -41,6 +41,7 @@ import com.butent.bee.client.data.RowFactory;
 import com.butent.bee.client.dialog.Modality;
 import com.butent.bee.client.dialog.Popup;
 import com.butent.bee.client.dialog.Popup.OutsideClick;
+import com.butent.bee.client.dialog.ReminderDialog;
 import com.butent.bee.client.dom.DomUtils;
 import com.butent.bee.client.event.EventUtils;
 import com.butent.bee.client.event.logical.MutationEvent;
@@ -99,6 +100,7 @@ import com.butent.bee.shared.modules.tasks.TaskConstants;
 import com.butent.bee.shared.modules.tasks.TaskConstants.TaskEvent;
 import com.butent.bee.shared.modules.tasks.TaskConstants.TaskStatus;
 import com.butent.bee.shared.modules.tasks.TaskUtils;
+import com.butent.bee.shared.rights.Module;
 import com.butent.bee.shared.time.DateTime;
 import com.butent.bee.shared.time.JustDate;
 import com.butent.bee.shared.time.TimeUtils;
@@ -703,6 +705,24 @@ class TaskEditor extends ProductSupportInterceptor {
     setCommentsLayout();
 
     Integer status = row.getInteger(form.getDataIndex(COL_STATUS));
+
+    if (isExecutor() || isOwner()) {
+      final ReminderDialog reminderDialog = new ReminderDialog(Module.TASKS, getActiveRow().getId(),
+          userId);
+
+      reminderDialog.getReminderLabel().addClickHandler(new ClickHandler() {
+        @Override
+        public void onClick(ClickEvent event) {
+
+          Map<Integer, DateTime> datesByField = new HashMap<>();
+          datesByField.put(ReminderDataField.START_DATE.ordinal(), getDateTime(COL_START_TIME));
+          datesByField.put(ReminderDataField.END_DATE.ordinal(), getDateTime(COL_FINISH_TIME));
+
+          reminderDialog.createDialog(datesByField);
+        }
+      });
+      header.addCommandItem(reminderDialog.getReminderLabel());
+    }
 
     final FaLabel createDocument = new FaLabel(FontAwesome.FILE_O);
     createDocument.setTitle(Localized.dictionary().documentNew());

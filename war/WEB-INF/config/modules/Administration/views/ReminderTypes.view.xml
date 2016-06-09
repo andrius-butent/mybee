@@ -7,6 +7,9 @@
   <Columns>
     <SimpleColumn name="Name" />
     <SimpleColumn name="Method" />
+    <SimpleColumn name="Module" />
+    <SimpleColumn name="ReminderDataField" />
+    <SimpleColumn name="ReminderDataIndicator" />
     <SimpleColumn name="Hours" />
     <SimpleColumn name="Minutes" />
     <SimpleColumn name="Caption" />

@@ -142,6 +142,8 @@ public interface Dictionary {
 
   default String advance() {return g("advance");}
 
+  default String after() {return g("after");}
+
   default String allValuesCannotBeEmpty() {return g("allValuesCannotBeEmpty");}
 
   default String allValuesEmpty(Object p0, Object p1) {
@@ -218,6 +220,8 @@ public interface Dictionary {
   default String banksAccounts() {return g("banksAccounts");}
 
   default String baseUnit() {return g("baseUnit");}
+
+  default String before() {return g("before");}
 
   default String birthdaysParties() {return g("birthdaysParties");}
 
@@ -942,11 +946,13 @@ public interface Dictionary {
   default String crmMailAssignedTasks() {return g("crmMailAssignedTasks");}
 
   default String crmMailTaskSubject() {return g("crmMailTaskSubject");}
-  
+
+  default String crmMailTasksSummary() {return g("crmMailTasksSummary");}
+
   default String crmMailTasksSummarySubject() {return g("crmMailTasksSummarySubject");}
-  
+
   default String crmMailTasksSummaryText() {return g("crmMailTasksSummaryText");}
-  
+
   default String crmNewDurationType() {return g("crmNewDurationType");}
 
   default String crmNewRecurringTask() {return g("crmNewRecurringTask");}
@@ -1186,7 +1192,7 @@ public interface Dictionary {
   default String crmTaskForwarding() {return g("crmTaskForwarding");}
 
   default String crmTaskForwardingForExecution() {return g("crmTaskForwardingForExecution");}
-  
+
   default String crmTaskLabelDelayedHours() {return g("crmTaskLabelDelayedHours");}
 
   default String crmTaskLabelLate() {return g("crmTaskLabelLate");}
@@ -4027,7 +4033,13 @@ public interface Dictionary {
 
   default String reminderCaption() {return g("reminderCaption");}
 
+  default String reminderDataField() {return g("reminderDataField");}
+
+  default String reminderDataIndicator() {return g("reminderDataIndicator");}
+
   default String reminderMethod() {return g("reminderMethod");}
+
+  default String reminderModule() {return g("reminderModule");}
 
   default String reminderName() {return g("reminderName");}
 
@@ -5757,6 +5769,24 @@ public interface Dictionary {
   default String userProfile() {return g("userProfile");}
 
   default String userProperties() {return g("userProperties");}
+
+  default String userRemind() {return g("userRemind");}
+
+  default String userReminder() {return g("userReminder");}
+
+  default String userReminderCancel() {return g("userReminderCancel");}
+
+  default String userReminderDataLabel() {return g("userReminderDataLabel");}
+
+  default String userReminderOtherTime() {return g("userReminderOtherTime");}
+
+  default String userReminderSendRemind() {return g("userReminderSendRemind");}
+
+  default String userReminderSendRemindDateError() {return g("userReminderSendRemindDateError");}
+
+  default String userReminderSuspend() {return g("userReminderSuspend");}
+
+  default String userReminderUpdate() {return g("userReminderUpdate");}
 
   default String userRoles() {return g("userRoles");}
 

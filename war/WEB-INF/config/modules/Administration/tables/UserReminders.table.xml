@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Table xmlns="http://www.butent.com/table"
+
+  name="UserReminders"
+  idName="UserReminderID"
+  >
+  <Fields>
+    <Long name="Object" notNull="true" />
+    <Enum name="ObjectModule" key="Module" notNull="false" />
+    <Relation name="ReminderType" relation="ReminderTypes" cascade="DELETE" />
+    <Relation name="User" notNull="true" relation="Users" />
+    <DateTime name="ReminderTime" />
+    <Boolean name="Active" />
+  </Fields>
+</Table>

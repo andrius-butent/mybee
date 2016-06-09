@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<View xmlns="http://www.butent.com/view"
+  name="UserReminders" source="UserReminders" >
+  <Columns>
+    <SimpleColumn name="Object" />
+    <SimpleColumn name="ObjectModule"/>
+
+    <SimpleColumn name="ReminderType" />
+    <SimpleJoin name="ReminderType" joinType="LEFT">
+      <SimpleColumn name="Name" />
+      <SimpleColumn name="Module" />
+      <SimpleColumn name="ReminderDataField" />
+      <SimpleColumn name="ReminderDataIndicator" />
+      <SimpleColumn name="Hours" />
+      <SimpleColumn name="Minutes" />
+    </SimpleJoin>
+
+    <SimpleColumn name="User" />
+
+    <SimpleColumn name="ReminderTime" />
+    <SimpleColumn name="Active" />
+  </Columns>
+</View>
+ 

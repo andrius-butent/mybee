@@ -578,6 +578,7 @@
       <xs:enumeration value="UserGroupSettings" />
       <xs:enumeration value="UserHistory" />
       <xs:enumeration value="UserParameters" />
+      <xs:enumeration value="UserReminders" />
       <xs:enumeration value="UserRoles" />
       <xs:enumeration value="Users" />
       <xs:enumeration value="UserSettings" />

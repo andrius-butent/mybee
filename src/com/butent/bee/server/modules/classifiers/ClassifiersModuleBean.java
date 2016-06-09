@@ -231,6 +231,8 @@ public class ClassifiersModuleBean implements BeeModule {
     } else if (BeeUtils.same(svc, SVC_GET_COMPANY_TYPE_REPORT)) {
       response = getCompanyTypeReport(reqInfo);
 
+    } else if (BeeUtils.same(svc, SVC_GET_USER_REMINDER_TIME)) {
+        response = calculateReminderTime(reqInfo);
     } else if (BeeUtils.same(svc, SVC_GENERATE_QR_CODE)) {
       try {
         response = generateQrCode(reqInfo);
@@ -2162,5 +2164,60 @@ public class ClassifiersModuleBean implements BeeModule {
     baos.close();
     qrBase64 = Codec.toBase64(imageInByte);
     return qrBase64;
+  }
+
+  public DateTime calculateReminderTime(Long time, Integer dataIndicator,
+      Integer hours, Integer minutes) {
+    DateTime reminderTime = new DateTime();
+    reminderTime.setTime(time);
+
+    if (time != null && dataIndicator != null) {
+      if (BeeUtils.same(dataIndicator.toString(),
+          BeeUtils.toString(ReminderDataIndicator.AFTER.ordinal()))) {
+        if (hours != null) {
+          TimeUtils.addHour(reminderTime, hours);
+        }
+        if (minutes != null) {
+          TimeUtils.addMinute(reminderTime, minutes);
+        }
+      }
+      if (BeeUtils.same(dataIndicator.toString(),
+          BeeUtils.toString(ReminderDataIndicator.BEFORE.ordinal()))) {
+        if (hours != null) {
+          TimeUtils.addHour(reminderTime, hours * -1);
+        }
+        if (minutes != null) {
+          TimeUtils.addMinute(reminderTime, minutes * -1);
+        }
+      }
+    }
+    return reminderTime;
+  }
+
+  private ResponseObject calculateReminderTime(RequestInfo reqInfo) {
+    Long objectTime = BeeUtils.toLongOrNull(reqInfo.getParameter(VAR_OBJECT_DATE));
+    Long reminderTypeId = BeeUtils.toLongOrNull(reqInfo.getParameter(VAR_REMINDER_TYPE_ID));
+
+    SimpleRowSet data = qs.getData(new SqlSelect()
+        .addFields(VIEW_REMINDER_TYPES, COL_REMINDER_DATA_INDICATOR,
+            COL_REMINDER_HOURS, COL_REMINDER_MINUTES)
+        .addFrom(VIEW_REMINDER_TYPES)
+        .setWhere(SqlUtils.equals(VIEW_REMINDER_TYPES, sys.getIdName(VIEW_REMINDER_TYPES),
+            reminderTypeId)));
+
+    if (!data.isEmpty()) {
+      SimpleRow row = data.getRow(0);
+      Integer dataIndicator = row.getInt(COL_REMINDER_DATA_INDICATOR);
+      Integer hours = row.getInt(COL_REMINDER_HOURS);
+      Integer minutes = row.getInt(COL_REMINDER_MINUTES);
+      DateTime reminderTime = calculateReminderTime(objectTime, dataIndicator, hours, minutes);
+      if (reminderTime == null) {
+        return ResponseObject.emptyResponse();
+      } else {
+        return ResponseObject.response(reminderTime);
+      }
+    } else {
+      return ResponseObject.emptyResponse();
+    }
   }
 }

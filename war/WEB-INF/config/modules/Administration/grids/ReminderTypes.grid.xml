@@ -11,6 +11,11 @@
     <DataColumn name="Name" caption="=name" visible="true" />
     <DataColumn name="Method" caption="=reminderMethod" visible="true" />
 
+    <DataColumn name="Module" caption="=reminderModule" visible="true" />
+    <DataColumn name="ReminderDataField" caption="=reminderDataField" visible="true" />
+    <DataColumn name="ReminderDataIndicator" caption="=reminderDataIndicator" visible="true" />
+
+
     <DataColumn name="Hours" caption="=unitHours" />
     <DataColumn name="Minutes" caption="=unitMinutes" />
 

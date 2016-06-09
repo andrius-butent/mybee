@@ -737,6 +737,7 @@ public final class TaskConstants {
 
   public static final String VAR_TASK_DATA = Service.RPC_VAR_PREFIX + "task_data";
   public static final String VAR_TASK_ID = Service.RPC_VAR_PREFIX + "task_id";
+  public static final String VAR_USER_ID = Service.RPC_VAR_PREFIX + "user_id";
   public static final String VAR_TASK_APPROVED_TIME = Service.RPC_VAR_PREFIX + "task_approved";
 
   public static final String VAR_TASK_COMMENT = Service.RPC_VAR_PREFIX + "task_comment";

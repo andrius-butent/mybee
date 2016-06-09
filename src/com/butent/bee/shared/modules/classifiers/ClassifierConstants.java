@@ -1,5 +1,6 @@
 package com.butent.bee.shared.modules.classifiers;
 
+import com.butent.bee.shared.Service;
 import com.butent.bee.shared.time.TimeUtils;
 import com.butent.bee.shared.utils.EnumUtils;
 
@@ -13,8 +14,14 @@ public final class ClassifierConstants {
   public static final String SVC_GET_COMPANY_TYPE_REPORT = "get_company_type_report";
   public static final String SVC_GET_PRICE_AND_DISCOUNT = "GetPriceAndDiscount";
 
+  public static final String SVC_GET_USER_REMINDER_TIME = "get_user_reminder_time";
+
+  public static final String VAR_OBJECT_DATE = Service.RPC_VAR_PREFIX + "object_date";
+  public static final String VAR_REMINDER_TYPE_ID = Service.RPC_VAR_PREFIX + "reminder_type_id";
+
   public static final String TIMER_REMIND_COMPANY_ACTIONS = "timer_remind_company_actions";
   public static final String TIMER_REMIND_TASKS_SUMMARY = "timer_remind_tasks_summary_";
+  public static final String TIMER_REMIND_USER_TASKS = "timer_remind_user_tasks";
 
   public static final String TBL_ITEMS = "Items";
   public static final String TBL_UNITS = "Units";

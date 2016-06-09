@@ -697,7 +697,8 @@ public enum FontAwesome {
   HASHTAG('\uf292'),
   BLUETOOTH('\uf293'),
   BLUETOOTH_B('\uf294'),
-  PERCENT('\uf295');
+  PERCENT('\uf295'),
+  ALARM_CLOCK('\u23f0');
 
   public static final String FAMILY = "FontAwesome";
 
