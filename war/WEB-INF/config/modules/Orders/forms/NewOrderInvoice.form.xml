@@ -4,8 +4,12 @@
   <!ENTITY lbl2 "text-align: right; padding-right: 9px;">
     <!ENTITY separator "<hr style=&#34; background-color: blue; color: blue; height: 1px;&#34;/>">
   ]>
-<f:Form xmlns="http://www.butent.com/widget" xmlns:f="http://www.butent.com/form" name="NewOrderInvoice"
-  viewName="OrdersInvoices" caption="=trdNewInvoice" width="710" height="410">
+<f:Form
+  xmlns="http://www.butent.com/widget"
+  xmlns:f="http://www.butent.com/form"
+  name="NewOrderInvoice" viewName="OrderChildInvoices" caption="=trdNewInvoice"
+  width="710" height="410"
+  >
   <FlowPanel style="padding: 1px 1px 1px 1px;">
     <Table kind="controls" style="border-spacing: 5px;">
       <row>
@@ -15,41 +19,49 @@
       </row>
       <row>
         <cell colSpan="4">
-          <CheckBox source="Proforma" text="=trdProformaInvoice" style="float:right;" />
+          <CheckBox source="Proforma" text="=trdProformaInvoice"
+            style="float:right;" />
         </cell>
       </row>
       <row>
         <Label text="=trdDate" class="bee-required" style="&lbl2; width:143px;" />
         <InputDateTime source="Date" style="width:11em;" />
+
+        <Label for="CheckNo" style="&lbl2;" />
+        <InputText source="CheckNo" />
       </row>
       <row>
-        <Label text="=currency" class="bee-required" style="&lbl2; width:143px; margin-right: 5px;" />
-        <DataSelector source="CurrencyName" style="width:5em;" editEnabled="false" />
-        <cell colSpan="2">
-          <HorizontalPanel style="border-spacing: 0px;">
-            <Label text="=trdInvoicePrefix" style="&lbl2; width: 42px; " />
-            <DataSelector source="SaleSeries" upperCase="true" style="width:50px; margin-right: 4px;" />
-            <InlineLabel text="=trdInvoiceNo" style="&lbl2; margin-right: 5px;" />
-            <InputText source="InvoiceNo" />
-          </HorizontalPanel>
-        </cell>
+        <Label text="=trdInvoicePrefix" style="&lbl2;" name="SeriesLabel" />
+        <DataSelector source="SaleSeries" name="Series" upperCase="true"
+          style="width:5em; margin-right: 4px;" />
+
+        <Label text="=trdInvoiceNo" style="&lbl2;" />
+        <InputText source="InvoiceNo" />
       </row>
       <row>
-        <Label text="=trdTerm" style="&lbl2; width:143px; text-align:right; margin-right: 5px;" />
+        <Label text="=trdTerm"
+          style="&lbl2; width:143px; text-align:right; margin-right: 5px;" />
         <InputDate source="Term" style="width:150px;" />
+
+        <Label text="=currency" class="bee-required"
+          style="&lbl2; width:143px; margin-right: 5px;" />
+        <DataSelector source="CurrencyName" style="width:5em;"
+          editEnabled="false" />
       </row>
       <row>
         <Label for="Operation" style="&lbl2;" class="bee-required" />
-        <DataSelector source="Operation" style="width:150px;" required="true" />
+        <DataSelector name="Operation" source="Operation" style="width:150px;"
+          required="true" renderColumns="OperationName" />
 
         <Label for="WarehouseFrom" style="&lbl2;" class="bee-required" />
-        <DataSelector source="WarehouseFrom" style="width:150px;" required="true" />
+        <DataSelector source="WarehouseFrom" style="width:150px;"
+          required="true" readOnly="true" />
       </row>
       <row>
         <Label text="=trdSupplier" style="&lbl2; width:143px;" />
         <DataSelector source="Supplier" />
         <Label text="=trdCustomer" class="bee-required" style="&lbl2;" />
-        <DataSelector source="Customer" required="true" />
+        <DataSelector source="Customer" required="true" renderColumns="CustomerName" />
       </row>
       <row>
         <Label text="=trdManager" style="&lbl2; width:143px;" />
