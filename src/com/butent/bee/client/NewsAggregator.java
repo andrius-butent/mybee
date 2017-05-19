@@ -1,8 +1,7 @@
 package com.butent.bee.client;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import com.butent.bee.client.communication.ParameterList;
@@ -11,6 +10,7 @@ import com.butent.bee.client.data.Data;
 import com.butent.bee.client.data.RowEditor;
 import com.butent.bee.client.grid.GridFactory;
 import com.butent.bee.client.grid.GridFactory.GridOptions;
+import com.butent.bee.client.grid.HtmlTable;
 import com.butent.bee.client.layout.Flow;
 import com.butent.bee.client.presenter.PresenterCallback;
 import com.butent.bee.client.screen.Domain;
@@ -87,39 +87,42 @@ public class NewsAggregator implements HandlesAllDataEvents {
       this.dataId = headline.getId();
       this.isNew = headline.isNew();
 
+      HtmlTable table = new HtmlTable();
+      FlowPanel flow = new FlowPanel();
+
       CustomDiv typeWidget = new CustomDiv(headline.isNew() ? STYLE_NEW : STYLE_UPD);
-      add(typeWidget);
+      table.setWidget(0, 0, typeWidget);
 
       Label captionWidget = new Label(headline.getCaption());
       captionWidget.addStyleName(STYLE_HEADLINE_PREFIX + "caption");
 
-      if (!BeeUtils.isEmpty(headline.getSubtitle())) {
-        captionWidget.setTitle(headline.getSubtitle());
-      }
-
-      captionWidget.addClickHandler(new ClickHandler() {
-        @Override
-        public void onClick(ClickEvent event) {
-          readHeadline(HeadlinePanel.this);
-          if (HeadlinePanel.this.getParent() != null) {
-            UiHelper.closeDialog(HeadlinePanel.this.getParent());
-          }
+      captionWidget.addClickHandler(event -> {
+        readHeadline(HeadlinePanel.this);
+        if (HeadlinePanel.this.getParent() != null) {
+          UiHelper.closeDialog(HeadlinePanel.this.getParent());
         }
       });
 
-      add(captionWidget);
+      flow.add(captionWidget);
+
+      if (!BeeUtils.isEmpty(headline.getSubtitle())) {
+        Label subtitle = new Label(headline.getSubtitle());
+        subtitle.addStyleName(STYLE_HEADLINE_PREFIX + "subtitle");
+
+        flow.add(subtitle);
+      }
+
+      table.setWidget(0, 1, flow);
+      table.getCellFormatter().setWidth(0, 1, 420);
 
       Label dismiss = new Label(String.valueOf(BeeConst.CHAR_TIMES));
       dismiss.addStyleName(STYLE_HEADLINE_PREFIX + "dismiss");
 
-      dismiss.addClickHandler(new ClickHandler() {
-        @Override
-        public void onClick(ClickEvent event) {
-          dismissHeadline(HeadlinePanel.this);
-        }
-      });
+      dismiss.addClickHandler(event -> dismissHeadline(HeadlinePanel.this));
 
-      add(dismiss);
+      table.setWidget(0, 2, dismiss);
+
+      add(table);
     }
 
     private long getDataId() {
@@ -164,12 +167,7 @@ public class NewsAggregator implements HandlesAllDataEvents {
       this.disclosureWidget = new FaLabel(FontAwesome.CARET_RIGHT);
       disclosureWidget.addStyleName(STYLE_PREFIX + "disclosure");
 
-      disclosureWidget.addClickHandler(new ClickHandler() {
-        @Override
-        public void onClick(ClickEvent event) {
-          toggleOpen();
-        }
-      });
+      disclosureWidget.addClickHandler(event -> toggleOpen());
 
       header.add(disclosureWidget);
 
@@ -177,12 +175,9 @@ public class NewsAggregator implements HandlesAllDataEvents {
       refreshWidget.setTitle(Localized.dictionary().actionRefresh());
       refreshWidget.addStyleName(STYLE_PREFIX + "refresh");
 
-      refreshWidget.addClickHandler(new ClickHandler() {
-        @Override
-        public void onClick(ClickEvent event) {
-          cancelRefresh();
-          refresh(Feed.ALL);
-        }
+      refreshWidget.addClickHandler(event -> {
+        cancelRefresh();
+        refresh(Feed.ALL);
       });
 
       header.add(refreshWidget);
@@ -191,12 +186,7 @@ public class NewsAggregator implements HandlesAllDataEvents {
       dismissAllhWidget.setTitle(Localized.dictionary().clearNews());
       dismissAllhWidget.addStyleName(STYLE_PREFIX + "dismissAll");
 
-      dismissAllhWidget.addClickHandler(new ClickHandler() {
-        @Override
-        public void onClick(ClickEvent event) {
-          dismissAllNews();
-        }
-      });
+      dismissAllhWidget.addClickHandler(event -> dismissAllNews());
 
       header.add(dismissAllhWidget);
 
@@ -367,24 +357,14 @@ public class NewsAggregator implements HandlesAllDataEvents {
       this.disclosure = new FaLabel(open ? FontAwesome.CARET_DOWN : FontAwesome.CARET_RIGHT);
       disclosure.addStyleName(STYLE_SUBSCRIPTION_PREFIX + "disclosure");
 
-      disclosure.addClickHandler(new ClickHandler() {
-        @Override
-        public void onClick(ClickEvent event) {
-          toggleOpen();
-        }
-      });
+      disclosure.addClickHandler(event -> toggleOpen());
 
       header.add(disclosure);
 
       Label feedLabel = new Label(subscription.getLabel());
       feedLabel.addStyleName(STYLE_SUBSCRIPTION_PREFIX + "label");
 
-      feedLabel.addClickHandler(new ClickHandler() {
-        @Override
-        public void onClick(ClickEvent event) {
-          toggleOpen();
-        }
-      });
+      feedLabel.addClickHandler(event -> toggleOpen());
 
       header.add(feedLabel);
 
@@ -398,12 +378,7 @@ public class NewsAggregator implements HandlesAllDataEvents {
       filter.addStyleName(STYLE_SUBSCRIPTION_PREFIX + "filter");
       filter.setTitle(Localized.dictionary().actionFilter());
 
-      filter.addClickHandler(new ClickHandler() {
-        @Override
-        public void onClick(ClickEvent event) {
-          onFilter(getFeed());
-        }
-      });
+      filter.addClickHandler(event -> onFilter(getFeed()));
 
       header.add(filter);
 

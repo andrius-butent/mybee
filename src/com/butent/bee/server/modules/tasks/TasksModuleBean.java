@@ -547,21 +547,26 @@ public class TasksModuleBean extends TimerBuilder implements BeeModule {
 
       List<String> subtitles = new ArrayList<>();
 
+      String company = DataUtils.getString(rowSet, row, ALS_COMPANY_NAME);
+      if (!BeeUtils.isEmpty(company)) {
+        subtitles.add(company);
+      }
+
       DateTime finish = DataUtils.getDateTime(rowSet, row, COL_FINISH_TIME);
       if (finish != null) {
         subtitles.add(Formatter.renderDateTime(dtfInfo, finish));
-      }
-
-      TaskStatus status = EnumUtils.getEnumByIndex(TaskStatus.class,
-          DataUtils.getInteger(rowSet, row, COL_STATUS));
-      if (status != null) {
-        subtitles.add(status.getCaption(constants));
       }
 
       if (feed != Feed.TASKS_ASSIGNED) {
         subtitles.add(BeeUtils.joinWords(
             DataUtils.getString(rowSet, row, ALS_EXECUTOR_FIRST_NAME),
             DataUtils.getString(rowSet, row, ALS_EXECUTOR_LAST_NAME)));
+      }
+
+      TaskStatus status = EnumUtils.getEnumByIndex(TaskStatus.class,
+          DataUtils.getInteger(rowSet, row, COL_STATUS));
+      if (status != null) {
+        subtitles.add(status.getCaption(constants));
       }
 
       return Headline.create(row.getId(), caption, subtitles, isNew);

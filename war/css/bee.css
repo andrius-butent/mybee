@@ -2960,6 +2960,11 @@
 .bee-News-headline-panel:hover .bee-News-headline-dismiss {
   visibility: visible;
 }
+.bee-News-headline-subtitle {
+  font-size: 12px;
+  color: #CCC;
+}
+
 
 .bee-News-headline-new,
 .bee-News-headline-upd {
