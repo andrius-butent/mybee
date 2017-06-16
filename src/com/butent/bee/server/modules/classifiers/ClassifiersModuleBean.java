@@ -95,6 +95,7 @@ import com.butent.bee.shared.modules.tasks.TaskConstants;
 import com.butent.bee.shared.modules.transport.TransportConstants;
 import com.butent.bee.shared.news.Feed;
 import com.butent.bee.shared.news.NewsConstants;
+import com.butent.bee.shared.report.ReportInfo;
 import com.butent.bee.shared.rights.Module;
 import com.butent.bee.shared.rights.ModuleAndSub;
 import com.butent.bee.shared.rights.SubModule;
@@ -247,6 +248,10 @@ public class ClassifiersModuleBean implements BeeModule {
 
     } else if (BeeUtils.same(svc, SVC_FILTER_ORDERS)) {
       response = filterOrders(reqInfo);
+
+    } else if (BeeUtils.same(svc, SVC_COMPANY_SOURCE_REPORT)) {
+      response = getCompanySourceReport(reqInfo);
+
     } else {
       String msg = BeeUtils.joinWords("Commons service not recognized:", svc);
       logger.warning(msg);
@@ -1260,6 +1265,51 @@ public class ClassifiersModuleBean implements BeeModule {
     } else {
       return ResponseObject.response(result);
     }
+  }
+
+  private ResponseObject getCompanySourceReport(RequestInfo reqInfo) {
+    ReportInfo report = ReportInfo.restore(reqInfo.getParameter(Service.VAR_DATA));
+
+    HasConditions clause = SqlUtils.and();
+    clause.add(report.getCondition(TBL_COMPANIES, COL_COMPANY_NAME));
+    clause.add(report.getCondition(TBL_COMPANIES, COL_COMPANY_CODE));
+    clause.add(report.getCondition(SqlUtils.field(TBL_COMPANY_TYPES, COL_ITEM_NAME),
+        COL_COMPANY_TYPE));
+    clause.add(report.getCondition(SqlUtils.field(VIEW_INFORMATION_SOURCES, COL_ITEM_NAME),
+        COL_COMPANY_INFORMATION_SOURCE));
+    clause.add(report.getCondition(SqlUtils.field(VIEW_COMPANY_SIZES, "SizeName"),
+        COL_COMPANY_SIZE));
+    clause.add(report.getCondition(SqlUtils.field(VIEW_COMPANY_TURNOVERS, COL_ITEM_NAME),
+        COL_COMPANY_TURNOVER));
+    clause.add(report.getCondition(SqlUtils.field(VIEW_COMPANY_GROUPS, COL_ITEM_NAME),
+        COL_COMPANY_GROUP));
+    clause.add(report.getCondition(SqlUtils.field(VIEW_COMPANY_RELATION_TYPES, COL_ITEM_NAME),
+        COL_COMPANY_RELATION_TYPE_STATE));
+
+    SqlSelect selectCompanies = new SqlSelect()
+        .addFields(TBL_COMPANIES, COL_COMPANY_NAME, COL_COMPANY_CODE)
+        .addField(TBL_COMPANY_TYPES, COL_ITEM_NAME, COL_COMPANY_TYPE)
+        .addField(VIEW_INFORMATION_SOURCES, COL_ITEM_NAME, COL_COMPANY_INFORMATION_SOURCE)
+        .addField(VIEW_COMPANY_SIZES, "SizeName", COL_COMPANY_SIZE)
+        .addField(VIEW_COMPANY_TURNOVERS, COL_ITEM_NAME, COL_COMPANY_TURNOVER)
+        .addField(VIEW_COMPANY_GROUPS, COL_ITEM_NAME, COL_COMPANY_GROUP)
+        .addField(VIEW_COMPANY_RELATION_TYPES, COL_ITEM_NAME, COL_COMPANY_RELATION_TYPE_STATE)
+        .addFrom(TBL_COMPANIES)
+        .addFromLeft(TBL_COMPANY_TYPES, sys.joinTables(TBL_COMPANY_TYPES, TBL_COMPANIES,
+            COL_COMPANY_TYPE))
+        .addFromLeft(VIEW_INFORMATION_SOURCES, sys.joinTables(VIEW_INFORMATION_SOURCES,
+            TBL_COMPANIES, COL_COMPANY_INFORMATION_SOURCE))
+        .addFromLeft(VIEW_COMPANY_SIZES, sys.joinTables(VIEW_COMPANY_SIZES, TBL_COMPANIES,
+            COL_COMPANY_SIZE))
+        .addFromLeft(VIEW_COMPANY_TURNOVERS, sys.joinTables(VIEW_COMPANY_TURNOVERS, TBL_COMPANIES,
+            COL_COMPANY_TURNOVER))
+        .addFromLeft(VIEW_COMPANY_GROUPS, sys.joinTables(VIEW_COMPANY_GROUPS, TBL_COMPANIES,
+            COL_COMPANY_GROUP))
+        .addFromLeft(VIEW_COMPANY_RELATION_TYPES, sys.joinTables(VIEW_COMPANY_RELATION_TYPES,
+            TBL_COMPANIES, COL_COMPANY_RELATION_TYPE_STATE))
+        .setWhere(clause);
+
+    return ResponseObject.response(qs.getData(selectCompanies));
   }
 
   private void explain(Object... messages) {

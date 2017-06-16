@@ -87,6 +87,14 @@ public class Relations extends Flow implements Editor, ClickHandler, SelectorEve
     ParentRowEvent.Handler, HasFosterParent, HasRowChildren, HandlesValueChange,
     SummaryChangeEvent.Handler, RowInsertEvent.Handler {
 
+  public interface InputRelationsInterceptor {
+    void onClose();
+
+    void onOpen();
+
+    void onSave();
+  }
+
   public static final String PFX_RELATED = "Rel";
 
   private static final String STORAGE = TBL_RELATIONS;
@@ -118,6 +126,7 @@ public class Relations extends Flow implements Editor, ClickHandler, SelectorEve
 
   private Long id;
   private SelectorEvent.Handler handler;
+  private InputRelationsInterceptor inputRelationsInterceptor;
 
   public Relations(String column, boolean inline, Collection<Relation> relations,
       List<String> defaultRelations, List<String> blockedRelations) {
@@ -385,6 +394,10 @@ public class Relations extends Flow implements Editor, ClickHandler, SelectorEve
     }
     refresh();
 
+    if (Objects.nonNull(inputRelationsInterceptor)) {
+      inputRelationsInterceptor.onOpen();
+    }
+
     Global.inputWidget(Localized.dictionary().relations(), table, new InputCallback() {
       @Override
       public void onAdd() {
@@ -392,7 +405,7 @@ public class Relations extends Flow implements Editor, ClickHandler, SelectorEve
       }
 
       @Override
-      public void onClose(final CloseCallback closeCallback) {
+      public void onClose(CloseCallback closeCallback) {
         if (isValueChanged()) {
           Global.decide(Localized.dictionary().relations(),
               Lists.newArrayList(Localized.dictionary().changedValues() + BeeConst.CHAR_SPACE
@@ -400,6 +413,9 @@ public class Relations extends Flow implements Editor, ClickHandler, SelectorEve
               new DecisionCallback() {
                 @Override
                 public void onConfirm() {
+                  if (Objects.nonNull(inputRelationsInterceptor)) {
+                    inputRelationsInterceptor.onClose();
+                  }
                   closeCallback.onSave();
                 }
 
@@ -409,6 +425,9 @@ public class Relations extends Flow implements Editor, ClickHandler, SelectorEve
                 }
               }, DialogConstants.DECISION_YES);
         } else {
+          if (Objects.nonNull(inputRelationsInterceptor)) {
+            inputRelationsInterceptor.onClose();
+          }
           InputCallback.super.onClose(closeCallback);
         }
       }
@@ -424,6 +443,9 @@ public class Relations extends Flow implements Editor, ClickHandler, SelectorEve
               requery(result, id);
             }
           });
+        }
+        if (Objects.nonNull(inputRelationsInterceptor)) {
+          inputRelationsInterceptor.onSave();
         }
       }
     }, null, null, EnumSet.of(Action.ADD));
@@ -587,6 +609,10 @@ public class Relations extends Flow implements Editor, ClickHandler, SelectorEve
   @Override
   public void setHandlesTabulation(boolean handlesTabulation) {
     this.handlesTabulation = handlesTabulation;
+  }
+
+  public void setInputRelationsInterceptor(InputRelationsInterceptor interceptor) {
+    this.inputRelationsInterceptor = interceptor;
   }
 
   @Override
