@@ -1664,10 +1664,6 @@ class TaskEditor extends ProductSupportInterceptor {
       exclusions.add(oldUser);
     }
 
-    if (!BeeUtils.isEmpty(getProjectUsers())) {
-      filter.addAll(getProjectUsers());
-    }
-
     final TaskDialog dialog = new TaskDialog(Localized.dictionary().crmTaskForwarding());
 
     final String sid =
@@ -1892,6 +1888,27 @@ class TaskEditor extends ProductSupportInterceptor {
 
   private boolean isOwner() {
     return Objects.equals(userId, getOwner());
+  }
+
+  private void maybeHideProjectInformation(boolean visibility) {
+    FormView form = getFormView();
+
+    if (form == null) {
+      return;
+    }
+
+    for (String name : new String[]{ProjectConstants.COL_PROJECT,
+        ProjectConstants.COL_PROJECT_STAGE, COL_PRODUCT, COL_COMPANY, COL_CONTACT}) {
+      Widget widget = getFormView().getWidgetBySource(name);
+
+      if (widget != null) {
+        Widget drill = ((DataSelector) widget).getDrill();
+
+        if (drill != null) {
+          drill.setVisible(visibility);
+        }
+      }
+    }
   }
 
   private void onResponse(BeeRow data) {
@@ -2280,6 +2297,7 @@ class TaskEditor extends ProductSupportInterceptor {
     if (!DataUtils.isId(projectId)) {
       TaskHelper.setSelectorFilter(ownerSelector, null);
       TaskHelper.setSelectorFilter(observersSelector, null);
+      maybeHideProjectInformation(true);
       return;
     }
     TaskHelper.setWidgetEnabled(observersSelector, isOwner()
@@ -2313,6 +2331,8 @@ class TaskEditor extends ProductSupportInterceptor {
         TaskHelper.setSelectorFilter(observersSelector, projectTeamFilter);
         TaskHelper.setSelectorFilter(ownerSelector, projectTeamFilter);
         setProjectUsers(userIds);
+
+        maybeHideProjectInformation(getProjectUsers().contains(getExecutor()));
       }
     });
   }

@@ -70,6 +70,51 @@ public enum Report implements HasWidgetSupplier {
       return new CompanyUsageReport();
     }
   },
+  COMPANY_SOURCE(ModuleAndSub.of(Module.CLASSIFIERS), SVC_COMPANY_SOURCE_REPORT) {
+    @Override
+    public List<ReportItem> getItems() {
+      Dictionary loc = Localized.dictionary();
+
+      return Arrays.asList(
+          new ReportTextItem(COL_COMPANY_NAME, loc.name()),
+          new ReportTextItem(COL_COMPANY_TYPE, loc.companyStatus()),
+          new ReportTextItem(COL_COMPANY_CODE, loc.code()),
+          new ReportTextItem(COL_COMPANY_INFORMATION_SOURCE, loc.informationSource()),
+          new ReportTextItem(COL_COMPANY_SIZE, loc.companySize()),
+          new ReportTextItem(COL_COMPANY_TURNOVER, loc.trdTurnover()),
+          new ReportTextItem(COL_COMPANY_GROUP, loc.clientGroup()),
+          new ReportTextItem(COL_COMPANY_RELATION_TYPE_STATE, loc.companyRelationState()));
+    }
+
+    @Override
+    public String getReportCaption() {
+      return Localized.dictionary().contactReportCompanySource();
+    }
+
+    @Override
+    public Collection<ReportInfo> getReports() {
+      Map<String, ReportItem> items = new HashMap<>();
+      for (ReportItem item : getItems()) {
+        items.put(item.getExpression(), item);
+      }
+      ReportInfo report = new ReportInfo(getReportCaption());
+
+      for (String item : new String[]{
+          COL_COMPANY_TYPE,
+          COL_COMPANY_CODE,
+          COL_COMPANY_INFORMATION_SOURCE,
+          COL_COMPANY_SIZE,
+          COL_COMPANY_TURNOVER,
+          COL_COMPANY_GROUP,
+          COL_COMPANY_RELATION_TYPE_STATE}) {
+        report.addColItem(items.get(item));
+      }
+
+      report.addRowItem(items.get(COL_COMPANY_NAME));
+
+      return Collections.singletonList(report);
+    }
+  },
 
   ASSESSMENT_QUANTITY(ModuleAndSub.of(Module.TRANSPORT), "AssessmentQuantity",
       "AssessmentQuantityReport") {

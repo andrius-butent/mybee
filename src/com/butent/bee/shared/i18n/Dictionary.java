@@ -867,6 +867,8 @@ public interface Dictionary {
 
   default String contactReportCompanyUsage() {return g("contactReportCompanyUsage");}
 
+  default String contactReportCompanySource() {return g("contactReportCompanySource");}
+
   default String contactReports() {return g("contactReports");}
 
   default String contacts() {return g("contacts");}

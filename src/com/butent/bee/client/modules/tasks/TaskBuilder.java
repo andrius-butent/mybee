@@ -888,7 +888,6 @@ class TaskBuilder extends ProductSupportInterceptor {
         }
 
         if (executors != null) {
-          executors.getOracle().setAdditionalFilter(Filter.idIn(userIds), true);
           TaskHelper.setWidgetEnabled(executors, notScheduledTask != null
               && !notScheduledTask.isChecked());
         }
