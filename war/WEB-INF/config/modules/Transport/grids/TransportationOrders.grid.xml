@@ -14,7 +14,8 @@
     <DataColumn name="Outsized" caption="=outsizedShort" width="15" sortable="false" />
     <DataColumn name="Dangerous" caption="=dangerousShort" width="15" sortable="false" />
 
-    <RelColumn name="Customer" />
+    <DataColumn name="Customer" label="=customerId" filterSupplier="value" />
+    <DataColumn name="CustomerName" source="Customer" renderColumns="CustomerName CustomerTypeName"/>
     <RelColumn name="Payer" />
     <RelColumn name="Manager" renderColumns="ManagerFirstName ManagerLastName"
                filterSupplier="list" />
