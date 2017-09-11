@@ -16,14 +16,14 @@
     <Boolean name="VatPercent" label="=vatPercent" />
 
     <String name="Number" precision="20" label="=number" />
-    <Relation name="Customer" relation="Companies" label="=payer" />
+    <Relation name="Customer" relation="Companies" label="=customer" />
     <String name="Note" precision="50" label="=note" />
 
     <Relation name="Sale" relation="Sales" cascade="SET_NULL" label="=trdInvoiceId" />
     <Relation name="Purchase" relation="Purchases" cascade="SET_NULL" label="=trdPurchaseId" />
 
     <Relation name="Creator" relation="Users" label="=trdGenerated" defExpr="CURRENT_USER" />
-    <Numeric name="InsuranceCertificate" precision="1" label="Sertifikatas" />
+    <Numeric name="InsuranceCertificate" precision="1" label="=trInsuranceCertificate" />
     <Relation name="Trip" relation="Trips" cascade="SET_NULL" label="=trip" />
 
     <Relation name="CargoTrip" relation="CargoTrips" cascade="SET_NULL" label="=trip" />

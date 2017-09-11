@@ -1546,7 +1546,7 @@ public class TransportReportsBean {
         || report.requiresField(COL_ORDER_MANAGER) || report.requiresField(COL_CARGO)
         || report.requiresField(COL_CARGO_CMR_DATE)
         || report.requiresField(COL_CARGO_PARTIAL) || report.requiresField(ALS_ORDER_STATUS)
-        || report.requiresField(ALS_CUSTOMER_ID);;
+        || report.requiresField(ALS_CUSTOMER_ID);
 
     if (cargoRequired) {
       String tmpPercents = getCargoTripPercents(COL_TRIP,
