@@ -19,7 +19,9 @@
       <renderToken source="InvoicePrefix" suffix=" " />
       <renderToken source="InvoiceNo" />
     </DataColumn>
-    <RelColumn name="Supplier" filterSupplier="value" />
+
+    <DataColumn name="SupplierId" label="=trSupplierId" filterSupplier="value" />
+    <RelColumn name="Supplier" caption="=trSupplier" renderColumns="SupplierName SupplierType"/>
     <DataColumn name="Amount" />
     <RelColumn name="Currency" />
     <DataColumn name="Term" />
