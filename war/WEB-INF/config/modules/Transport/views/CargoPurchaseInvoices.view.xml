@@ -42,6 +42,7 @@
 
     <SimpleColumn name="Supplier" />
     <SimpleJoin name="Supplier" joinType="LEFT">
+      <IdColumn name="SupplierId" />
       <SimpleColumn name="Name" alias="SupplierName" />
       <SimpleJoin joinType="LEFT" name="CompanyType">
         <SimpleColumn name="Name" alias="SupplierType" />

@@ -53,6 +53,7 @@
 
     <SimpleColumn name="Customer" />
     <SimpleJoin joinType="LEFT" name="Customer">
+      <IdColumn name="CustomerId" />
       <SimpleColumn name="Name" alias="CustomerName" label="=trdCustomer" />
       <SimpleJoin joinType="LEFT" name="CompanyType">
         <SimpleColumn name="Name" alias="CustomerTypeName" />
@@ -61,6 +62,7 @@
 
     <SimpleColumn name="Payer" />
     <SimpleJoin joinType="LEFT" name="Payer">
+      <IdColumn name="PayerId" />
       <SimpleColumn name="Name" alias="PayerName" label="=trdPayer" />
        <SimpleJoin joinType="LEFT" name="CompanyType">
         <SimpleColumn name="Name" alias="PayerTypeName" />

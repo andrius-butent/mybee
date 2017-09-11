@@ -27,6 +27,7 @@
 
         <SimpleColumn name="Customer" />
         <SimpleJoin joinType="LEFT" name="Customer">
+          <IdColumn name="CustomerId" />
           <SimpleColumn name="Name" alias="CustomerName" label="=customer" />
         </SimpleJoin>
 

@@ -1093,6 +1093,7 @@ public final class TransportConstants {
 
   public static final String ALS_ABSENCE_NAME = "AbsenceName";
   public static final String ALS_ABSENCE_LABEL = "AbsenceLabel";
+  public static final String ALS_CUSTOMER_ID = "CustomerId";
   public static final String ALS_CUSTOMER_NAME = "CustomerName";
   public static final String ALS_CUSTOMER_TYPE_NAME = "CustomerTypeName";
 
