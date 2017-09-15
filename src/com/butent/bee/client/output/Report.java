@@ -216,9 +216,12 @@ public enum Report implements HasWidgetSupplier {
 
           new ReportTextItem(COL_ORDER_NO, loc.orderNumber()),
           new ReportDateTimeItem(TransportConstants.COL_ORDER + COL_ORDER_DATE, loc.orderDate()),
+          new ReportTextItem(ALS_CUSTOMER_ID, loc.customerId()),
           new ReportTextItem(COL_CUSTOMER, loc.customer()),
           new ReportTextItem(COL_ORDER_MANAGER, loc.manager()),
           new ReportTextItem(COL_CARGO, loc.cargo()),
+          new ReportTextItem(COL_CARGO_TYPE_NAME, loc.trCargoType()),
+          new ReportTextItem(COL_CARGO_GROUP_NAME, loc.trCargoGroup()),
           new ReportBooleanItem(COL_CARGO_PARTIAL, loc.partial()),
 
           new ReportNumericItem(COL_ROUTE_KILOMETERS, loc.kilometers()),
