@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @FunctionalInterface
-public interface Dictionary extends CustomDictionary{
+public interface Dictionary {
 
   String g(String key);
 
@@ -1493,6 +1493,8 @@ public interface Dictionary extends CustomDictionary{
 
   default String customer() {return g("customer");}
 
+  default String customerId() {return g("customerId");}
+
   default String customerPrice() {return g("customerPrice");}
 
   default String dangerous() {return g("dangerous");}
@@ -2646,6 +2648,8 @@ public interface Dictionary extends CustomDictionary{
   default String expenditures() {return g("expenditures");}
 
   default String expenses() {return g("expenses");}
+
+  default String expensesEnteredPerson() {return g("expensesEnteredPerson");}
 
   default String exportToMsExcel() {return g("exportToMsExcel");}
 
@@ -5962,6 +5966,8 @@ public interface Dictionary extends CustomDictionary{
 
   default String trCargoDocuments() {return g("trCargoDocuments");}
 
+  default String trCargoGroup() {return g("trCargoGroup");}
+
   default String trCargoGroups() {return g("trCargoGroups");}
 
   default String trCargoIncomes() {return g("trCargoIncomes");}
@@ -6037,6 +6043,8 @@ public interface Dictionary extends CustomDictionary{
   default String trCreditSales() {return g("trCreditSales");}
 
   default String trCustomer() {return g("trCustomer");}
+
+  default String trCustomerId() {return g("trCustomerId");}
 
   default String trDailyAmount() {return g("trDailyAmount");}
 
@@ -6232,6 +6240,8 @@ public interface Dictionary extends CustomDictionary{
 
   default String trMotoHourShort() {return g("trMotoHourShort");}
 
+  default String trMultipleSegments() {return g("trMultipleSegments");}
+
   default String trNewAbsence() {return g("trNewAbsence");}
 
   default String trNewAbsenceType() {return g("trNewAbsenceType");}
@@ -6309,6 +6319,8 @@ public interface Dictionary extends CustomDictionary{
   default String trOrderStatusRequest() {return g("trOrderStatusRequest");}
 
   default String trOrders() {return g("trOrders");}
+
+  default String trOrdersSumWithProforma() {return g("trOrdersSumWithProforma");}
 
   default String trOther() {return g("trOther");}
 
@@ -6628,6 +6640,8 @@ public interface Dictionary extends CustomDictionary{
 
   default String trSupplier() {return g("trSupplier");}
 
+  default String trSupplierId() {return g("trSupplierId");}
+
   default String trTbSettingsAdditionalInfo() {return g("trTbSettingsAdditionalInfo");}
 
   default String trTbSettingsCompletedTrips() {return g("trTbSettingsCompletedTrips");}
@@ -6675,6 +6689,8 @@ public interface Dictionary extends CustomDictionary{
   default String trTemperatureShort() {return g("trTemperatureShort");}
 
   default String trTonneKilometer() {return g("trTonneKilometer");}
+
+  default String trTotalLiabilities() {return g("trTotalLiabilities");}
 
   default String trTotalWithVAT() {return g("trTotalWithVAT");}
 
@@ -7069,6 +7085,8 @@ public interface Dictionary extends CustomDictionary{
 
   default String trdPayer() {return g("trdPayer");}
 
+  default String trdPayerId() {return g("trdPayerId");}
+
   default String trdPayment() {return g("trdPayment");}
 
   default String trdPaymentTerms() {return g("trdPaymentTerms");}
@@ -7154,6 +7172,8 @@ public interface Dictionary extends CustomDictionary{
   default String trdStock() {return g("trdStock");}
 
   default String trdSupplier() {return g("trdSupplier");}
+
+  default String trdSupplierId() {return g("trdSupplierId");}
 
   default String trdTerm() {return g("trdTerm");}
 

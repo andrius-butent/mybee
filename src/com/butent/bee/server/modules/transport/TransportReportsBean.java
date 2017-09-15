@@ -1191,6 +1191,8 @@ public class TransportReportsBean {
     cargoClause.add(report.getCondition(TBL_ORDERS, COL_ORDER_NO));
     cargoClause.add(report.getCondition(SqlUtils.field(TBL_ORDERS, COL_ORDER_DATE),
         COL_ORDER + COL_ORDER_DATE));
+    cargoClause.add(report.getCondition(SqlUtils.cast(SqlUtils.field(TBL_ORDERS, COL_CUSTOMER),
+        SqlConstants.SqlDataType.STRING, 20, 0), ALS_CUSTOMER_ID));
     cargoClause.add(report.getCondition(SqlUtils.field(TBL_COMPANIES, COL_COMPANY_NAME),
         COL_CUSTOMER));
     cargoClause.add(report.getCondition(SqlUtils.cast(SqlUtils.field(TBL_ORDER_CARGO,
@@ -1543,7 +1545,10 @@ public class TransportReportsBean {
         || report.requiresField(COL_ORDER + COL_ORDER_DATE) || report.requiresField(COL_CUSTOMER)
         || report.requiresField(COL_ORDER_MANAGER) || report.requiresField(COL_CARGO)
         || report.requiresField(COL_CARGO_CMR_DATE)
-        || report.requiresField(COL_CARGO_PARTIAL) || report.requiresField(ALS_ORDER_STATUS);
+        || report.requiresField(COL_CARGO_PARTIAL) || report.requiresField(ALS_ORDER_STATUS)
+        || report.requiresField(ALS_CUSTOMER_ID)
+        || report.requiresField(COL_CARGO_TYPE_NAME)
+        || report.requiresField(COL_CARGO_GROUP_NAME);
 
     if (cargoRequired) {
       String tmpPercents = getCargoTripPercents(COL_TRIP,
@@ -1556,13 +1561,18 @@ public class TransportReportsBean {
           .addField(TBL_ORDERS, COL_STATUS, ALS_ORDER_STATUS)
           .addField(TBL_ORDERS, COL_ORDER_DATE, COL_ORDER + COL_ORDER_DATE)
           .addField(TBL_COMPANIES, COL_COMPANY_NAME, COL_CUSTOMER)
+          .addField(TBL_ORDERS, COL_CUSTOMER, ALS_CUSTOMER_ID)
           .addExpr(SqlUtils.concat(SqlUtils.field(TBL_PERSONS, COL_FIRST_NAME), "' '",
               SqlUtils.nvl(SqlUtils.field(TBL_PERSONS, COL_LAST_NAME), "''")), COL_ORDER_MANAGER)
           .addFields(tmpPercents, COL_CARGO)
+          .addFields(VIEW_CARGO_TYPES, COL_CARGO_TYPE_NAME)
+          .addFields(VIEW_CARGO_GROUPS, COL_CARGO_GROUP_NAME)
           .addFields(TBL_ORDER_CARGO, COL_CARGO_PARTIAL, COL_CARGO_CMR_DATE)
           .addFrom(tmp)
           .addFromLeft(tmpPercents, SqlUtils.joinUsing(tmp, tmpPercents, COL_TRIP))
           .addFromLeft(TBL_ORDER_CARGO, sys.joinTables(TBL_ORDER_CARGO, tmpPercents, COL_CARGO))
+          .addFromLeft(VIEW_CARGO_TYPES, sys.joinTables(VIEW_CARGO_TYPES, TBL_ORDER_CARGO, COL_CARGO_TYPE))
+          .addFromLeft(VIEW_CARGO_GROUPS, sys.joinTables(VIEW_CARGO_GROUPS, TBL_ORDER_CARGO, COL_CARGO_GROUP))
           .addFromLeft(TBL_ORDERS, sys.joinTables(TBL_ORDERS, TBL_ORDER_CARGO, COL_ORDER))
           .addFromLeft(TBL_COMPANIES, sys.joinTables(TBL_COMPANIES, TBL_ORDERS, COL_CUSTOMER))
           .addFromLeft(TBL_USERS, sys.joinTables(TBL_USERS, TBL_ORDERS, COL_ORDER_MANAGER))

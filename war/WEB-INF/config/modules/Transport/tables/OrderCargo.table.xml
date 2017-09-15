@@ -33,7 +33,7 @@
     <Boolean name="CustomsBrokerage" label="=trRequestCustomsBrokerage" />
     <Boolean name="FreightInsurance" label="=trRequestFreightInsurance" />
 
-    <Boolean name="MultipleSegments" label="Kelios atkarpos" />
+    <Boolean name="MultipleSegments" label="=trMultipleSegments" />
 
     <!--TODO: remove-->
     <Relation name="CargoHandling" unique="true" relation="CargoHandling" cascade="SET_NULL"

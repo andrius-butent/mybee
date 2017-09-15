@@ -18,8 +18,10 @@
     <RelColumn name="Operation" />
     <DataColumn name="InvoiceNo" renderColumns="InvoicePrefix InvoiceNo"
                 searchBy="InvoicePrefix InvoiceNo" />
-    <RelColumn name="Customer" filterSupplier="value" />
-    <RelColumn name="Payer" filterSupplier="value" />
+    <DataColumn name="Customer" label="=trCustomerId" filterSupplier="value" />
+    <DataColumn name="CustomerName" source="Customer" renderColumns="CustomerName CustomerTypeName" />
+    <DataColumn name="Payer" label="=trdPayerId" filterSupplier="value" />
+    <DataColumn name="PayerName" source="Payer" renderColumns="PayerName PayerTypeName"/>
     <DataColumn name="Amount" >
       <footer aggregate="sum" />
     </DataColumn>
