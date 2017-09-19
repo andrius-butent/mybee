@@ -3,7 +3,7 @@
         xmlns:xi="http://www.w3.org/2001/XInclude"
 
         name="AssessmentTransportationReport" viewName="AssessmentTransportationReport"
-        caption="Vežėjų ataskaita" flexGrow="1" readOnly="true"
+        caption="=carriersReport" flexGrow="1" readOnly="true"
 >
   <g:columns>
     <RelColumn name="Assessment" label="=trAssessment" editEnabled="true"

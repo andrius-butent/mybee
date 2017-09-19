@@ -2,7 +2,7 @@
 <View xmlns="http://www.butent.com/view"
 
       name="AssessmentTransportationReport" source="Trips"
-      filter="!(AssessmentForwarder)" caption="Vežėjų ataskaita"
+      filter="!(AssessmentForwarder)" caption="=carriersReport"
 >
   <Columns>
     <SimpleColumn name="TransportationPrice" />

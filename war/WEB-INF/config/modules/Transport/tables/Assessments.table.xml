@@ -13,11 +13,11 @@
     <Text name="Notes" label="=trComment" />
 
     <Text name="Log" label="=modifications" />
-    <Numeric name="LogCount" precision="2" label="Korekcijų sk." />
-    <Boolean name="Finished" label="Baigtas" />
-    <Numeric name="FinishedCount" precision="2" label="Pajamų korekcijų sk." />
+    <Numeric name="LogCount" precision="2" label="=trLogCountShort" />
+    <Boolean name="Finished" label="=trOrderStatusCompleted" />
+    <Numeric name="FinishedCount" precision="2" label="=trFinishedCountShort" />
     <Boolean name="ExpensesRegistered" label="=trExpensesRegistered" />
-    <Text name="Documents" label="Dokumentai" />
+    <Text name="Documents" label="=documents" />
 
     <Relation name="Order" unique="true" relation="TransportationOrders" editable="true" />
 

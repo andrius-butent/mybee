@@ -11,7 +11,7 @@
     <Numeric name="Weight" precision="10" scale="3" label="=weight" />
     <Relation name="WeightUnit" relation="Units" label="=weightUnit" />
     <Numeric name="Volume" precision="8" scale="2" label="=volume" />
-    <Relation name="VolumeUnit" relation="Units" label="=volumeUnit" />
+    <Relation name="VolumeUnit" relation="Units" label="=volumeUnit"  />
     <Numeric name="LDM" precision="5" scale="2" />
     <Numeric name="Length" precision="8" scale="2" label="=length" />
     <Numeric name="Width" precision="8" scale="2" label="=width" />

@@ -657,6 +657,8 @@ public interface Dictionary {
 
   default String carriers() {return g("carriers");}
 
+  default String carriersReport() {return g("carriersReport");}
+
   default String cars() {return g("cars");}
 
   default String cash() {return g("cash");}
@@ -4877,6 +4879,8 @@ public interface Dictionary {
 
   default String prmForbiddenFilesExtentions() {return g("prmForbiddenFilesExtentions");}
 
+  default String prmForwarderExpeditionType() {return g("prmForwarderExpeditionType");}
+
   default String prmImportActItemRegEx() {return g("prmImportActItemRegEx");}
 
   default String prmImportERPItemsTime() {return g("prmImportERPItemsTime");}
@@ -5002,6 +5006,8 @@ public interface Dictionary {
   default String quantityFrom() {return g("quantityFrom");}
 
   default String quantityTo() {return g("quantityTo");}
+
+  default String quantityUnit() {return g("quantityUnit");}
 
   default String quarter() {return g("quarter");}
 
@@ -6078,6 +6084,8 @@ public interface Dictionary {
 
   default String trExpensesRegistered() {return g("trExpensesRegistered");}
 
+  default String trFinishedCountShort() {return g("trFinishedCountShort");}
+
   default String trFuelBalanceAfter() {return g("trFuelBalanceAfter");}
 
   default String trFuelBalanceBefore() {return g("trFuelBalanceBefore");}
@@ -6173,6 +6181,8 @@ public interface Dictionary {
   default String trLoadingPhone() {return g("trLoadingPhone");}
 
   default String trLoadingPostIndex() {return g("trLoadingPostIndex");}
+
+  default String trLogCountShort() {return g("trLogCountShort");}
 
   default String trLogistics() {return g("trLogistics");}
 
