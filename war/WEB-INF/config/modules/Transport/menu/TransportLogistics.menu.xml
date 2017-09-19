@@ -13,6 +13,6 @@ module="Transport.Logistics"
   <Item name="AssessmentTurnoverReport" label="=trAssessmentTurnoverReport" service="report" 
     parameters="AssessmentTurnover" data="Assessments" />
 
-  <Item name="AssessmentTransportationReport" label="Vežėjų ataskaita" service="grid"
+  <Item name="AssessmentTransportationReport" label="=carriersReport" service="grid"
     parameters="AssessmentTransportationReport" separator="true" />
 </Entry>

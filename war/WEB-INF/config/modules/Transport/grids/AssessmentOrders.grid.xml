@@ -30,6 +30,13 @@
     <DataColumn name="OrderNotes" />
     <DataColumn name="Description" />
 
+    <DataColumn name="Quantity" label="=quantity" sortable="false"/>
+    <DataColumn name="QuantityUnitName" label="=quantityUnit" sortable="false"/>
+    <DataColumn name="Volume" label="=volume" sortable="false"/>
+    <DataColumn name="VolumeUnitName" label="=volumeUnit" sortable="false"/>
+    <DataColumn name="Weight" label="=weight" sortable="true" />
+    <DataColumn name="WeightUnitName" label="=weightUnit" sortable="false" />
+
     <DataColumn name="Partial" caption="=partialShort" width="15" sortable="false" />
     <DataColumn name="Outsized" caption="=outsizedShort" width="15" sortable="false" />
     <DataColumn name="Dangerous" caption="=dangerousShort" width="15" sortable="false" />
@@ -75,7 +82,6 @@
     <DataColumn name="FinishedCount" />
 
     <RelColumn name="Author" filterSupplier="list" />
-
     <RelColumn name="Customer" renderColumns="CustomerName CustomerTypeName" />
   </g:columns>
 
