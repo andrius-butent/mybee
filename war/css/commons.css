@@ -168,3 +168,9 @@
   outline-offset: -1px;
   cursor: pointer;
 }
+.bee-co-company-activities .bee-TextBox {
+  max-width: 420px;
+}
+.bee-co-company-relation .bee-TextBox {
+  max-width: 280px;
+}
