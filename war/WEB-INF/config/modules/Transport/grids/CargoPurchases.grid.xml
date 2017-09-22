@@ -5,15 +5,16 @@
   name="CargoPurchases" viewName="CargoPurchases"
   flexGrow="1"
   readOnly="true" caption="=transportTripCosts"
-  >
+>
   <g:columns>
     <SelectionColumn name="Select" width="20" />
     <RelColumn name="Assessment" label="ID" editEnabled="true" filterSupplier="value"
-      editViewName="Assessments" editSource="Assessment" module="Transport.Logistics"/>
+    editViewName="Assessments" editSource="Assessment" module="Transport.Logistics"/>
     <DataColumn name="OrderDate" />
     <RelColumn name="OrderNo" editEnabled="true" editSource="Order" />
     <DataColumn name="Status" />
-    <DataColumn name="SupplierName" />
+    <DataColumn name="Supplier" label="=supplierId" filterSupplier="value" />
+    <RelColumn name="SupplierName" source="Supplier" renderColumns="SupplierName" />
     <DataColumn name="Number" />
   </g:columns>
 

@@ -16,7 +16,7 @@
     <Boolean name="VatPercent" label="=vatPercent" defValue="1" />
 
     <String name="Number" precision="20" label="=number" />
-    <Relation name="Customer" relation="Companies" label="=payer" />
+    <Relation name="Customer" relation="Companies" label="=customer" />
     <String name="Note" precision="50" label="=note" />
 
     <Relation name="Sale" relation="Sales" cascade="SET_NULL" label="=trdInvoiceId" />
