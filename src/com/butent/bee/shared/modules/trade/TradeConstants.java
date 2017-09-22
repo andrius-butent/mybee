@@ -280,6 +280,8 @@ public final class TradeConstants {
   public static final String ALS_TRADE_BOL_SERIES = "BoLSeriesName";
   public static final String ALS_TRADE_BOL_DRIVER_TAB_NO = "DriverTabNo";
   public static final String ALS_TRADE_BOL_DRIVER_EMPLOYEES = "DriverEmployees";
+  public static final String ALS_TRADE_CUSTOMER_ID = "Customer ID";
+  public static final String ALS_TRADE_SUPPLIER_ID = "Supplier ID";
 
   public static final String ALS_CUSTOMER_NAME = "CustomerName";
   public static final String ALS_PAYER_NAME = "PayerName";

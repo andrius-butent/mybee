@@ -7,7 +7,7 @@
         parameters="TripProfitReport" />
   <Item name="TransportFuelUsageReport" label="=trReportFuelUsage" service="report"
         parameters="FuelUsageReport" />
-  <Item name="IncomeInvoicesReport" label="Pajamų sąskaitos" service="report"
+  <Item name="IncomeInvoicesReport" label="=trIncomeInvoices" service="report"
         parameters="IncomeInvoicesReport" />
   <Item name="TransportTripCostsReport" label="=trImportCosts" service="report"
         parameters="TripCostsReport" />

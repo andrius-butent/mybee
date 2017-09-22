@@ -14,11 +14,17 @@
     <DataColumn name="OrderDate" />
     <RelColumn name="OrderNo" editEnabled="true" editSource="Order" />
     <DataColumn name="Status" />
-    <DataColumn name="Customer" searchBy="CustomerName PayerName">
+    <DataColumn name="Customer" label="=customerId" filterSupplier="value">
+      <render>
+        <ui:expression>row.Company ? row.Company : row.Customer</ui:expression>
+      </render>
+    </DataColumn>
+    <DataColumn name="CustomerName" searchBy="CustomerName PayerName" >
       <render>
         <ui:expression>row.Company ? row.CompanyName : row.CustomerName</ui:expression>
       </render>
     </DataColumn>
+    <DataColumn name="Payer" label="=trdPayerId" filterSupplier="value" />
     <DataColumn name="PayerName" />
   </g:columns>
 
