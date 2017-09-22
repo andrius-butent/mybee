@@ -434,37 +434,39 @@ public enum Report implements HasWidgetSupplier {
     public List<ReportItem> getItems() {
       Dictionary loc = Localized.dictionary();
       return Arrays.asList(
-          new ReportTextItem("IncomeID", "Pajamų ID"),
-          new ReportTextItem(COL_ASSESSMENT, "Užsakymo Nr."),
-          new ReportDateTimeItem(TransportConstants.COL_ORDER + COL_DATE, "Užsakymo data"),
+          new ReportTextItem("IncomeID", loc.incomeId()),
+          new ReportTextItem(COL_ASSESSMENT, loc.orderNumber()),
+          new ReportDateTimeItem(TransportConstants.COL_ORDER + COL_DATE, loc.orderDate()),
           new ReportTextItem(COL_DEPARTMENT_NAME,
               Data.getColumnLabel(TBL_DEPARTMENTS, COL_DEPARTMENT_NAME)),
           new ReportTextItem(COL_SERVICE_NAME, Data.getColumnLabel(TBL_SERVICES, "Name")),
-          new ReportDateTimeItem(TradeConstants.COL_TRADE_DATE, "Pajamų sąsk.data"),
-          new ReportTextItem(TradeConstants.COL_SALE + COL_ORDER_MANAGER, "Sąskaitą išrašė"),
+          new ReportDateTimeItem(TradeConstants.COL_TRADE_DATE, loc.trIncomeInvoicesDate()),
+          new ReportTextItem(TradeConstants.COL_SALE + COL_ORDER_MANAGER, loc.printInvoiceAuthorised()),
           new ReportTextItem(COL_ORDER_MANAGER, loc.manager()),
-          new ReportTextItem(TradeConstants.COL_TRADE_INVOICE_PREFIX, "Pajamų sąsk.Ser."),
-          new ReportTextItem(TradeConstants.COL_TRADE_INVOICE_NO, "Pajamų sąsk.Nr."),
+          new ReportTextItem(TradeConstants.COL_TRADE_INVOICE_PREFIX, loc.trIncomeInvoicesSeriesShort()),
+          new ReportTextItem(TradeConstants.COL_TRADE_INVOICE_NO, loc.trIncomeInvoicesNo()),
+          new ReportTextItem(TradeConstants.ALS_TRADE_CUSTOMER_ID, loc.customerId()),
           new ReportTextItem(TradeConstants.COL_TRADE_CUSTOMER, loc.customer()),
-          new ReportTextItem(VAR_EXPENSE + COL_SERVICE_NAME, "Sąnaudų paslauga"),
-          new ReportDateTimeItem(VAR_EXPENSE + TradeConstants.COL_TRADE_DATE, "Sąnaudų sąsk.data"),
-          new ReportTextItem(VAR_EXPENSE + TradeConstants.COL_TRADE_INVOICE_PREFIX,
-              "Sąnaudų sąsk.Ser."),
-          new ReportTextItem(VAR_EXPENSE + TradeConstants.COL_TRADE_INVOICE_NO, "Sąnaudų sąsk.Nr."),
-          new ReportTextItem(VAR_EXPENSE + TradeConstants.COL_TRADE_OPERATION, "Sąnaudų operacija"),
+          new ReportTextItem(VAR_EXPENSE + COL_SERVICE_NAME, loc.trExpendituresService()),
+          new ReportDateTimeItem(VAR_EXPENSE + TradeConstants.COL_TRADE_DATE, loc.trExpendituresDate()),
+          new ReportTextItem(VAR_EXPENSE + TradeConstants.COL_TRADE_INVOICE_PREFIX, loc.trExpendituresAccountSeriesShort()),
+          new ReportTextItem(VAR_EXPENSE + TradeConstants.COL_TRADE_INVOICE_NO, loc.trExpendituresAccountNo()),
+          new ReportTextItem(VAR_EXPENSE + TradeConstants.COL_TRADE_OPERATION, loc.trExpendituresOperation()),
           new ReportNumericItem(VAR_INCOME, loc.income()).setPrecision(2),
-          new ReportNumericItem(VAR_EXPENSE, "Sąnaudos").setPrecision(2),
-          new ReportTextItem(VAR_EXPENSE + COL_TRADE_SUPPLIER, "Sąnaudų tiekėjas"));
+          new ReportNumericItem(VAR_EXPENSE, loc.expenditures()).setPrecision(2),
+          new ReportTextItem(VAR_EXPENSE + ALS_TRADE_SUPPLIER_ID, loc.trExpendituresSupplierId()),
+          new ReportTextItem(VAR_EXPENSE + COL_TRADE_SUPPLIER, loc.trExpendituresSupplier()));
     }
 
     @Override
     public String getReportCaption() {
-      return "Pajamų sąskaitos";
+      return Localized.dictionary().trIncomeInvoices();
     }
 
     @Override
     public Collection<ReportInfo> getReports() {
       Map<String, ReportItem> items = new HashMap<>();
+      Dictionary loc = Localized.dictionary();
 
       for (ReportItem item : getItems()) {
         items.put(item.getExpression(), item);
@@ -479,11 +481,12 @@ public enum Report implements HasWidgetSupplier {
 
       report.addRowItem(items.get(COL_ORDER_MANAGER));
 
-      report.addRowItem(new ReportExpressionItem("Sąskaita")
+      report.addRowItem(new ReportExpressionItem(loc.account())
           .append(null, items.get(TradeConstants.COL_TRADE_INVOICE_PREFIX))
           .append(" ", items.get(TradeConstants.COL_TRADE_INVOICE_NO)));
 
       report.addRowItem(items.get(TradeConstants.COL_TRADE_CUSTOMER));
+      report.addRowItem(items.get(TradeConstants.ALS_TRADE_CUSTOMER_ID));
       report.addRowItem(items.get(TradeConstants.COL_SALE + COL_ORDER_MANAGER));
 
       report.setRowGrouping(items.get(COL_DEPARTMENT_NAME));
@@ -491,7 +494,7 @@ public enum Report implements HasWidgetSupplier {
       report.addColItem(items.get(VAR_EXPENSE + COL_SERVICE_NAME));
       report.addColItem(items.get(VAR_EXPENSE + TradeConstants.COL_TRADE_DATE));
 
-      report.addColItem(new ReportExpressionItem("Sąnaudų sąskaita")
+      report.addColItem(new ReportExpressionItem(loc.trExpendituresAccount())
           .append(null, items.get(VAR_EXPENSE + TradeConstants.COL_TRADE_INVOICE_PREFIX))
           .append(" ", items.get(VAR_EXPENSE + TradeConstants.COL_TRADE_INVOICE_NO)));
 
@@ -502,7 +505,7 @@ public enum Report implements HasWidgetSupplier {
       report.addColItem(items.get(VAR_INCOME));
       report.addColItem(items.get(VAR_EXPENSE));
 
-      report.addColItem(new ReportFormulaItem("Pelnas")
+      report.addColItem(new ReportFormulaItem(loc.profit())
           .plus(items.get(VAR_INCOME))
           .minus(items.get(VAR_EXPENSE)).setPrecision(2));
 
