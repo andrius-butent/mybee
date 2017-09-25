@@ -3,7 +3,7 @@
 
       name="ERPTripCosts"
       source="TripCosts"
-      caption="Reisų išlaidos apskaitai"
+      caption="=trERPTripCosts"
       readOnly="true"
       filter="TabNumber"
     >

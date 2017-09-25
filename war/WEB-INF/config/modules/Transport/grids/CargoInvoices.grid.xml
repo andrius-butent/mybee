@@ -19,9 +19,9 @@
     <DataColumn name="InvoiceNo" renderColumns="InvoicePrefix InvoiceNo"
                 searchBy="InvoicePrefix InvoiceNo" />
     <DataColumn name="Customer" label="=trCustomerId" filterSupplier="value" />
-    <DataColumn name="CustomerName" source="Customer" renderColumns="CustomerName CustomerTypeName" />
+    <DataColumn name="CustomerName" renderColumns="CustomerName CustomerTypeName" />
     <DataColumn name="Payer" label="=trdPayerId" filterSupplier="value" />
-    <DataColumn name="PayerName" source="Payer" renderColumns="PayerName PayerTypeName"/>
+    <DataColumn name="PayerName" renderColumns="PayerName PayerTypeName"/>
     <DataColumn name="Amount" >
       <footer aggregate="sum" />
     </DataColumn>

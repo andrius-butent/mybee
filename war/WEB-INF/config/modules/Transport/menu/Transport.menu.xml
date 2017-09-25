@@ -12,7 +12,7 @@ name="Transport" label="=transport" order="50" module="Transport"
   <Item name="UnassignedTripCosts" label="=trUnassignedTripCosts" service="grid" parameters="UnassignedTripCosts" separator="true" />
   <Item name="UnassignedFuelCosts" label="=trUnassignedFuelCosts" service="grid" parameters="UnassignedFuelCosts" />
 
-  <Item name="ERPTripCosts" label="Reisų išlaidos apskaitai" service="grid" parameters="ERPTripCosts" separator="true" />
+  <Item name="ERPTripCosts" label="=trERPTripCosts" service="grid" parameters="ERPTripCosts" separator="true" />
 
   <Item name="Drivers" label="=drivers" service="grid" parameters="Drivers" separator="true" />
 

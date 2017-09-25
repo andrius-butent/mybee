@@ -633,6 +633,7 @@ public final class TransportConstants {
   public static final String COL_CARGO_VALUE = "Value";
   public static final String COL_CARGO_VALUE_CURRENCY = "ValueCurrency";
   public static final String COL_CARGO_TYPE = "CargoType";
+  public static final String COL_CARGO_GROUP = "CargoGroup";
 
   public static final String COL_DAILY_COSTS_ITEM = "DailyCostsItem";
   public static final String COL_ROAD_COSTS_ITEM = "RoadCostsItem";
@@ -1012,6 +1013,7 @@ public final class TransportConstants {
 
   public static final String COL_CARGO_TYPE_NAME = "CargoTypeName";
   public static final String COL_CARGO_TYPE_COLOR = "Color";
+  public static final String COL_CARGO_GROUP_NAME = "CargoGroupName";
 
   public static final String COL_TRANSPORTATION_ORDER = "TransportationOrder";
 
