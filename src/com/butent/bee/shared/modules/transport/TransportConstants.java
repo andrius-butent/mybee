@@ -482,6 +482,7 @@ public final class TransportConstants {
   public static final String TBL_CARGO_UNLOADING = "CargoUnloading";
   public static final String TBL_CARGO_HANDLING = "CargoHandling";
   public static final String TBL_CARGO_TYPES = "CargoTypes";
+  public static final String TBL_CARGO_GROUPS = "CargoGroups";
 
   public static final String TBL_SERVICES = "Services";
 
@@ -612,6 +613,7 @@ public final class TransportConstants {
   public static final String COL_CARGO_PALETTES = "Palettes";
   public static final String COL_CARGO_VALUE = "Value";
   public static final String COL_CARGO_VALUE_CURRENCY = "ValueCurrency";
+  public static final String COL_CARGO_GROUP = "CargoGroup";
   public static final String COL_CARGO_TYPE = "CargoType";
 
   public static final String COL_DAILY_COSTS_ITEM = "DailyCostsItem";
@@ -968,6 +970,7 @@ public final class TransportConstants {
   public static final String COL_SELF_SERVICE = "SelfService";
   public static final String COL_SHIPMENT_REQUEST = "ShipmentRequest";
 
+  public static final String COL_CARGO_GROUP_NAME = "CargoGroupName";
   public static final String COL_CARGO_TYPE_NAME = "CargoTypeName";
   public static final String COL_CARGO_TYPE_COLOR = "Color";
 

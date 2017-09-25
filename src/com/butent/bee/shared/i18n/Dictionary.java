@@ -6006,6 +6006,8 @@ public interface Dictionary {
 
   default String trCargoDocuments() {return g("trCargoDocuments");}
 
+  default String trCargoGroup() {return g("trCargoGroup");}
+
   default String trCargoGroups() {return g("trCargoGroups");}
 
   default String trCargoIncomes() {return g("trCargoIncomes");}
