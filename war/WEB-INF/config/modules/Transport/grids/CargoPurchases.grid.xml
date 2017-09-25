@@ -14,7 +14,7 @@
     <RelColumn name="OrderNo" editEnabled="true" editSource="Order" />
     <DataColumn name="Status" />
     <DataColumn name="Supplier" label="=supplierId" filterSupplier="value" />
-    <RelColumn name="SupplierName" />
+    <DataColumn name="SupplierName" />
     <DataColumn name="Number" />
   </g:columns>
 

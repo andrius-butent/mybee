@@ -576,11 +576,10 @@ public class TransportReportsBean {
         .addField(TBL_PURCHASES, COL_TRADE_INVOICE_PREFIX, VAR_EXPENSE + COL_TRADE_INVOICE_PREFIX)
         .addField(TBL_PURCHASES, COL_TRADE_INVOICE_NO, VAR_EXPENSE + COL_TRADE_INVOICE_NO)
         .addField(TBL_TRADE_OPERATIONS, COL_OPERATION_NAME, VAR_EXPENSE + COL_TRADE_OPERATION)
+        .addField(TBL_CARGO_EXPENSES, COL_TRADE_SUPPLIER, VAR_EXPENSE + ALS_TRADE_SUPPLIER_ID)
         .addExpr(SqlUtils.concat(SqlUtils.field(TBL_COMPANIES, COL_COMPANY_NAME), "' '",
             SqlUtils.nvl(SqlUtils.field(TBL_COMPANY_TYPES, COL_COMPANY_TYPE_NAME), "''")),
             VAR_EXPENSE + COL_TRADE_SUPPLIER)
-        .addExpr(SqlUtils.concat(SqlUtils.field(TBL_COMPANIES, sys.getIdName(TBL_COMPANIES)), "' '"),
-                    VAR_EXPENSE + ALS_TRADE_SUPPLIER_ID)
         .addFrom(TBL_CARGO_EXPENSES)
         .addFromInner(tmpIncomes, SqlUtils.join(TBL_CARGO_EXPENSES, VAR_INCOME, tmpIncomes, id))
         .addFromInner(TBL_ORDER_CARGO,
@@ -659,7 +658,10 @@ public class TransportReportsBean {
     clause.add(report.getCondition(tmp, VAR_EXPENSE + COL_TRADE_INVOICE_NO));
     clause.add(report.getCondition(tmp, VAR_EXPENSE + COL_TRADE_OPERATION));
     clause.add(report.getCondition(tmp, VAR_EXPENSE + COL_TRADE_SUPPLIER));
-    clause.add(report.getCondition(tmp, VAR_EXPENSE + ALS_TRADE_SUPPLIER_ID));
+    clause.add(report.getCondition(SqlUtils.cast(SqlUtils.field(tmp,
+            VAR_EXPENSE + ALS_TRADE_SUPPLIER_ID),
+        SqlConstants.SqlDataType.STRING, 20, 0),
+            VAR_EXPENSE + ALS_TRADE_SUPPLIER_ID));
 
     return report.getResultResponse(qs, tmp,
         Localizations.getDictionary(reqInfo.getParameter(VAR_LOCALE)), clause);
