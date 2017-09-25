@@ -3332,7 +3332,7 @@
 					<textElement verticalAlignment="Middle" markup="none">
 						<font fontName="DejaVu Sans" size="10" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$R{missionRoute}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$R{missionRoute2}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="">
 					<reportElement key="" style="Cell" positionType="Float" x="240" y="-4" width="270" height="16" uuid="7c2ba156-33e2-4d18-9f51-b9c20d3c2bc1">
