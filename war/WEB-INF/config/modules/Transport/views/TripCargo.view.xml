@@ -34,6 +34,12 @@
       <SimpleColumn name="CmrCopy" editable="true" />
 
       <SimpleColumn name="Description" />
+      <SimpleJoin joinType="LEFT" name="CargoType">
+        <SimpleColumn name="CargoTypeName" alias="CargoType" />
+      </SimpleJoin>
+      <SimpleJoin joinType="LEFT" name="CargoGroup">
+        <SimpleColumn name="CargoGroupName" alias="CargoGroup" />
+      </SimpleJoin>
       <SimpleColumn name="Weight" editable="true"/>
       <SimpleJoin joinType="LEFT" name="WeightUnit">
         <SimpleColumn name="Name" alias="WeightUnit" />
