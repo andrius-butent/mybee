@@ -13,6 +13,8 @@
                editSource="Customer" readOnly="true" />
     <RelColumn name="Cargo" renderColumns="Cargo Description" editEnabled="true" maxWidth="300"
                editSource="Cargo" readOnly="true" />
+    <DataColumn name="CargoType" label="=trCargoType"/>
+    <DataColumn name="CargoGroup" label="=trCargoGroup"/>
     <DataColumn name="Weight" scale="0" />
     <DataColumn name="Volume" scale="0" />
     <DataColumn name="Quantity" scale="0" />

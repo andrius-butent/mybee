@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @FunctionalInterface
-public interface Dictionary {
+public interface Dictionary extends CustomDictionary{
 
   String g(String key);
 
