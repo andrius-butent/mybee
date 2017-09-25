@@ -26,7 +26,6 @@
                 label="=taMinTermShort+=trUnloadingDateShort"
                 filterSupplier="customDateTime" filterOptions="Assessments" />
 
-    <DataColumn name="CustomerName" />
     <DataColumn name="OrderNotes" />
     <DataColumn name="Description" />
 
@@ -82,7 +81,8 @@
     <DataColumn name="FinishedCount" />
 
     <RelColumn name="Author" filterSupplier="list" />
-    <RelColumn name="Customer" renderColumns="CustomerName CustomerTypeName" />
+    <DataColumn name="Customer" label="=customerId" filterSupplier="value" />
+    <DataColumn name="CustomerName" renderColumns="CustomerName CustomerTypeName" label="=customer" />
   </g:columns>
 
   <g:rowStyle>
