@@ -9,7 +9,7 @@
         name="Trip" viewName="Trips" caption="=trip"
         width="900" height="600"
     >
-  <f:properties jasperReports="TripRoute:=travelSheet+ +=dutyOrder,
+  <f:properties jasperReports="TripRouteOrder:=travelSheet+ +=trdVatPlus+ +=dutyOrder,
   TripOrder2:=adjustmentDutyOrder, TripSummary:=expenditureReport" />
   <FlowPanel class="flexBox-vertical">
     <Table kind="controls">
