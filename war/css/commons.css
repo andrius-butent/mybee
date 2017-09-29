@@ -174,3 +174,16 @@
 .bee-co-company-relation .bee-TextBox {
   max-width: 280px;
 }
+.bee-co-company-activities .bee-MultiSelector-choice {
+  max-width: 410px;
+}
+.bee-co-company-relation .bee-MultiSelector-choice {
+  max-width: 270px;
+}
+.bee-co-additional-info .bee-MultiSelector-label {
+  margin: 0;
+}
+.bee-co-additional-info .bee-MultiSelector-choice {
+  overflow-wrap: break-word;
+  margin-left: 10px;
+}

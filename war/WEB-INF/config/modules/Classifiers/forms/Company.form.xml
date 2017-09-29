@@ -187,7 +187,8 @@
               <cell colSpan="3">
                 <ChildSelector viewName="CompanyActivities" childTable="CompActStore"
                                targetRelColumn="Company" sourceRelColumn="Activity"
-                               label="=companyActivities" style="width: 100%;" summarize="true" class="bee-co-company-activities"/>
+                               label="=companyActivities" style="width: 100%; max-width: 452px;" summarize="true"
+                               class="bee-co-company-activities bee-co-additional-info"/>
               </cell>
             </row>
             <row data="RcpsGroupsContacts" listName="RcpsGroupsContacts">
@@ -198,7 +199,7 @@
                                targetRelColumn="Company" sourceRelColumn="RecipientsGroup"
                                renderColumns="GroupName"
                                choiceColumns="GroupName" label="=mailRecipientsGroups"
-                               style="width: 100%;" summarize="true"
+                               style="width: 100%; max-width: 452px;" summarize="true"
                                filter="Creator {u} or Visibility = 0" />
               </cell>
             </row>
@@ -220,7 +221,8 @@
               <cell colSpan="2">
                 <ChildSelector viewName="CompanyRelationTypes" childTable="CompRelTypeStore"
                                targetRelColumn="Company" sourceRelColumn="RelationType"
-                               newRowEnabled="true" label="=companyRelationType" summarize="true" class="bee-co-company-relation" />
+                               newRowEnabled="true" label="=companyRelationType" summarize="true"
+                               class="bee-co-company-relation bee-co-additional-info" />
               </cell>
               <Label style="&lbl;" for="CompanyRelationTypeState" />
               <DataSelector source="CompanyRelationTypeState" summarize="true" />
