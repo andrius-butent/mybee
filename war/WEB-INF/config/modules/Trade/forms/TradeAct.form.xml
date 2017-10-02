@@ -93,7 +93,7 @@
 
         <Label for="Object" name="labelObject"/>
         <DataSelector source="Object" name="Object" renderColumns="ObjectName" disablable="false"
-          choiceColumns="CompanyName TypeNameObjectName ObjectAddress" newRowEnabled="true" newRowForm="CompanyObject"
+          choiceColumns="CompanyName TypeName ObjectName ObjectAddress" newRowEnabled="true" newRowForm="CompanyObject"
           style="&inpw;" />
       </row>
 

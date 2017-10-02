@@ -17,18 +17,35 @@
       
       <row>
         <Label text="=dateFrom" class="bee-required" />
-        <InputDate name="DateFrom" style="width: 100px;" required="true" />
+        <InputDate name="DateFrom" style="width: 150px;" required="true" />
     
         <Label text="=dateTo" class="bee-required" />
-        <InputDate name="DateTo" style="width: 100px;" required="true" />
+        <InputDate name="DateTo" style="width: 150px;" required="true" />
 
-        <Label text="=client" class="bee-required" />
-        <UnboundSelector name="Company" viewName="Companies" renderColumns="Name TypeName" 
-          style="width: 200px;" required="true" newRowEnabled="false" caching="none" />
+        <Label text="=taSeries" />
+        <UnboundSelector name="Series" viewName="TradeSeries" renderColumns="SeriesName"
+                         newRowEnabled="false" style="width: 150px;" />
+
+        <CheckBox name="AllActs" text="=tradeActsAll" style="margin-left: 10px;" />
       </row>
       
       <row>
-        <Label text="=trdInvoicePrefix" class="bee-required" />
+        <Label text="=client" class="bee-required" />
+        <UnboundSelector name="Company" viewName="Companies" renderColumns="Name TypeName"
+                         style="width: 200px;" required="true" newRowEnabled="false"
+                         caching="none" />
+
+        <Label text="=object" />
+        <UnboundSelector name="Object" viewName="CompanyObjects" renderColumns="ObjectName"
+                         newRowEnabled="false" style="width: 150px;" />
+
+        <Label text="=manager" />
+        <UnboundSelector name="Manager" viewName="Users" renderColumns="FirstName LastName"
+                         newRowEnabled="false" style="width: 150px;" />
+      </row>
+
+      <row>
+        <Label text="=trdSeriesLong" class="bee-required" />
         <UnboundSelector name="SaleSeries" viewName="SaleSeries"  renderColumns="SeriesName" upperCase="true" style="width: 100px;" />
 
         <Label text="=currency" />
