@@ -708,7 +708,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="DejaVu Sans" size="9" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$R{arrived}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$R{left}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="">
 					<reportElement key="" style="Cell" positionType="Float" stretchType="ContainerBottom" x="127" y="16" width="56" height="16" uuid="c6dfb8ed-8bff-4608-a397-fd2cc04ba586">
@@ -740,7 +740,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="DejaVu Sans" size="9" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$R{left}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$R{arrived}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement style="Cell" positionType="Float" stretchType="ContainerBottom" x="310" y="16" width="56" height="16" uuid="fadce04a-bf5b-4bbd-be14-f9456e4324b5">
