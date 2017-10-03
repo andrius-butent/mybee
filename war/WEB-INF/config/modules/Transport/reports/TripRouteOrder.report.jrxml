@@ -2920,7 +2920,7 @@
 					<font fontName="DejaVu Sans" size="8"/>
 					<paragraph lineSpacing="Fixed" lineSpacingSize="10.0"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$R{dataDP} +"\n" + $R{dataVD} + "\n" + $R{dataRA} + "\n" + $R{manager}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{dateDP} +"\n" + $R{dateVD} + "\n" + $R{dateRA} + "\n" + $R{manager}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="450" y="60" width="104" height="50" uuid="a07ee0a3-7597-484b-9917-c3ac11c2b97d">

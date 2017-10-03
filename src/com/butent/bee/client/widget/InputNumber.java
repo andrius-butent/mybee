@@ -55,6 +55,7 @@ public class InputNumber extends InputText implements HasBounds, HasIntStep,
 
   public InputNumber() {
     super();
+    setCharMatcher(NUM_CHAR_MATCHER);
   }
 
   public InputNumber(Element element) {
