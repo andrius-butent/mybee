@@ -187,7 +187,7 @@
               <cell colSpan="3">
                 <ChildSelector viewName="CompanyActivities" childTable="CompActStore"
                                targetRelColumn="Company" sourceRelColumn="Activity"
-                               label="=companyActivities" style="width: 100%;" summarize="true" />
+                               label="=companyActivities" style="width: 100%; max-width: 452px;" summarize="true" />
               </cell>
             </row>
             <row data="RcpsGroupsContacts" listName="RcpsGroupsContacts">
@@ -198,7 +198,7 @@
                                targetRelColumn="Company" sourceRelColumn="RecipientsGroup"
                                renderColumns="GroupName"
                                choiceColumns="GroupName" label="=mailRecipientsGroups"
-                               style="width: 100%;" summarize="true"
+                               style="width: 100%; max-width: 452px;" summarize="true"
                                filter="Creator {u} or Visibility = 0" />
               </cell>
             </row>
