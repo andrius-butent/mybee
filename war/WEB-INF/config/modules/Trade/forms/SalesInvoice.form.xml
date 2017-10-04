@@ -45,7 +45,7 @@
         <Label for="Supplier" />
         <DataSelector source="Supplier" name="Supplier" style="&inp;"/>
 
-        <Label for="Customer" />
+        <Label for="Customer" class="bee-required" />
         <DataSelector source="Customer" name="Customer" required="true" visible="true"
                       style="&inp;"/>
 
