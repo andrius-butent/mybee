@@ -3298,7 +3298,8 @@ public class TradeActBean implements HasTimerService {
     }
 
     query.addFrom(tmp);
-    query.setWhere(SqlUtils.positive(tmp, ALS_BASE_AMOUNT));
+    query.setWhere(SqlUtils.and(SqlUtils.positive(tmp, ALS_BASE_AMOUNT),
+            SqlUtils.notNull(tmp, COL_TA_SERVICE_FROM)));
 
     SimpleRowSet data = qs.getData(query);
     qs.sqlDropTemp(tmp);

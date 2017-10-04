@@ -8,7 +8,7 @@
   >
   <g:columns>
     <DataColumn name="Ordinal" visible="false" />
-    <RelColumn name="Item" renderColumns="ItemName" choiceColumns="Name Article" visible="true">
+    <RelColumn name="Item" renderColumns="ItemName" choiceColumns="Name Article" editPopup="true" visible="true">
       <footer text="=totalOf" horizontalAlignment="right" />
     </RelColumn>
     <DataColumn name="Article" />

@@ -495,7 +495,9 @@ public class TradeActInvoiceBuilder extends AbstractFormInterceptor implements
     if (to != null && ((UnboundSelector) widget).isEnabled() && dateTo instanceof InputDate) {
       ((InputDate) dateTo).setDate(to);
     } else if (!((UnboundSelector) widget).isEnabled()) {
-      ((InputDate) dateTo).setDate(new JustDate().getDate());
+      JustDate date = new JustDate();
+      TimeUtils.addDay(date, 1);
+      ((InputDate) dateTo).setDate(date);
     }
   }
 
