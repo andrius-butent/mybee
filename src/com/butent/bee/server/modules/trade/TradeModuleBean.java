@@ -81,6 +81,7 @@ import com.butent.bee.shared.data.value.TextValue;
 import com.butent.bee.shared.data.value.Value;
 import com.butent.bee.shared.data.value.ValueType;
 import com.butent.bee.shared.data.view.DataInfo;
+import com.butent.bee.shared.data.view.Order;
 import com.butent.bee.shared.exceptions.BeeException;
 import com.butent.bee.shared.exceptions.BeeRuntimeException;
 import com.butent.bee.shared.html.builder.Document;
@@ -345,6 +346,10 @@ public class TradeModuleBean implements BeeModule, ConcurrencyBean.HasTimerServi
         response = dischargePrepayment(reqInfo);
         break;
 
+      case SVC_GET_ITEMS_FOR_SELECTION:
+        response = getItemsForSelection(reqInfo);
+        break;
+
       default:
         if (reqInfo.getSubModule() == SubModule.ACTS) {
           response = act.doService(svc, reqInfo);
@@ -364,6 +369,36 @@ public class TradeModuleBean implements BeeModule, ConcurrencyBean.HasTimerServi
     }
 
     return response;
+  }
+
+  private ResponseObject getItemsForSelection(RequestInfo reqInfo) {
+    Long saleId = reqInfo.getParameterLong(COL_SALE);
+    Long warehouse = reqInfo.getParameterLong(COL_WAREHOUSE);
+    String source = reqInfo.getParameter(Service.VAR_TABLE);
+
+    Assert.notEmpty(source);
+
+    String where = reqInfo.getParameter(Service.VAR_VIEW_WHERE);
+
+    CompoundFilter filter = Filter.and();
+
+    Set<Long> saleItems =
+        BeeUtils.same(source, TBL_SALE_ITEMS) ? new HashSet<>()  : getSaleItems(saleId);
+    if (!saleItems.isEmpty()) {
+      filter.add(Filter.idNotIn(saleItems));
+    }
+
+    if (!BeeUtils.isEmpty(where)) {
+      filter.add(Filter.restore(where));
+    }
+
+    BeeRowSet items = qs.getViewData(VIEW_ITEMS, filter, Order.ascending(COL_ITEM_ORDINAL));
+    if (DataUtils.isEmpty(items)) {
+      logger.debug(reqInfo.getService(), "no items found", filter);
+      return ResponseObject.emptyResponse();
+    }
+
+    return ResponseObject.response(items);
   }
 
   @Override
@@ -1919,6 +1954,18 @@ public class TradeModuleBean implements BeeModule, ConcurrencyBean.HasTimerServi
         loc.trdInvoices(),
         BeeUtils.unbox(rs.getInt(0, "SalesCount"))));
 
+  }
+
+  private Set<Long> getSaleItems(Long saleId) {
+    if (DataUtils.isId(saleId)) {
+      return qs.getLongSet(new SqlSelect()
+          .addFields(TBL_SALE_ITEMS, COL_ITEM)
+          .addFrom(TBL_SALE_ITEMS)
+          .setWhere(SqlUtils.equals(TBL_SALE_ITEMS, COL_SALE, saleId)));
+
+    } else {
+      return BeeConst.EMPTY_IMMUTABLE_LONG_SET;
+    }
   }
 
   private static Integer getOverdueInDays(BeeRowSet rs, IsRow row) {
