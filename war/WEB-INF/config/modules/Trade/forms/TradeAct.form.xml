@@ -150,7 +150,7 @@
     </Table>
 
     <br />
-    <TabbedPages style="height: 1200px;">
+    <TabbedPages style="min-height: 400px;">
       <page>
         <text>=goods</text>
         <ChildGrid name="TradeActItems" relColumn="TradeAct" disablable="true" />
