@@ -18,8 +18,12 @@
     </DataColumn>
     <DataColumn name="UnitName" flexGrow="0" caption="=unitShort" />
 
-    <DataColumn name="Price">
+    <DataColumn name="Price" label="=taPeriodPrice" >
       <footer expression="row.Quantity * row.Price" />
+    </DataColumn>
+
+    <DataColumn name="FullPrice" >
+      <footer expression="row.Quantity * row.FullPrice" />
     </DataColumn>
 
     <DataColumn name="Discount" flexGrow="0">

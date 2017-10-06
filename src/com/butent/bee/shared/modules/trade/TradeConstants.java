@@ -180,6 +180,7 @@ public final class TradeConstants {
   public static final String COL_TRADE_ITEM_QUANTITY = "Quantity";
   public static final String COL_TRADE_ITEM_PRICE = "Price";
   public static final String COL_TRADE_ITEM_RENTAL_PRICE = "RentalPrice";
+  public static final String COL_TRADE_ITEM_FULL_PRICE = "FullPrice";
   public static final String COL_TRADE_ITEM_NOTE = "Note";
   public static final String COL_TRADE_TOTAL_WEIGHT = "TotalWeight";
   public static final String COL_TRADE_TOTAL_AREA = "TotalArea";

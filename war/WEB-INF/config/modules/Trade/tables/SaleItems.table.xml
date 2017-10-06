@@ -10,6 +10,7 @@
     <String name="Article" precision="30" label="=article" />
     <Numeric name="Quantity" precision="12" scale="3" notNull="true" label="=trdQuantity" />
     <Numeric name="Price" precision="12" scale="5" label="=trdPrice" />
+    <Numeric name="FullPrice" precision="12" scale="5" label="=trdPrice" />
     <Boolean name="VatPlus" label="=vatPlus" />
     <Numeric name="Vat" precision="12" scale="2" label="=vat" />
     <Boolean name="VatPercent" label="=vatPercent" />

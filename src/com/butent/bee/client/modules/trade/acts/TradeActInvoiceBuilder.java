@@ -901,8 +901,8 @@ public class TradeActInvoiceBuilder extends AbstractFormInterceptor implements
       Multimap<Long, Integer> selectedRanges, Long currency) {
 
     List<String> colNames = Lists.newArrayList(COL_SALE, COL_ITEM, COL_TRADE_ITEM_ARTICLE,
-        COL_TRADE_ITEM_QUANTITY, COL_TRADE_ITEM_PRICE, COL_TRADE_DISCOUNT,
-        COL_TRADE_VAT_PLUS, COL_TRADE_VAT, COL_TRADE_VAT_PERC,
+        COL_TRADE_ITEM_QUANTITY, COL_TRADE_ITEM_PRICE, COL_TRADE_ITEM_FULL_PRICE,
+        COL_TRADE_DISCOUNT, COL_TRADE_VAT_PLUS, COL_TRADE_VAT, COL_TRADE_VAT_PERC,
         COL_TRADE_ITEM_NOTE);
 
     List<BeeColumn> columns = Data.getColumns(VIEW_SALE_ITEMS, colNames);
@@ -925,6 +925,8 @@ public class TradeActInvoiceBuilder extends AbstractFormInterceptor implements
     int priceIndex = invoiceItems.getColumnIndex(COL_TRADE_ITEM_PRICE);
     int priceScale = invoiceItems.getColumn(COL_TRADE_ITEM_PRICE).getScale();
     int discountScale = invoiceItems.getColumn(COL_TRADE_DISCOUNT).getScale();
+
+    int fullPriceIdx = invoiceItems.getColumnIndex(COL_TRADE_ITEM_FULL_PRICE);
 
     int vatPlusIndex = invoiceItems.getColumnIndex(COL_TRADE_VAT_PLUS);
     int vatIndex = invoiceItems.getColumnIndex(COL_TRADE_VAT);
@@ -950,6 +952,12 @@ public class TradeActInvoiceBuilder extends AbstractFormInterceptor implements
 
           Double amount = svc.amount(idx, currency, date);
           Double discount = svc.discounts.get(idx);
+
+          Double price = row.getDouble(DataUtils.getColumnIndex(COL_TRADE_ITEM_PRICE,
+              selectedServices.getColumns()));
+          if (BeeUtils.isPositive(price)) {
+            inv.setValue(fullPriceIdx, price);
+          }
 
           if (BeeUtils.isPositive(amount) && BeeUtils.isPositive(svc.quantity)) {
             inv.setValue(priceIndex, BeeUtils.round(amount / svc.quantity, priceScale));
