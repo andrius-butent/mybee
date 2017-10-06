@@ -350,6 +350,8 @@ public final class TradeConstants {
   public static final String VAR_PAYMENTS = "Payments";
   public static final String VAR_PREPAYMENT = "Prepayment";
   public static final String VAR_KIND = "Kind";
+  public static final String VAR_FINANCIAL_STATE = "FinancialState";
+  public static final String VAR_FINANCIAL_STATE_COLOR = "Background";
 
   public static final String GRID_TRADE_OPERATIONS = "TradeOperations";
   public static final String GRID_TRADE_STATUSES = "TradeStatuses";
