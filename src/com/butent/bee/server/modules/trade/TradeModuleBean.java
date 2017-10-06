@@ -466,9 +466,18 @@ public class TradeModuleBean implements BeeModule, ConcurrencyBean.HasTimerServi
         .addFields(TBL_COMPANIES, COL_COMPANY_NAME, COL_COMPANY_CREDIT_LIMIT,
             COL_COMPANY_LIMIT_CURRENCY, COL_COMPANY_CREDIT_DAYS)
         .addField(TBL_CURRENCIES, COL_CURRENCY_NAME, COL_CURRENCY)
+        .addField(VIEW_FINANCIAL_STATES, COL_FINANCIAL_STATE_NAME, COL_COMPANY_FINANCIAL_STATE)
+        .addField(VIEW_COLORS, COL_BACKGROUND, COL_COLOR)
+        .addField(TBL_COMPANY_TYPES, COL_COMPANY_TYPE_NAME, COL_COMPANY_TYPE)
         .addFrom(TBL_COMPANIES)
         .addFromLeft(TBL_CURRENCIES,
             sys.joinTables(TBL_CURRENCIES, TBL_COMPANIES, COL_COMPANY_LIMIT_CURRENCY))
+        .addFromLeft(VIEW_FINANCIAL_STATES,
+            sys.joinTables(VIEW_FINANCIAL_STATES, TBL_COMPANIES, COL_COMPANY_FINANCIAL_STATE))
+        .addFromLeft(VIEW_COLORS,
+            sys.joinTables(VIEW_COLORS, VIEW_FINANCIAL_STATES, COL_COLOR))
+        .addFromLeft(TBL_COMPANY_TYPES,
+            sys.joinTables(TBL_COMPANY_TYPES, TBL_COMPANIES, COL_COMPANY_TYPE))
         .setWhere(sys.idEquals(TBL_COMPANIES, companyId)));
 
     Map<String, Object> resp = new HashMap<>();
@@ -514,12 +523,15 @@ public class TradeModuleBean implements BeeModule, ConcurrencyBean.HasTimerServi
         debt += xxx;
       }
       resp.put(COL_COMPANY_NAME, company.getValue(COL_COMPANY_NAME));
+      resp.put(COL_COMPANY_TYPE, company.getValue(COL_COMPANY_TYPE));
       resp.put(COL_COMPANY_CREDIT_LIMIT, limit);
       resp.put(COL_COMPANY_LIMIT_CURRENCY, curr);
       resp.put(COL_CURRENCY, company.getValue(COL_CURRENCY));
       resp.put(COL_COMPANY_CREDIT_DAYS, days);
       resp.put(VAR_DEBT, BeeUtils.round(debt, 2));
       resp.put(VAR_OVERDUE, BeeUtils.round(overdue, 2));
+      resp.put(VAR_FINANCIAL_STATE, company.getValue(COL_COMPANY_FINANCIAL_STATE));
+      resp.put(VAR_FINANCIAL_STATE_COLOR, company.getValue(COL_COLOR));
     }
     return ResponseObject.response(resp);
   }
