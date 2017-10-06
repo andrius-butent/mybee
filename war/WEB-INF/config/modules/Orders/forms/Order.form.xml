@@ -65,9 +65,8 @@
       </row>
 
       <row>
-        <Label for="TradeOperation" style="&lbl;" class="bee-required" />
-        <DataSelector source="TradeOperation" style="&inpw;" required="true"
-                      renderColumns="OperationName" />
+        <Label for="TradeOperation" style="&lbl;" />
+        <DataSelector source="TradeOperation" style="&inpw;" renderColumns="OperationName" />
       </row>
     </Table>
     <br />

@@ -33,7 +33,7 @@
       <row>
         <Label text="=trdInvoicePrefix" style="&lbl2;" name="SeriesLabel" />
         <DataSelector source="SaleSeries" name="Series" upperCase="true"
-          style="width:5em; margin-right: 4px;" />
+          style="width:11em; margin-right: 4px;" />
 
         <Label text="=trdInvoiceNo" style="&lbl2;" />
         <InputText source="InvoiceNo" readOnly="true" />

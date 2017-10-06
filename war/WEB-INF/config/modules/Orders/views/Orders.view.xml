@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <View xmlns="http://www.butent.com/view" xmlns:x="http://www.butent.com/expression"
 
-  name="Orders" source="Orders" module="Orders" editForm="Order"
+  name="Orders" source="Orders" module="Orders" editForm="Order" caption="=orders"
   newRowForm="Order" rowCaption="Number">
   <Columns>
     <SimpleColumn name="Status" />

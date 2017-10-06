@@ -30,7 +30,7 @@
       <row>
         <Label for="SaleSeries" />
         <DataSelector source="SaleSeries" upperCase="true" name="Series"
-          style="width: 7em;" disablable="false" />
+          style="width: 11em;" disablable="false" />
 
         <Label for="InvoiceNo" />
         <InputText source="InvoiceNo" />
