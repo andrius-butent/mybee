@@ -1,11 +1,15 @@
 package com.butent.bee.client.modules.trade.acts;
 
+import com.butent.bee.client.grid.HtmlTable;
+import com.butent.bee.client.widget.Label;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.web.bindery.event.shared.HandlerRegistration;
-
+import static com.butent.bee.shared.modules.administration.AdministrationConstants.COL_BACKGROUND;
+import static com.butent.bee.shared.modules.classifiers.ClassifierConstants.COL_COMPANY_FINANCIAL_STATE;
+import static com.butent.bee.shared.modules.trade.TradeConstants.SVC_CREDIT_INFO;
 import static com.butent.bee.shared.modules.trade.acts.TradeActConstants.*;
 import com.butent.bee.client.BeeKeeper;
 import com.butent.bee.client.communication.ParameterList;
@@ -52,9 +56,13 @@ import com.butent.bee.shared.ui.Relation.Caching;
 import com.butent.bee.shared.utils.BeeUtils;
 import com.butent.bee.shared.utils.Codec;
 import com.butent.bee.shared.utils.EnumUtils;
+import com.butent.bee.client.Global;
+import com.butent.bee.shared.modules.administration.AdministrationConstants;
+import com.butent.bee.shared.modules.trade.TradeConstants;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 public class TradeActForm extends PrintFormInterceptor implements SelectorEvent.Handler,
     HandlesUpdateEvents {
@@ -91,6 +99,50 @@ public class TradeActForm extends PrintFormInterceptor implements SelectorEvent.
     if (widget instanceof DataSelector
         && BeeUtils.same(editableWidget.getColumnId(), COL_TA_COMPANY)) {
       editableWidget.getRelation().setCaching(Caching.NONE);
+    }
+
+    if (BeeUtils.same(editableWidget.getColumnId(), COL_TA_COMPANY)
+            && widget instanceof DataSelector) {
+      ((DataSelector)  widget).addSelectorHandler(new SelectorEvent.Handler() {
+        @Override
+        public void onDataSelector(SelectorEvent event) {
+          if (event.isChanged() && event.getRelatedRow() != null) {
+            ParameterList args = TradeActKeeper.createArgs(SVC_CREDIT_INFO);
+            args.addDataItem(ClassifierConstants.COL_COMPANY, event.getRelatedRow().getId());
+
+            BeeKeeper.getRpc().makePostRequest(args, response -> {
+              response.notify(getFormView());
+              if (response.hasErrors()) {
+                return;
+              }
+              Map<String, String> result = Codec.deserializeLinkedHashMap(response.getResponseAsString());
+
+              double limit = BeeUtils.toDouble(result.get(ClassifierConstants.COL_COMPANY_CREDIT_LIMIT));
+              double debt = BeeUtils.toDouble(result.get(TradeConstants.VAR_DEBT));
+              double overdue = BeeUtils.toDouble(result.get(TradeConstants.VAR_OVERDUE));
+              String financialState = BeeUtils.trim(result.get(COL_COMPANY_FINANCIAL_STATE));
+              String financialStateColor = BeeUtils.trim(result.get(COL_BACKGROUND));
+
+              HtmlTable table = new HtmlTable();
+
+              Label label = new Label(financialState);
+              StyleUtils.setBackgroundColor(label, financialStateColor);
+              table.setWidget(0, 1, label);
+              table.setText(0, 0, Localized.dictionary().financialState() + ":");
+              table.setText(1, 0, Localized.dictionary().creditLimit() + ":");
+              table.setText(1, 1, BeeUtils.joinWords(limit, result.get(AdministrationConstants.COL_CURRENCY)));
+              table.setText(2, 0, Localized.dictionary().trdDebt() + ":");
+              table.setText(2, 1, String.valueOf(debt));
+              table.setText(3, 0, Localized.dictionary().trdOverdue() + ":");
+              table.setText(3, 1, String.valueOf(overdue));
+              String cap = BeeUtils.joinWords(result.get(ClassifierConstants.COL_COMPANY_NAME),
+                      result.get(ClassifierConstants.COL_COMPANY_TYPE));
+
+              Global.showModalWidget(cap, table).hideOnEscape();
+            });
+          }
+        }
+      });
     }
     super.afterCreateEditableWidget(editableWidget, widget);
   }
