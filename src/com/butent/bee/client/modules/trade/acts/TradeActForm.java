@@ -120,9 +120,7 @@ public class TradeActForm extends PrintFormInterceptor implements SelectorEvent.
               double overdue = BeeUtils.toDouble(result.get(TradeConstants.VAR_OVERDUE));
               String financialState = BeeUtils.trim(result.get(VAR_FINANCIAL_STATE));
               String financialStateColor = BeeUtils.trim(result.get(VAR_FINANCIAL_STATE_COLOR));
-
               HtmlTable table = new HtmlTable();
-
               Label label = new Label(financialState);
               StyleUtils.setBackgroundColor(label, financialStateColor);
               table.setWidget(0, 1, label);
