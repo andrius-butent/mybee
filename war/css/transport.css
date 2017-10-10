@@ -150,8 +150,8 @@
 .bee-tr-dtb-Trip-info,
 .bee-tr-vtb-Trip-info {
   position: absolute;
-  left: 2%;
-  top: 0;
+  left: 5px;
+  top: 24px;
   pointer-events: none;
 }
 
@@ -191,6 +191,7 @@
   line-height: 12px;
   overflow: hidden;
   word-wrap: break-word;
+  padding-left: 5px;
 }
 
 .bee-places-table {
@@ -213,6 +214,9 @@
 .bee-tr-chart-filter-data-panel {
   overflow: hidden;
 }
+.bee-tr-chart-filter-data-panel:last-child {
+  min-width: 100px;
+}
 
 .bee-tr-chart-filter-data-caption {
   height: 35px;
@@ -232,9 +236,10 @@
 
 .bee-tr-chart-filter-data-search {
   position: absolute;
-  left: 1px;
-  right: 1px;
+  left: 1%;
+  right: 1%;
   top: calc(50% + 25px);
+  width: 98%;
 }
 
 .bee-tr-chart-filter-data-selected.bee-tr-chart-filter-data-controls {
@@ -489,3 +494,7 @@
 .bee-tr-SelfService-NewCommandItem:active {
   background-color: #1291b4;
 }
+.bee-tr-TransportGroup .bee-TextBox {
+  max-width: 195px;
+  margin-right: 0;
+ }
