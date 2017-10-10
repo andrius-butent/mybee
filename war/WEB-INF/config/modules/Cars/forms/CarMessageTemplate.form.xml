@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<f:Form xmlns="http://www.butent.com/widget"
+        xmlns:f="http://www.butent.com/form"
+
+        name="CarMessageTemplate" caption="=template"
+>
+  <Table kind="controls">
+    <row>
+      <Label for="Name" style="text-align:right" />
+      <InputText source="Name" style="width:200px" />
+    </row>
+    <row>
+      <Label for="Content" style="text-align:right;" />
+      <RichTextEditor source="Content" style="height:200px" />
+    </row>
+  </Table>
+</f:Form>

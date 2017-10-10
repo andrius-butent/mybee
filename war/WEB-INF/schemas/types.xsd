@@ -295,6 +295,7 @@
       <xs:enumeration value="CarJobModels" />
       <xs:enumeration value="CarJobProgress" />
       <xs:enumeration value="CarJobs" />
+      <xs:enumeration value="CarMessageTemplates" />
       <xs:enumeration value="CarOrderItems" />
       <xs:enumeration value="CarOrders" />
       <xs:enumeration value="CarPlaceCodes" />

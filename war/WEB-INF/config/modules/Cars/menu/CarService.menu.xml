@@ -16,6 +16,8 @@
 
   <Item name="CarDiscounts" label="=discounts" service="grid" parameters="CarDiscounts"
         separator="true" />
+  <Item name="CarMessageTemplates" label="=trMessageTemplates" service="grid"
+        parameters="CarMessageTemplates" separator="true" />
   <Item name="Parameters" label="=parameters" service="parameters" parameters="Cars"
         separator="true" />
 </Entry>
