@@ -95,6 +95,7 @@
 
     <SimpleColumn name="DocumentVatMode" />
     <SimpleColumn name="Notes" />
+    <SimpleColumn name="ExpectantCustomer" />
   </Columns>
   <Order>
     <OrderBy column="Date" descending="true" />
