@@ -11,6 +11,8 @@
               label="=serviceOrder" />
     <Relation name="ServiceEvent" relation="CarServiceEvents" cascade="DELETE"
               label="=calAppointment" />
+    <Boolean name="QualityCheck" label="=qualityCheck" />
+    <Text name="Note" label="=note" />
   </Fields>
 
   <Constraints>

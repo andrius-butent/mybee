@@ -4,8 +4,18 @@
       name="CarServiceSymptoms" source="CarServiceSymptoms" caption="=symptoms+ (+=serviceOrders+)"
 >
   <Columns>
-    <SimpleColumn name="Symptom" />
     <SimpleColumn name="ServiceOrder" />
     <SimpleColumn name="ServiceEvent" />
+
+    <SimpleColumn name="Symptom" />
+    <SimpleJoin name="Symptom" joinType="LEFT">
+      <SimpleColumn name="SymptomName" />
+      <SimpleColumn name="Code" />
+    </SimpleJoin>
+
+
+    <SimpleColumn name="QualityCheck" />
+    <SimpleColumn name="Note" />
+
   </Columns>
 </View>
