@@ -6,8 +6,8 @@
 >
   <g:columns>
     <DataColumn name="Code" />
-    <RelColumn name="Symptom" renderColumns="SymptomName" choiceColumns="Code SymptomName"
-               label="=symptom" />
+    <RelColumn name="Symptom" renderColumns="SymptomName"
+        choiceColumns="Code SymptomName" label="=symptom" />
     <DataColumn name="QualityCheck" />
     <DataColumn name="Note" />
 

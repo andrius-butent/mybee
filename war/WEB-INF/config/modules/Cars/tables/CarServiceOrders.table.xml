@@ -27,5 +27,7 @@
     <Enum name="DocumentVatMode" key="TradeVatMode" label="=vatMode" />
 
     <Text name="Notes" label="=notes" />
+
+    <Boolean name="ExpectantCustomer" label="=expectantCustomer" />
   </Fields>
 </Table>

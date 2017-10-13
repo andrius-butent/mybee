@@ -1,5 +1,8 @@
 package com.butent.bee.client.modules.cars;
 
+import com.butent.bee.client.dialog.ConfirmationCallback;
+import com.butent.bee.client.dialog.Icon;
+import com.butent.bee.shared.data.value.BooleanValue;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -170,7 +173,18 @@ public class CarServiceOrderForm extends PrintFormInterceptor implements HasStag
     if (Objects.equals(name, COL_CAR + "Warning") && widget instanceof HasClickHandlers) {
       carWarning = widget.asWidget();
       ((HasClickHandlers) carWarning).addClickHandler(clickEvent ->
-          Global.showInfo(Localized.dictionary().recalls(), carMessages));
+          Global.confirm(Localized.dictionary().checkCancellations(), Icon.QUESTION, carMessages,
+                new ConfirmationCallback() {
+                    @Override
+                    public void onConfirm() {
+                      Long car = getLongValue(COL_CAR);
+                      Queries.update(TBL_CAR_RECALLS,  Filter.and(Filter.equals(COL_VEHICLE, car),
+                        Filter.isNull(COL_CHECKED)), COL_CHECKED, BooleanValue.TRUE, null);
+                      carWarning.setVisible(false);
+                    }
+                }
+          )
+      );
     }
     if (Objects.equals(name, TBL_SERVICE_SYMPTOMS) && widget instanceof ChildSelector) {
       ((ChildSelector) widget).addSelectorHandler(event -> {
@@ -599,6 +613,7 @@ public class CarServiceOrderForm extends PrintFormInterceptor implements HasStag
                 beeRow.getString(result.getColumnIndex(CarsConstants.COL_DESCRIPTION)))));
 
             carWarning.setVisible(!carMessages.isEmpty());
+            carMessages.add(" ");
           });
     } else {
       carWarning.setVisible(false);
