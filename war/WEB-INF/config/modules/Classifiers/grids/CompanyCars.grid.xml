@@ -26,7 +26,7 @@
     <DataColumn name="DoorsNumber" visible="false" />
     <DataColumn name="GearsNumber" visible="false" />
     <RelColumn name="CarGearbox" visible="false" />
-    <RelColumn name="CarPlaceCode" visible="false" />
+    <RelColumn name="CarPlaceCode" />
     <RelColumn name="CarEmissionStandard" visible="false" />
   </g:columns>
 </g:Grid>

@@ -303,6 +303,11 @@
         <text>=svcMaintenance</text>
         <ChildGrid name="ServiceMaintenance" relColumn="Company" />
       </page>
+
+      <page data="Locations" module="Payroll">
+        <text>=objectLocations</text>
+        <ChildGrid name="Locations" relColumn="Company" />
+      </page>
     </TabbedPages>
   </FlowPanel>
 </f:Form>
