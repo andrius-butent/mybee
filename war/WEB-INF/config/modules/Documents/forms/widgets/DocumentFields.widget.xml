@@ -19,12 +19,11 @@
     </cell>
   </row>
 
-  <row>
+  <row module="Payroll" >
     <Label for="Location" visible="true" style="&lbl;" />
     <cell colSpan="3">
       <DataSelector source="Location" style="width: 100%;"
-                    choiceColumns="LocationName LocationCompanyName LocationCompanyTypeName"
-                    renderColumns="LocationName LocationCompanyName LocationCompanyTypeName" />
+            choiceColumns="LocationName" renderColumns="LocationName" />
     </cell>
   </row>
 

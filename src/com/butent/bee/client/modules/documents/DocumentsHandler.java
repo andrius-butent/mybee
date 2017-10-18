@@ -88,6 +88,7 @@ public final class DocumentsHandler {
             AdministrationConstants.COL_FILE_CAPTION, AdministrationConstants.ALS_FILE_NAME));
 
     GridFactory.registerGridInterceptor("RelatedDocuments", new RelatedDocumentsHandler());
+    GridFactory.registerGridInterceptor("AllDocuments", new AllDocumentsGrid());
 
     FormFactory.registerFormInterceptor(TBL_DOCUMENT_TREE, new DocumentTreeForm());
 
