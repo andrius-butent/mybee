@@ -18,5 +18,6 @@
 
     <DataColumn name="Status" flexGrow="0" />
     <DataColumn name="Notes" />
+    <RelColumn name="DepartmentName" />
   </g:columns>
 </g:Grid>

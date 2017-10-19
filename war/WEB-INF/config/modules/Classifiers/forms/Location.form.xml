@@ -37,6 +37,9 @@
         <DataSelector source="CompanyPerson" newRowEnabled="false" style="&w2;"
           renderColumns="ContactFirstName ContactLastName"
           choiceColumns="FirstName LastName CompanyName" options="Company" />
+
+        <Label for="Department" />
+        <DataSelector source="Department" style="&w1;" />
       </row>
     </Table>
     <br/>

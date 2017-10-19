@@ -17,5 +17,6 @@
     
     <Enum name="Status" key="ObjectStatus" defValue="0" notNull="true" label="=status" />
     <Text name="Notes" label="=notes" />
+    <Relation name="Department" relation="Departments" label="=department" />
   </Fields>
 </Table>

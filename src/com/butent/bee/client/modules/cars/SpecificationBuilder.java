@@ -672,8 +672,8 @@ public class SpecificationBuilder implements InputCallback {
 
             int packetIdx = rowSelectable;
 
-            for (Map.Entry<Option, Boolean> pck :
-                configuration.getPacketOptions(option, specification.getBundle()).entrySet()) {
+            for (Map.Entry<Option, Boolean> pck
+                    :configuration.getPacketOptions(option, specification.getBundle()).entrySet()) {
               Option opt = pck.getKey();
               boolean optional = pck.getValue();
               rowSelectable++;
