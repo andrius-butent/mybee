@@ -1,12 +1,13 @@
 package com.butent.bee.client.modules.cars;
 
-import com.butent.bee.client.dialog.ConfirmationCallback;
-import com.butent.bee.client.dialog.Icon;
-import com.butent.bee.shared.data.value.BooleanValue;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
+
+import com.butent.bee.client.dialog.ConfirmationCallback;
+import com.butent.bee.client.dialog.Icon;
+import com.butent.bee.shared.data.value.BooleanValue;
 
 import static com.butent.bee.shared.modules.administration.AdministrationConstants.*;
 import static com.butent.bee.shared.modules.cars.CarsConstants.*;
@@ -69,6 +70,8 @@ import com.butent.bee.shared.data.view.DataInfo;
 import com.butent.bee.shared.font.FontAwesome;
 import com.butent.bee.shared.i18n.Dictionary;
 import com.butent.bee.shared.i18n.Localized;
+import com.butent.bee.shared.logging.BeeLogger;
+import com.butent.bee.shared.logging.LogUtils;
 import com.butent.bee.shared.modules.cars.CarsConstants;
 import com.butent.bee.shared.modules.trade.ItemQuantities;
 import com.butent.bee.shared.modules.trade.Totalizer;
@@ -97,8 +100,13 @@ import java.util.stream.Stream;
 
 public class CarServiceOrderForm extends PrintFormInterceptor implements HasStages {
 
+  private static final String WIDGET_SERVICE_COMMENTS = "CarServiceComments";
+
+  private static final BeeLogger logger = LogUtils.getLogger(CarServiceOrderForm.class);
+  private final CarServiceEventsHandler eventsHandler = new CarServiceEventsHandler();
   private HasWidgets stageContainer;
   private List<Stage> orderStages;
+  private Flow serviceComments;
 
   private CustomAction createInvoice = new CustomAction(FontAwesome.FILE_TEXT_O,
       clickEvent -> selectServicesAndJobs());
@@ -201,7 +209,19 @@ public class CarServiceOrderForm extends PrintFormInterceptor implements HasStag
     if (Objects.equals(name, TBL_STAGES) && widget instanceof HasWidgets) {
       stageContainer = (HasWidgets) widget;
     }
+    if (widget instanceof Flow && BeeUtils.same(name, WIDGET_SERVICE_COMMENTS)) {
+      serviceComments = (Flow) widget;
+      serviceComments.clear();
+
+    }
     super.afterCreateWidget(name, widget, callback);
+  }
+
+  @Override
+  public void afterRefresh(FormView form, IsRow row) {
+    drawComments(row);
+
+    super.afterRefresh(form, row);
   }
 
   @Override
@@ -229,6 +249,10 @@ public class CarServiceOrderForm extends PrintFormInterceptor implements HasStag
   @Override
   public List<Stage> getStages() {
     return orderStages;
+  }
+
+  public Flow getServiceComments() {
+    return serviceComments;
   }
 
   public static void onCarSelection(FormView formView, SelectorEvent event, String ownerCol) {
@@ -344,6 +368,29 @@ public class CarServiceOrderForm extends PrintFormInterceptor implements HasStag
                 finalizer.run();
               }
             }));
+  }
+
+  private void drawComments(IsRow row) {
+    final Flow comments = getServiceComments();
+
+    if (comments == null) {
+      logger.warning("Widget of service comments not found");
+      return;
+    }
+
+    if (eventsHandler == null) {
+      logger.warning("Events handler not initialized");
+      return;
+    }
+
+    comments.clear();
+
+    if (!DataUtils.isId(row.getId())) {
+      return;
+    }
+
+    eventsHandler.create(comments, row.getId());
+    eventsHandler.setServiceRow(row);
   }
 
   private void renderInvoiceTable(BeeRowSet rs, Map<Long, Pair<Double, Double>> quantities) {

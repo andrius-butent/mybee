@@ -362,7 +362,6 @@ public abstract class EventsBoard extends Flow implements Presenter, RowInsertEv
   protected void afterCreateEventFilesCell(BeeRowSet rs, BeeRow row, Flow widget, Simple cell) {
   }
 
-  @SuppressWarnings("unused")
   protected void beforeCreateEventNoteCell(BeeRowSet rs, BeeRow row, Flow widget) {
   }
 
@@ -552,9 +551,9 @@ public abstract class EventsBoard extends Flow implements Presenter, RowInsertEv
   }
 
   private Flow createEventNoteCell(BeeRowSet rs, BeeRow row, Flow widget) {
-    beforeCreateEventNoteCell(rs, row, widget);
     Flow cell = createEventRowCell(widget, CONTENT_COL_EVENT_NOTE, null, false);
 
+    beforeCreateEventNoteCell(rs, row, cell);
     int idxNote = rs.getColumnIndex(getEventNoteColumnName());
 
     if (BeeUtils.isNegative(idxNote)) {

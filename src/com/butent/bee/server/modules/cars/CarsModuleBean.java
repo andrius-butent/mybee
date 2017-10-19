@@ -8,6 +8,7 @@ import com.google.common.collect.Table;
 import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
 
+import static com.butent.bee.shared.html.builder.Factory.*;
 import static com.butent.bee.shared.modules.administration.AdministrationConstants.*;
 import static com.butent.bee.shared.modules.calendar.CalendarConstants.*;
 import static com.butent.bee.shared.modules.cars.CarsConstants.*;
@@ -30,7 +31,10 @@ import com.butent.bee.server.data.SystemBean;
 import com.butent.bee.server.data.UserServiceBean;
 import com.butent.bee.server.http.RequestInfo;
 import com.butent.bee.server.modules.BeeModule;
+import com.butent.bee.server.modules.ParamHolderBean;
 import com.butent.bee.server.modules.administration.FileStorageBean;
+import com.butent.bee.server.modules.classifiers.TimerBuilder;
+import com.butent.bee.server.modules.mail.MailModuleBean;
 import com.butent.bee.server.modules.trade.StockReservationsProvider;
 import com.butent.bee.server.modules.trade.TradeModuleBean;
 import com.butent.bee.server.sql.IsCondition;
@@ -43,9 +47,12 @@ import com.butent.bee.server.sql.SqlUpdate;
 import com.butent.bee.server.sql.SqlUtils;
 import com.butent.bee.server.websocket.Endpoint;
 import com.butent.bee.shared.Assert;
+import com.butent.bee.shared.BeeConst;
 import com.butent.bee.shared.Pair;
 import com.butent.bee.shared.Service;
 import com.butent.bee.shared.communication.ResponseObject;
+import com.butent.bee.shared.css.CssUnit;
+import com.butent.bee.shared.css.values.FontWeight;
 import com.butent.bee.shared.data.BeeRow;
 import com.butent.bee.shared.data.BeeRowSet;
 import com.butent.bee.shared.data.DataUtils;
@@ -57,23 +64,34 @@ import com.butent.bee.shared.data.event.MultiDeleteEvent;
 import com.butent.bee.shared.data.filter.Filter;
 import com.butent.bee.shared.data.view.RowInfo;
 import com.butent.bee.shared.data.view.RowInfoList;
+import com.butent.bee.shared.html.Tags;
+import com.butent.bee.shared.html.builder.Document;
+import com.butent.bee.shared.html.builder.Element;
+import com.butent.bee.shared.html.builder.elements.Div;
+import com.butent.bee.shared.html.builder.elements.Tbody;
 import com.butent.bee.shared.i18n.DateTimeFormatInfo.DateTimeFormatInfo;
+import com.butent.bee.shared.i18n.Dictionary;
 import com.butent.bee.shared.i18n.Formatter;
 import com.butent.bee.shared.logging.BeeLogger;
 import com.butent.bee.shared.logging.LogUtils;
 import com.butent.bee.shared.modules.BeeParameter;
+import com.butent.bee.shared.modules.administration.AdministrationConstants;
 import com.butent.bee.shared.modules.cars.Bundle;
 import com.butent.bee.shared.modules.cars.ConfInfo;
 import com.butent.bee.shared.modules.cars.Configuration;
 import com.butent.bee.shared.modules.cars.Dimension;
 import com.butent.bee.shared.modules.cars.Option;
 import com.butent.bee.shared.modules.cars.Specification;
+import com.butent.bee.shared.modules.mail.MailConstants;
+import com.butent.bee.shared.modules.projects.ProjectConstants;
+import com.butent.bee.shared.modules.tasks.TaskConstants;
 import com.butent.bee.shared.modules.trade.ItemQuantities;
 import com.butent.bee.shared.modules.trade.TradeDocument;
 import com.butent.bee.shared.rights.Module;
 import com.butent.bee.shared.rights.ModuleAndSub;
 import com.butent.bee.shared.rights.SubModule;
 import com.butent.bee.shared.time.DateTime;
+import com.butent.bee.shared.time.TimeUtils;
 import com.butent.bee.shared.utils.BeeUtils;
 import com.butent.bee.shared.utils.Codec;
 
@@ -90,13 +108,23 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
-import javax.ejb.Stateless;
+import javax.ejb.Singleton;
+import javax.ejb.Timer;
+import javax.ejb.TimerConfig;
+import javax.ejb.TimerService;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
 
-@Stateless
+@Singleton
 @LocalBean
-public class CarsModuleBean implements BeeModule {
+public class CarsModuleBean extends TimerBuilder implements BeeModule {
 
   private static BeeLogger logger = LogUtils.getLogger(CarsModuleBean.class);
 
@@ -110,6 +138,13 @@ public class CarsModuleBean implements BeeModule {
   FileStorageBean fs;
   @EJB
   TradeModuleBean trd;
+  @EJB
+  MailModuleBean mail;
+  @EJB
+  ParamHolderBean prm;
+
+  @Resource
+  TimerService timerService;
 
   @Override
   public List<SearchResult> doSearch(String query) {
@@ -208,6 +243,11 @@ public class CarsModuleBean implements BeeModule {
         response = ResponseObject.emptyResponse();
         break;
 
+      case SVC_INFORM_CUSTOMER:
+        Long commentId = reqInfo.getParameterLong(TaskConstants.COL_ID);
+        response = informCustomer(commentId, false);
+        break;
+
       case SVC_SET_RESTRICTIONS:
         Map<Long, Map<Long, Boolean>> data = new HashMap<>();
 
@@ -268,7 +308,13 @@ public class CarsModuleBean implements BeeModule {
         BeeParameter.createRelation(module, PRM_SERVICE_WAREHOUSE, true, VIEW_WAREHOUSES,
             COL_WAREHOUSE_CODE),
         BeeParameter.createRelation(module, PRM_SERVICE_TRADE_OPERATION, true,
-            VIEW_TRADE_OPERATIONS, COL_OPERATION_NAME)
+            VIEW_TRADE_OPERATIONS, COL_OPERATION_NAME),
+        BeeParameter.createText(module, PRM_CARS_SMS_REQUEST_CONTACT_INFO_FROM, false,
+            VIEW_DEPARTMENTS),
+        BeeParameter.createText(module, PRM_CARS_SMS_REQUEST_SERVICE_ADDRESS),
+        BeeParameter.createText(module, PRM_CARS_SMS_REQUEST_SERVICE_USER_NAME),
+        BeeParameter.createText(module, PRM_CARS_SMS_REQUEST_SERVICE_PASSWORD),
+        BeeParameter.createText(module, PRM_CARS_SMS_REQUEST_SERVICE_FROM)
     );
   }
 
@@ -522,6 +568,20 @@ public class CarsModuleBean implements BeeModule {
 
       @Subscribe
       @AllowConcurrentEvents
+      public void createTimer(DataEvent.ViewInsertEvent event) {
+        if (event.isAfter(TBL_CAR_SERVICE_COMMENTS)) {
+          if (DataUtils.contains(event.getColumns(), COL_TRADE_TERM)
+              && event.getRow().getDateTime(DataUtils.getColumnIndex(COL_TRADE_TERM,
+              event.getColumns())) != null) {
+
+            createOrUpdateTimers(TIMER_REMIND_SERVICE_COMMENT, TBL_CAR_SERVICE_COMMENTS,
+                event.getRow().getId());
+          }
+        }
+      }
+
+      @Subscribe
+      @AllowConcurrentEvents
       public void notifyAppointmentRemoval(DataEvent.ViewDeleteEvent event) {
         if (event.isTarget(TBL_SERVICE_EVENTS)) {
           if (event.isBefore()) {
@@ -563,6 +623,8 @@ public class CarsModuleBean implements BeeModule {
         }
       }
     });
+
+    buildTimers(TIMER_REMIND_SERVICE_COMMENT);
   }
 
   public ResponseObject setBundle(Long branchId, Bundle bundle, ConfInfo info, boolean blocked) {
@@ -816,6 +878,58 @@ public class CarsModuleBean implements BeeModule {
       calendarId = qs.insertData(si);
     }
     return ResponseObject.response(calendarId);
+  }
+
+
+  private String getSenderPhone(SimpleRowSet.SimpleRow sRow) {
+    String phoneFrom = BeeConst.STRING_EMPTY;
+    Long publisher = sRow.getLong(COL_COMPANY_PERSON);
+
+    String contactInfoFrom = prm.getText(PRM_CARS_SMS_REQUEST_CONTACT_INFO_FROM);
+    if (!BeeUtils.isEmpty(contactInfoFrom) && DataUtils.isId(publisher)) {
+
+      SqlSelect phoneFromSelect = new SqlSelect()
+          .addFields(TBL_CONTACTS, COL_PHONE)
+          .addFrom(TBL_CONTACTS);
+
+      switch (contactInfoFrom) {
+        case AdministrationConstants.VIEW_DEPARTMENTS:
+          Long departmentId = sRow.getLong(COL_DEPARTMENT);
+
+          if (DataUtils.isId(departmentId)) {
+            phoneFromSelect.addFromLeft(AdministrationConstants.VIEW_DEPARTMENTS,
+                sys.joinTables(TBL_CONTACTS, AdministrationConstants.VIEW_DEPARTMENTS,
+                    COL_CONTACT))
+                .setWhere(sys.idEquals(AdministrationConstants.VIEW_DEPARTMENTS,
+                    sRow.getLong(COL_DEPARTMENT)));
+          } else {
+            phoneFromSelect = null;
+          }
+          break;
+
+        case VIEW_COMPANIES:
+          phoneFromSelect.addFromLeft(TBL_COMPANIES,
+              sys.joinTables(TBL_CONTACTS, TBL_COMPANIES, COL_CONTACT))
+              .addFromLeft(TBL_COMPANY_PERSONS,
+                  sys.joinTables(TBL_COMPANIES, TBL_COMPANY_PERSONS, COL_COMPANY))
+              .setWhere(sys.idEquals(TBL_COMPANY_PERSONS, publisher));
+          break;
+
+        case VIEW_COMPANY_PERSONS:
+          phoneFromSelect.addFromLeft(TBL_COMPANY_PERSONS,
+              sys.joinTables(TBL_CONTACTS, TBL_COMPANY_PERSONS, COL_CONTACT))
+              .setWhere(sys.idEquals(TBL_COMPANY_PERSONS, publisher));
+          break;
+      }
+
+      if (phoneFromSelect != null) {
+        phoneFrom = qs.getValue(phoneFromSelect);
+      }
+    } else {
+      phoneFrom = prm.getText(PRM_CARS_SMS_REQUEST_SERVICE_FROM);
+    }
+
+    return phoneFrom;
   }
 
   private ResponseObject getConfiguration(Long branchId, boolean skipBlocked) {
@@ -1119,6 +1233,185 @@ public class CarsModuleBean implements BeeModule {
     return ResponseObject.response(specification);
   }
 
+  private ResponseObject informCustomer(Long commentId, boolean hasTerm) {
+    Long senderAccountId = mail.getSenderAccountId(TIMER_REMIND_SERVICE_COMMENT);
+    ResponseObject response = ResponseObject.emptyResponse();
+
+    if (DataUtils.isId(commentId)) {
+      SqlSelect select = new SqlSelect()
+          .addFields(TBL_CAR_SERVICE_COMMENTS, COL_SEND_EMAIL, COL_SEND_SMS, COL_TRADE_TERM,
+              ProjectConstants.COL_COMMENT, MailConstants.COL_SUBJECT)
+          .addField(TBL_USERS, sys.getIdName(TBL_USERS), COL_USER)
+          .addFields(TBL_DEPARTMENT_EMPLOYEES, COL_DEPARTMENT)
+          .addFields(TBL_CONTACTS, COL_PHONE)
+          .addFields(TaskConstants.COL_PUBLISHER + TBL_USERS, COL_COMPANY_PERSON)
+          .addFrom(TBL_CAR_SERVICE_COMMENTS)
+          .addFromLeft(TBL_SERVICE_ORDERS,
+              sys.joinTables(TBL_SERVICE_ORDERS, TBL_CAR_SERVICE_COMMENTS,
+                  FORM_CAR_SERVICE_ORDER))
+          .addFromLeft(TBL_COMPANY_PERSONS,
+              sys.joinTables(TBL_COMPANY_PERSONS, TBL_SERVICE_ORDERS, "CustomerPerson"))
+          .addFromLeft(TBL_CONTACTS,
+              sys.joinTables(TBL_CONTACTS, TBL_COMPANY_PERSONS, COL_CONTACT))
+          .addFromLeft(TBL_USERS, SqlUtils.join(TBL_USERS, COL_COMPANY_PERSON,
+              TBL_SERVICE_ORDERS, "CustomerPerson"))
+          .addFromLeft(TBL_USERS, TaskConstants.COL_PUBLISHER + TBL_USERS,
+              sys.joinTables(TBL_USERS, TaskConstants.COL_PUBLISHER + TBL_USERS,
+                  TBL_CAR_SERVICE_COMMENTS, TaskConstants.COL_PUBLISHER))
+          .addFromLeft(TBL_DEPARTMENT_EMPLOYEES, SqlUtils.joinUsing(TBL_DEPARTMENT_EMPLOYEES,
+              TaskConstants.COL_PUBLISHER + TBL_USERS, COL_COMPANY_PERSON));
+
+      IsCondition where;
+      if (hasTerm) {
+        where = SqlUtils.and(sys.idEquals(TBL_CAR_SERVICE_COMMENTS, commentId),
+            SqlUtils.notNull(TBL_CAR_SERVICE_COMMENTS, COL_TRADE_TERM));
+      } else {
+        where = sys.idEquals(TBL_CAR_SERVICE_COMMENTS, commentId);
+      }
+
+      select.setWhere(where);
+
+      SimpleRowSet.SimpleRow sRow = qs.getData(select).getRow(0);
+
+      if (sRow != null) {
+        boolean isEmail = BeeUtils.unbox(sRow.getBoolean(COL_SEND_EMAIL));
+        boolean isSms = BeeUtils.unbox(sRow.getBoolean(COL_SEND_SMS));
+
+        if (isEmail && DataUtils.isId(senderAccountId)) {
+          response = informCustomerWithMail(sRow, senderAccountId);
+        }
+        if (isSms && !BeeUtils.isEmpty(sRow.getValue(COL_PHONE))) {
+          response = informCustomerWithSms(sRow);
+        }
+
+        if (hasTerm && !response.hasErrors()) {
+          removeServiceCommentTerm(commentId);
+        }
+      }
+    }
+
+    return response;
+  }
+
+  private ResponseObject informCustomerWithMail(SimpleRowSet.SimpleRow row, Long senderAccountId) {
+
+    Long user = row.getLong(COL_USER);
+
+    Document doc = new Document();
+
+    Dictionary dic = usr.getDictionary(user);
+
+    doc.getHead().append(meta().encodingDeclarationUtf8());
+
+    Div panel = div();
+    doc.getBody().append(panel);
+
+    Tbody fields = tbody().append(
+        tr().append(
+            td().text(dic.comment()),
+            td().text(row.getValue(ProjectConstants.COL_COMMENT))));
+
+    List<Element> cells = fields.queryTag(Tags.TD);
+    for (Element cell : cells) {
+      if (cell.index() == 0) {
+        cell.setPaddingRight(1, CssUnit.EM);
+        cell.setFontWeight(FontWeight.BOLDER);
+      }
+    }
+
+    panel.append(table().append(fields));
+
+    String content = doc.buildLines();
+    String headerCaption = row.getValue(MailConstants.COL_SUBJECT);
+
+    ResponseObject mailResponse = ResponseObject.emptyResponse();
+
+    String recipientEmail;
+
+    if (user != null && usr.isActive(user)) {
+      recipientEmail = usr.getUserEmail(user, false);
+    } else {
+      recipientEmail = mail.getSenderAccountEmail(senderAccountId);
+    }
+
+    if (recipientEmail == null) {
+      mailResponse.addError(dic.mailRecipientAddressNotFound());
+      return mailResponse;
+    }
+
+    mailResponse = mail.sendStyledMail(senderAccountId, recipientEmail, headerCaption, content,
+        headerCaption);
+
+    if (mailResponse.hasErrors()) {
+      logger.severe(TIMER_REMIND_SERVICE_COMMENT, "mail error - canceled");
+      mailResponse.addError("mail error - canceled");
+    }
+
+    return mailResponse;
+  }
+
+  private ResponseObject informCustomerWithSms(SimpleRowSet.SimpleRow sRow) {
+    Dictionary dic = usr.getDictionary();
+
+    String phoneFrom = getSenderPhone(sRow);
+
+    if (BeeUtils.isEmpty(phoneFrom)) {
+      return ResponseObject.error(dic.svcEmptySmsFromError());
+    }
+
+    String phoneTo = sRow.getValue(COL_PHONE);
+    phoneTo = phoneTo.replaceAll("\\D+", "");
+
+    phoneFrom = phoneFrom.replaceAll("\\D+", "");
+
+    String message = sRow.getValue(ProjectConstants.COL_COMMENT);
+
+    if (BeeUtils.isEmpty(message) || BeeUtils.isEmpty(phoneTo)) {
+      return ResponseObject.error("message or phone is empty");
+    }
+
+    String address = prm.getText(PRM_CARS_SMS_REQUEST_SERVICE_ADDRESS);
+    String userName = prm.getText(PRM_CARS_SMS_REQUEST_SERVICE_USER_NAME);
+    String password = prm.getText(PRM_CARS_SMS_REQUEST_SERVICE_PASSWORD);
+
+    if (BeeUtils.isEmpty(address)) {
+      logger.warning(BeeUtils.joinWords(PRM_CARS_SMS_REQUEST_SERVICE_ADDRESS, " is empty"));
+      return ResponseObject.error(PRM_CARS_SMS_REQUEST_SERVICE_ADDRESS + " is empty");
+    }
+    if (BeeUtils.isEmpty(userName)) {
+      logger.warning(BeeUtils.joinWords(PRM_CARS_SMS_REQUEST_SERVICE_USER_NAME, " is empty"));
+      return ResponseObject.error(PRM_CARS_SMS_REQUEST_SERVICE_USER_NAME + " is empty");
+    }
+    if (BeeUtils.isEmpty(password)) {
+      logger.warning(BeeUtils.joinWords(PRM_CARS_SMS_REQUEST_SERVICE_PASSWORD, " is empty"));
+      return ResponseObject.error(PRM_CARS_SMS_REQUEST_SERVICE_PASSWORD + " is empty");
+    }
+
+    Client client = ClientBuilder.newClient();
+    UriBuilder uriBuilder = UriBuilder.fromPath(address);
+
+    uriBuilder.queryParam("username", userName);
+    uriBuilder.queryParam("password", password);
+    uriBuilder.queryParam("message", message);
+    uriBuilder.queryParam("from", phoneFrom);
+    uriBuilder.queryParam("to", phoneTo);
+    WebTarget webtarget = client.target(uriBuilder);
+
+    javax.ws.rs.client.Invocation.Builder builder = webtarget.request(MediaType.TEXT_PLAIN_TYPE)
+        .acceptEncoding(BeeConst.CHARSET_UTF8);
+
+    Response response = builder.get();
+    String smsResponseMessage = response.readEntity(String.class);
+
+    if (response.getStatus() == 200 && !BeeUtils.isEmpty(smsResponseMessage)
+        && BeeUtils.containsSame(smsResponseMessage, "OK")) {
+      return ResponseObject.emptyResponse();
+    }
+
+    logger.warning(BeeUtils.joinWords("Method informCustomerWithSms", smsResponseMessage));
+    return ResponseObject.error(smsResponseMessage);
+  }
+
   private ResponseObject saveDimensions(Long branchId, List<Long> rows, List<Long> cols) {
     String idName = sys.getIdName(TBL_CONF_DIMENSIONS);
 
@@ -1193,5 +1486,80 @@ public class CarsModuleBean implements BeeModule {
           .addConstant(COL_PRICE, specification.getOptionPrice(option)));
     }
     return ResponseObject.response(objectId);
+  }
+
+  private void removeServiceCommentTerm(long id) {
+    SqlUpdate update = new SqlUpdate(TBL_CAR_SERVICE_COMMENTS)
+        .addConstant(COL_TRADE_TERM, null)
+        .setWhere(sys.idEquals(TBL_CAR_SERVICE_COMMENTS, id));
+
+    qs.updateData(update);
+  }
+
+  @Override
+  public void onTimeout(String timerInfo) {
+    if (BeeUtils.isPrefix(timerInfo, TIMER_REMIND_SERVICE_COMMENT)) {
+      logger.info("expired service comment reminder timeout", timerInfo);
+
+      long commentId = BeeUtils.toLong(BeeUtils.removePrefix(timerInfo,
+          TIMER_REMIND_SERVICE_COMMENT));
+      informCustomer(commentId, true);
+    }
+  }
+
+  @Override
+  protected List<Timer> createTimers(String timerIdentifier, IsCondition wh) {
+    List<Timer> timersList = new ArrayList<>();
+
+    if (BeeUtils.same(timerIdentifier, TIMER_REMIND_SERVICE_COMMENT)) {
+      SimpleRowSet data = qs.getData(new SqlSelect()
+          .addFields(TBL_CAR_SERVICE_COMMENTS, sys.getIdName(TBL_CAR_SERVICE_COMMENTS),
+              COL_TRADE_TERM)
+          .addFrom(TBL_CAR_SERVICE_COMMENTS)
+          .setWhere(SqlUtils.and(wh, SqlUtils.notNull(TBL_CAR_SERVICE_COMMENTS, COL_TRADE_TERM))));
+
+      for (SimpleRowSet.SimpleRow row : data) {
+        Long timerId = row.getLong(sys.getIdName(TBL_CAR_SERVICE_COMMENTS));
+        DateTime timerTime = TimeUtils.toDateTimeOrNull(row.getValue(COL_TRADE_TERM));
+
+        if (timerTime == null) {
+          continue;
+        }
+
+        if (timerTime.getTime() > System.currentTimeMillis()) {
+          Timer timer = getTimerService().createSingleActionTimer(timerTime.getJava(),
+              new TimerConfig(timerIdentifier + timerId, false));
+
+          logger.info("Created timer:", timerTime, timer.getInfo());
+
+          if (timer != null) {
+            timersList.add(timer);
+          }
+        }
+      }
+    }
+
+    return timersList;
+  }
+
+  @Override
+  protected Pair<IsCondition, List<String>> getConditionAndTimerIdForUpdate(String timerIdentifier,
+      String viewName, Long relationId) {
+    if (BeeUtils.same(timerIdentifier, TIMER_REMIND_SERVICE_COMMENT)) {
+      if (BeeUtils.same(viewName, TBL_CAR_SERVICE_COMMENTS)) {
+        IsCondition wh = SqlUtils.equals(TBL_CAR_SERVICE_COMMENTS,
+            sys.getIdName(TBL_CAR_SERVICE_COMMENTS), relationId);
+        List<String> timerIdentifiersIds = new ArrayList<>();
+        timerIdentifiersIds.add(timerIdentifier + relationId);
+        return Pair.of(wh, timerIdentifiersIds);
+      }
+    }
+
+    return null;
+  }
+
+  @Override
+  public TimerService getTimerService() {
+    return timerService;
   }
 }
