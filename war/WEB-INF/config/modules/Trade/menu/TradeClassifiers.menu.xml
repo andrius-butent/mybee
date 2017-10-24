@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Entry xmlns="http://www.butent.com/menu"
 
-       name="TradeClassifiers" label="=classifiers" parent="Trade" order="100" separator="true"
+       name="TradeClassifiers" label="=classifiers" parent="Trade" order="250" separator="true"
 >
   <Item name="TradeOperations" label="=trdOperations" service="grid" parameters="TradeOperations" />
   <Item name="TradeSeries" label="=seriesPlural" service="grid" parameters="TradeSeries" />

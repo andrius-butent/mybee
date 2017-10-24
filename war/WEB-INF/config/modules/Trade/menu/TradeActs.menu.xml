@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Entry xmlns="http://www.butent.com/menu"
-       name="TradeActs" label="=tradeActs" parent="Trade" order="200"
+       name="TradeActs" label="=tradeActs" parent="Trade" order="150" separator="true"
        module="Trade.Acts">
 
   <Item name="TradeActsSale" label="=taKindSale" service="trade_act_list" parameters="sale"
@@ -15,18 +15,4 @@
 
   <Item name="TradeActsAll" label="=tradeActsAll" service="trade_act_list" parameters="all"
         separator="true" />
-
-  <Item name="TradeActNames" label="=tradeActNames" service="grid"
-        parameters="TradeActNames" separator="true" />
-
-  <Item name="TradeActTemplates" label="=tradeActTemplates" service="grid"
-        parameters="TradeActTemplates" separator="true" />
-  <Item name="TradeNotes" label="=trdNoteTemplates" service="grid" parameters="TradeNotes" />
-
-  <Item name="TradeActInvoiceBuilder" label="=taInvoiceBuilder" service="form"
-        parameters="TradeActInvoiceBuilder" separator="true" />
-  <Item name="Sales" label="=trdInvoices" service="grid" parameters="Sales" />
-
-  <Item name="TradeActParameters" label="=parameters" service="parameters" parameters="Trade.Acts"
-        separator="true" order="300" module="Administration" />
 </Entry>

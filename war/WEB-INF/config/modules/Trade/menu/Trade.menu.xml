@@ -16,5 +16,18 @@
         separator="true" module="Administration" />
 
   <Item name="TradeParameters" label="=trdParameters" service="parameters" parameters="Trade"
-        separator="true" order="150" module="Administration" />
+        separator="true" order="140" module="Administration" />
+
+  <Item name="TradeActNames" label="=tradeActNames" service="grid"
+        parameters="TradeActNames" separator="true" order="160" />
+  <Item name="TradeActTemplates" label="=tradeActTemplates" service="grid"
+        parameters="TradeActTemplates" />
+  <Item name="TradeNotes" label="=trdNoteTemplates" service="grid" parameters="TradeNotes" />
+
+  <Item name="TradeActInvoiceBuilder" label="=taInvoiceBuilder" service="form"
+        parameters="TradeActInvoiceBuilder" separator="true" />
+  <Item name="Sales" label="=trdInvoices" service="grid" parameters="Sales" />
+
+  <Item name="TradeActParameters" label="=parameters" service="parameters" parameters="Trade.Acts"
+        separator="true" order="300" module="Administration" />
 </Entry>
