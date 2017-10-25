@@ -61,7 +61,7 @@
                         style="width: 160px;" d:size="80" d:unit="px"
                         d:rootStyle="&absolute; left: 0; top: 360px;" />
           <Radio source="Visibility" vertical="true"
-                 style="&absolute; left: 260px; top: 340px;" />
+                 style="&absolute; left: 590px; top: 187px;" />
 
           <Label text="=company" style="&absolute; left: 380px; top: 280px; width: 76px;" />
 

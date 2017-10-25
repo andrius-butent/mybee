@@ -738,3 +738,6 @@
 .bee-cal-MonthView .source {
   outline: #aaa dashed 2px;
 }
+.bee-cal-Controller-datePicker .bee-DatePicker-month div {
+  width: 105px;
+}
