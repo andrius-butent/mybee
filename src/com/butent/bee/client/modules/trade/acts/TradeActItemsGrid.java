@@ -281,44 +281,47 @@ public class TradeActItemsGrid extends AbstractGridInterceptor implements
   public boolean beforeAddRow(GridPresenter presenter, boolean copy) {
     final IsRow parentRow = ViewHelper.getFormRow(presenter.getMainView());
 
-    if (parentRow != null) {
-      TradeActKind kind = TradeActKeeper.getKind(VIEW_TRADE_ACTS, parentRow);
-      Long parent = Data.getLong(VIEW_TRADE_ACTS, parentRow, COL_TA_PARENT);
-      FormView parentForm = ViewHelper.getForm(presenter.getMainView());
-      FormInterceptor parentInterceptor = parentForm.getFormInterceptor();
-      TradeActForm parentTaForm = null;
+    presenter.getGridView().ensureRelId(result -> {
+      if (parentRow != null) {
+        TradeActKind kind = TradeActKeeper.getKind(VIEW_TRADE_ACTS, parentRow);
+        Long parent = Data.getLong(VIEW_TRADE_ACTS, parentRow, COL_TA_PARENT);
+        FormView parentForm = ViewHelper.getForm(presenter.getMainView());
+        FormInterceptor parentInterceptor = parentForm.getFormInterceptor();
+        TradeActForm parentTaForm = null;
 
-      if (parentInterceptor instanceof TradeActForm) {
-        parentTaForm = (TradeActForm) parentInterceptor;
-      }
+        if (parentInterceptor instanceof TradeActForm) {
+          parentTaForm = (TradeActForm) parentInterceptor;
+        }
       /* If trade act is Return */
-      if (kind == TradeActKind.RETURN) {
+        if (kind == TradeActKind.RETURN) {
 
-        if (!parentForm.validate(parentForm, true) || (parentTaForm != null
-            && !parentTaForm.validateBeforeSave(parentForm, parentRow, false))) {
-          return false;
-        }
+          if (!parentForm.validate(parentForm, true) || (parentTaForm != null
+                  && !parentTaForm.validateBeforeSave(parentForm, parentRow, false))) {
+            return;
 
-        Pair<BeeRowSet, BeeRowSet> mrd = TradeActUtils.getMultiReturnData(parentRow);
-        if (!mrd.isNull()) {
-          doMultiReturn(parentRow, mrd.getA(), mrd.getB());
-        } else if (DataUtils.isId(parent)) {
-          doSingleReturn(parentRow, parent, kind);
-        } else {
+          }
+
+          Pair<BeeRowSet, BeeRowSet> mrd = TradeActUtils.getMultiReturnData(parentRow);
+          if (!mrd.isNull()) {
+            doMultiReturn(parentRow, mrd.getA(), mrd.getB());
+          } else if (DataUtils.isId(parent)) {
+            doSingleReturn(parentRow, parent, kind);
+          } else {
+            getGridView().notifySevere(Localized.dictionary().actionCanNotBeExecuted());
+            return;
+          }
+        } else if (DataUtils.isId(Data.getLong(VIEW_TRADE_ACTS, parentRow, COL_TA_CONTINUOUS))) {
           getGridView().notifySevere(Localized.dictionary().actionCanNotBeExecuted());
-          return false;
+          return;
+        } else {
+          if (!parentForm.validate(parentForm, true) || (parentTaForm != null
+                  && !parentTaForm.validateBeforeSave(parentForm, parentRow, false))) {
+            return;
+          }
+          ensurePicker().show(parentRow, presenter.getMainView().getElement());
         }
-      } else if (DataUtils.isId(Data.getLong(VIEW_TRADE_ACTS, parentRow, COL_TA_CONTINUOUS))) {
-        getGridView().notifySevere(Localized.dictionary().actionCanNotBeExecuted());
-        return false;
-      } else {
-        if (!parentForm.validate(parentForm, true) || (parentTaForm != null
-          && !parentTaForm.validateBeforeSave(parentForm, parentRow, false))) {
-          return false;
-        }
-        ensurePicker().show(parentRow, presenter.getMainView().getElement());
       }
-    }
+    });
 
     return false;
   }

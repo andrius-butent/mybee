@@ -126,8 +126,9 @@ public class SalesInvoiceForm extends PrintFormInterceptor {
         Long id = getActiveRowId();
 
         String invoice = BeeUtils.same(form.getViewName(), VIEW_SALES)
-            ? BeeUtils.join("", form.getStringValue(COL_TRADE_INVOICE_PREFIX),
-            form.getStringValue(COL_TRADE_INVOICE_NO))
+            ? BeeUtils.join("_", Localized.dictionary().trdInvoice(),
+                BeeUtils.join("", form.getStringValue(COL_TRADE_INVOICE_PREFIX),
+                  form.getStringValue(COL_TRADE_INVOICE_NO)))
             : BeeUtils.join("_", form.getCaption(), form.getActiveRowId());
 
         if (!BeeUtils.isEmpty(invoice)) {
@@ -141,7 +142,7 @@ public class SalesInvoiceForm extends PrintFormInterceptor {
         }
 
         String content = BeeUtils.same(form.getViewName(), VIEW_SALES)
-            ? Localized.dictionary().trdInvoice()
+            ? ""
             : Localized.dictionary().tradeAct();
 
         Filter flt = Filter.notNull(COL_EMAIL_ADDRESS);
