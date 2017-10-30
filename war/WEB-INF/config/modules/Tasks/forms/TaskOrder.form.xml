@@ -26,7 +26,7 @@
         name="TaskOrder" viewName="TaskOrders" caption="=order" showRowId="true" printHeader="true"
         width="1024" height="768" favorite="Summary"
 >
-  <f:properties jasperReports="Task_lt:Užsakymas, InternalTask_lt:Vidinis užsakymas" />
+  <f:properties jasperReports="Task_lt:Užsakymas, TaskRemake_lt:UžsakymasRemake, InternalTask_lt:Vidinis užsakymas" />
   <SplitPanel splitterSize="1" style="margin:5px;" name="Split" >
     <west size="660">
       <TabbedPages resizable="false" name="TabbedPages" >

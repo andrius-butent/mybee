@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-10-17T15:39:51 -->
+<!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TaskOrder" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f61c84c0-32c7-4a4d-a4ff-6f16bae30b57">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<import value="java.util.Objects"/>
@@ -43,6 +42,7 @@
 	<parameter name="ContactLastName" class="java.lang.String"/>
 	<parameter name="FinishTime" class="java.lang.String"/>
 	<parameter name="Summary" class="java.lang.String"/>
+	<parameter name="TypeName" class="java.lang.String"/>
 	<parameter name="OwnerFirstName" class="java.lang.String"/>
 	<parameter name="OwnerLastName" class="java.lang.String"/>
 	<parameter name="ExecutorFirstName" class="java.lang.String"/>
@@ -111,6 +111,7 @@
 	<parameter name="To" class="java.lang.String"/>
 	<parameter name="TaskOrderItemsDataSet" class="com.butent.bee.server.RsDataSource"/>
 	<parameter name="Transportation" class="java.lang.String"/>
+	<parameter name="TransportationNote" class="java.lang.String"/>
 	<parameter name="PackageQty" class="java.lang.String"/>
 	<parameter name="Weight" class="java.lang.String"/>
 	<parameter name="Material" class="java.lang.String"/>
@@ -120,6 +121,7 @@
 	<parameter name="OtherMaterial" class="java.lang.String"/>
 	<parameter name="OtherBending" class="java.lang.String"/>
 	<parameter name="InvoiceSupplier" class="java.lang.String"/>
+	<parameter name="InvoiceNote" class="java.lang.String"/>
 	<parameter name="InvoiceDate" class="java.lang.String"/>
 	<parameter name="InvoiceSeries" class="java.lang.String"/>
 	<parameter name="InvoiceNumber" class="java.lang.String"/>
@@ -256,7 +258,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="DejaVu Sans" size="9" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{Summary}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{Summary} + " (" + $P{TypeName} + ")"]]></textFieldExpression>
 				</textField>
 			</frame>
 			<frame>
@@ -1106,13 +1108,14 @@
 		</band>
 	</title>
 	<summary>
-		<band height="128" splitType="Stretch">
+		<band height="156" splitType="Stretch">
 			<componentElement>
-				<reportElement positionType="Float" x="0" y="60" width="555" height="46" isRemoveLineWhenBlank="true" uuid="9f93888b-855c-4156-be85-c9d89915a4ad">
+				<reportElement positionType="Float" x="0" y="72" width="555" height="46" isRemoveLineWhenBlank="true" uuid="9f93888b-855c-4156-be85-c9d89915a4ad">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
 					<property name="net.sf.jasperreports.export.headertoolbar.table.name" value=""/>
 					<property name="com.jaspersoft.studio.components.autoresize.proportional" value="true"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="TaskOrderItems" uuid="0caa4c3c-593c-46b9-95a1-ea786d57abb4">
@@ -1357,7 +1360,7 @@
 				</jr:table>
 			</componentElement>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement positionType="Float" x="0" y="116" width="180" height="12" isRemoveLineWhenBlank="true" uuid="d03a459c-659f-43eb-bdce-b7d697e25b7e">
+				<reportElement positionType="Float" x="0" y="126" width="180" height="12" isRemoveLineWhenBlank="true" uuid="d03a459c-659f-43eb-bdce-b7d697e25b7e">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
@@ -1369,7 +1372,7 @@
 				<textFieldExpression><![CDATA[BeeUtils.joinWords("<b>TRANSPORTAVIMAS:</b>", $P{Transportation})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement positionType="Float" x="180" y="116" width="201" height="12" isRemoveLineWhenBlank="true" uuid="c8adf272-a1d2-450d-856e-d0e3a9a87021">
+				<reportElement positionType="Float" x="180" y="126" width="201" height="12" isRemoveLineWhenBlank="true" uuid="c8adf272-a1d2-450d-856e-d0e3a9a87021">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
@@ -1381,7 +1384,7 @@
 				<textFieldExpression><![CDATA[BeeUtils.joinWords("<b>Pakuočių kiekis:</b>", $P{PackageQty})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement positionType="Float" x="382" y="116" width="172" height="12" isRemoveLineWhenBlank="true" uuid="1b14a40b-24d8-405d-8326-dbb4dd689e62">
+				<reportElement positionType="Float" x="382" y="126" width="172" height="12" isRemoveLineWhenBlank="true" uuid="1b14a40b-24d8-405d-8326-dbb4dd689e62">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
@@ -1535,7 +1538,35 @@
 					</textElement>
 					<textFieldExpression><![CDATA[BeeUtils.joinWords("<b>Kaina:</b>", $P{InvoicePrice})]]></textFieldExpression>
 				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement positionType="Float" x="50" y="12" width="505" height="12" isRemoveLineWhenBlank="true" uuid="122ec41b-32d7-432d-8a99-becd28785ee3">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+						<printWhenExpression><![CDATA[$P{InvoiceNote} != null]]></printWhenExpression>
+					</reportElement>
+					<box leftPadding="0"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="DejaVu Sans" size="9" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[($P{InvoiceNote}==null ? "" : $P{InvoiceNote})]]></textFieldExpression>
+				</textField>
 			</frame>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="0" y="138" width="555" height="12" isRemoveLineWhenBlank="true" uuid="bd923397-912b-4fcd-aefe-886bf856db0b">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<printWhenExpression><![CDATA[$P{TransportationNote} != null]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($P{TransportationNote}==null ? "" : $P{TransportationNote})]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>

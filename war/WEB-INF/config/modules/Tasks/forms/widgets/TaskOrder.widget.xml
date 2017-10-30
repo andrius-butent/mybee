@@ -423,13 +423,12 @@
           <InputText source="Series" style="width: 120px;" />
 
           <Label for="From" />
-          <InputInteger source="From" minValue="0" maxValue="999999" style="width: 80px;" />
+          <InputText source="From" style="width: 80px;" />
 
           <cell colSpan="2" >
             <FlowPanel>
               <Label for="To" style="&inline; margin-right: 5px; margin-left: 55px;" />
-              <InputInteger source="To" minValue="0" maxValue="999999"
-                            style="&inline; width: 80px;" />
+              <InputText source="To" style="&inline; width: 80px;" />
             </FlowPanel>
           </cell>
         </row>
@@ -540,6 +539,13 @@
         </row>
 
         <row>
+          <Label for="InvoiceNote" />
+          <cell colSpan="5">
+            <InputText source="InvoiceNote" style="width: 495px;" />
+          </cell>
+        </row>
+
+        <row>
           <Label for="InvoiceSeries" />
           <InputText source="InvoiceSeries" style="width: 100px;" />
 
@@ -564,6 +570,14 @@
           <Label for="Weight" />
           <InputDouble source="Weight" minValue="0" maxValue="999999.999" style="width: 100px;" />
         </row>
+
+        <row>
+          <Label for="TransportationNote" style="margin-bottom: 10px;" />
+          <cell colSpan="5">
+            <InputText source="TransportationNote" style="width: 495px; margin-bottom: 10px;" />
+          </cell>
+        </row>
+
       </Table>
       <ChildGrid name="TaskOrderItems" relColumn="Task" class="flexible" style="height: 300px;" />
     </FlowPanel>

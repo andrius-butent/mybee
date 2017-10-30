@@ -64,8 +64,8 @@
     <String name="GlueNote" precision="100" label="Pastaba" />
     <String name="Mounting" precision="100" label="Montavimas" />
     <String name="Series" precision="3" label="Serija" />
-    <Integer name="From" label="Nr. nuo" />
-    <Integer name="To" label="Nr. iki" />
+    <String name="From" precision="30" label="Nr. nuo" />
+    <String name="To" precision="30" label="Nr. iki" />
     <Relation name="Packed" relation="CompanyPersons" label="Numeravo/pakavo" />
     <String name="MarkOnPack" precision="200" label="Žymė ant pakuotės" />
     <String name="Packing" precision="10" label="Pakavimas" />
@@ -76,11 +76,13 @@
     <String name="Number" precision="10" label="Numeris" />
     <Date name="Date" label="Data" />
     <String name="Transportation" precision="10" label="Transportavimas" />
+    <String name="TransportationNote" precision="100" label="Pastaba" />
     <Integer name="PackageQty" label="Pakuočių kiekis" />
     <Numeric name="Weight" precision="7" scale="3" label="Svoris" />
 
     <String name="InvoiceSupplier" label="Sąskaitą išrašė"  precision="25" />
     <Numeric name="InvoicePrice" precision="10" scale="4" label="Kaina" />
+    <String name="InvoiceNote" precision="100" label="Pastaba" />
     <String name="InvoiceSeries" precision="10" label="Serija" />
     <String name="InvoiceNumber" precision="10" label="Numeris" />
     <Date name="InvoiceDate" label="Data" />
