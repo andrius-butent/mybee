@@ -19,7 +19,7 @@
       <renderToken source="InvoiceNo" />
     </DataColumn>
     <DataColumn name="Supplier" label="=trdSupplierId" filterSupplier="value" />
-    <DataColumn name="SupplierName" />
+    <DataColumn name="SupplierName" label="=supplier" />
     <DataColumn name="Amount" />
     <RelColumn name="Currency" />
     <DataColumn name="Term" />

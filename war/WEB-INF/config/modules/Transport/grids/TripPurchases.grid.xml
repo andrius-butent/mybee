@@ -17,7 +17,7 @@
     <DataColumn name="Date" caption="=date" />
 
     <RelColumn name="Item" renderColumns="ItemName" />
-    <DataColumn name="UnitName" />
+    <DataColumn name="UnitName" label="=quantityUnit" />
     <DataColumn name="Quantity" />
     <DataColumn name="Price" format="0.00" />
     <RelColumn name="Currency" />

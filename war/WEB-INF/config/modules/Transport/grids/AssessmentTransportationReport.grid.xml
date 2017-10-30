@@ -18,11 +18,11 @@
     <DataColumn name="Description" minWidth="100" whiteSpace="nowrap" />
 
     <DataColumn name="Weight" />
-    <DataColumn name="WeightUnitName" />
+    <DataColumn name="WeightUnitName" label="=weightUnit" />
     <DataColumn name="Volume" />
-    <DataColumn name="VolumeUnitName" />
+    <DataColumn name="VolumeUnitName" label="=volumeUnit" />
     <DataColumn name="Quantity" />
-    <DataColumn name="QuantityUnitName" />
+    <DataColumn name="QuantityUnitName" label="=quantityUnit" />
 
     <DataColumn name="CustomerName" />
     <DataColumn name="Partial" caption="=partialShort" width="15" sortable="false" />

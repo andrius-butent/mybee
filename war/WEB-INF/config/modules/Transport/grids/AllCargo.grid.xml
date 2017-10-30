@@ -34,7 +34,7 @@
 
     <ActionColumn name="TripNo" element="link" />
     <DataColumn name="ExpeditionType" caption="=trExpeditionType" />
-    <DataColumn name="ForwarderName" caption="=carrier" />
+    <DataColumn name="ForwarderName" label="=carrier" />
     <CalcColumn name="Vehicle" type="string" caption="=transport"
       searchBy="ForwarderVehicle VehicleNumber TrailerNumber">
       <render>
