@@ -7,6 +7,7 @@ import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.web.bindery.event.shared.HandlerRegistration;
+
 import static com.butent.bee.shared.modules.administration.AdministrationConstants.COL_BACKGROUND;
 import static com.butent.bee.shared.modules.classifiers.ClassifierConstants.COL_COMPANY_FINANCIAL_STATE;
 import static com.butent.bee.shared.modules.trade.TradeConstants.SVC_CREDIT_INFO;

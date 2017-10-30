@@ -124,8 +124,9 @@ public final class TradeActKeeper {
 
         ReportUtils.getPdf(form.getPrintElement().getString(), (fileInfo) -> {
           String invoice = BeeUtils.same(form.getViewName(), VIEW_SALES)
-              ? BeeUtils.join("", form.getStringValue(COL_TRADE_INVOICE_PREFIX),
-              form.getStringValue(COL_TRADE_INVOICE_NO))
+              ? BeeUtils.join("_", Localized.dictionary().trdInvoice(),
+                  BeeUtils.join("", form.getStringValue(COL_TRADE_INVOICE_PREFIX),
+                          form.getStringValue(COL_TRADE_INVOICE_NO)))
               : BeeUtils.join("_", form.getCaption(), form.getActiveRowId());
 
           if (!BeeUtils.isEmpty(invoice)) {
@@ -139,7 +140,7 @@ public final class TradeActKeeper {
           }
 
           String content = BeeUtils.same(form.getViewName(), VIEW_SALES)
-              ? Localized.dictionary().trdInvoice()
+              ? ""
               : Localized.dictionary().tradeAct();
 
           Queries.getValue(VIEW_COMPANIES, BeeUtils.unbox(companyId),
