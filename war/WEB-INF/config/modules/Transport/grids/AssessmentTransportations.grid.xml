@@ -9,7 +9,7 @@
   <g:columns>
     <IdColumn name="ID" />
     <DataColumn name="Date" />
-    <DataColumn name="ForwarderName" caption="=carrier" />
+    <DataColumn name="ForwarderName" label="=carrier" />
     <DataColumn name="ExpeditionType" caption="=trExpeditionType" />
     <CalcColumn name="Order" type="string" caption="=trOrder" maxWidth="300" searchBy="OrderNo">
       <render>

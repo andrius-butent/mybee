@@ -9,7 +9,7 @@
     <DataColumn name="OrderNo" caption="=orderNumber" />
     <DataColumn name="Status" caption="=trOrderStatus" />
     <DataColumn name="Customer" label="=customerId" filterSupplier="value" />
-    <DataColumn name="CustomerName" caption="=customer" renderColumns="CustomerName TypeName"/>
+    <DataColumn name="CustomerName" label="=customer" renderColumns="CustomerName TypeName"/>
     <RelColumn name="Manager" caption="=manager" filterSupplier="list" />
 
     <RelColumn name="Cargo" viewName="OrderCargo" renderColumns="Cargo" label="=captionId"
@@ -35,7 +35,7 @@
 
     <ActionColumn name="TripNo" element="link" />
     <DataColumn name="ExpeditionType" caption="=trExpeditionType" />
-    <DataColumn name="ForwarderName" caption="=carrier" />
+    <DataColumn name="ForwarderName" label="=carrier" />
     <CalcColumn name="Vehicle" type="string" caption="=transport"
       searchBy="ForwarderVehicle VehicleNumber TrailerNumber">
       <render>
