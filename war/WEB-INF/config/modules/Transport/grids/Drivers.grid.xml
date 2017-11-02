@@ -7,7 +7,7 @@
 
   <g:columns>
     <RelColumn name="CompanyPerson" renderColumns="FirstName LastName" caption="=trDriverName" />
-    <DataColumn name="CompanyName" caption="=company" />
+    <DataColumn name="CompanyName" label="=company" />
     <DataColumn name="PositionName" />
     <DataColumn name="Phone" />
 

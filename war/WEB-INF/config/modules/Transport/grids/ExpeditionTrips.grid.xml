@@ -9,7 +9,7 @@
     <DataColumn name="ExpeditionType" caption="=trExpeditionType" />
     <DataColumn name="TripNo" caption="=trTripNo" />
     <DataColumn name="Status" caption="=status" />
-    <DataColumn name="ForwarderName" caption="=carrier" />
+    <DataColumn name="ForwarderName" label="=carrier" />
     <DataColumn name="ForwarderVehicle" caption="=transport" />
     <DataColumn name="ForwarderDriver" caption="=vehicleDriver" />
     <DataColumn name="DateFrom" source="DateFrom" caption="=trDeparted" width="80" />
