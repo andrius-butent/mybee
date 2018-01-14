@@ -626,13 +626,16 @@ public class TradeDocumentRenderer extends AbstractFormInterceptor {
 
     int columnSize = columns.size();
 
-    for (int j = 0; j < columnSize; j++) {
+    for (int j = 0; j < columnSize ; j++) {
       ItemColumn itemColumn = columns.get(j);
 
       if (itemColumn.ordinal() == 12 && !discountVisible) {
-        columns.remove(itemColumn);
-        itemColumn = columns.get(j+1);
-        columnSize -= 1;
+        ItemColumn discount = columns.get(j);
+        ItemColumn discountPrice = columns.get(j+1);
+        columns.remove(discount);
+        columns.remove(discountPrice);
+        j -=2 ;
+        columnSize -= 2;
       }
 
       String label = itemColumn.hasCurency

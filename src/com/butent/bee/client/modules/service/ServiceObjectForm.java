@@ -1,6 +1,7 @@
 package com.butent.bee.client.modules.service;
 
 import com.butent.bee.client.grid.HtmlTable;
+import com.butent.bee.client.layout.Flow;
 import com.butent.bee.client.widget.CheckBox;
 import com.butent.bee.shared.Latch;
 import com.butent.bee.shared.css.values.FontWeight;
@@ -442,9 +443,12 @@ public class ServiceObjectForm extends MaintenanceExpanderForm implements ClickH
         table.setText(rNo.get(), cNo++, row.getString(1));
       }
 
-      StyleUtils.setOverflow(table, StyleUtils.ScrollBars.VERTICAL, Overflow.AUTO);
+      Flow container = new Flow();
+      StyleUtils.setSize(container, 800, 600);
+      StyleUtils.setOverflow(container, StyleUtils.ScrollBars.VERTICAL, Overflow.AUTO);
+      container.add(table);
 
-      Global.inputWidget(d.mainCriteria(), table, () -> {
+      Global.inputWidget(d.mainCriteria(), container, () -> {
 
         BeeRowSet rowSet = new BeeRowSet(VIEW_SERVICE_OBJECT_MAIN_CRITERIA,
           Data.getColumns(VIEW_SERVICE_OBJECT_MAIN_CRITERIA,

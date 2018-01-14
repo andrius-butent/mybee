@@ -2,6 +2,7 @@ package com.butent.bee.client.modules.trade.acts;
 
 import com.butent.bee.client.grid.HtmlTable;
 import com.butent.bee.client.widget.Label;
+import com.butent.bee.shared.Service;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.user.client.ui.Widget;
@@ -10,7 +11,7 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
 
 import static com.butent.bee.shared.modules.administration.AdministrationConstants.COL_BACKGROUND;
 import static com.butent.bee.shared.modules.classifiers.ClassifierConstants.COL_COMPANY_FINANCIAL_STATE;
-import static com.butent.bee.shared.modules.trade.TradeConstants.SVC_CREDIT_INFO;
+import static com.butent.bee.shared.modules.trade.TradeConstants.*;
 import static com.butent.bee.shared.modules.trade.acts.TradeActConstants.*;
 import com.butent.bee.client.BeeKeeper;
 import com.butent.bee.client.communication.ParameterList;
@@ -151,6 +152,12 @@ public class TradeActForm extends PrintFormInterceptor implements SelectorEvent.
         }
       });
     }
+
+    if (widget instanceof DataSelector
+      && BeeUtils.same(editableWidget.getColumnId(), COL_TRADE_SERIES)) {
+      ((DataSelector) widget).addSelectorHandler(this);
+    }
+
     super.afterCreateEditableWidget(editableWidget, widget);
   }
 
@@ -236,6 +243,13 @@ public class TradeActForm extends PrintFormInterceptor implements SelectorEvent.
         && getActiveRow() != null) {
       FormView form = getFormView();
       IsRow row = getActiveRow();
+
+      Long seriesId = Data.getLong(VIEW_TRADE_ACTS, row, COL_SERIES);
+      String seriesName = Data.getString(VIEW_TRADE_ACTS, row, COL_SERIES_NAME);
+      if (DataUtils.isId(seriesId) && !BeeUtils.isEmpty(seriesName)) {
+        BeeKeeper.getStorage().set(TradeActKeeper.getStorageKey(COL_SERIES), BeeUtils.toString(seriesId));
+        BeeKeeper.getStorage().set(TradeActKeeper.getStorageKey(COL_SERIES_NAME), seriesName);
+      }
 
       return validateBeforeSave(form, row, true);
     }
@@ -436,6 +450,29 @@ public class TradeActForm extends PrintFormInterceptor implements SelectorEvent.
 
         if (companySelector != null) {
           contractSelector.getOracle().setAdditionalFilter(relDocFilter, true);
+        }
+      }
+    }
+
+    if (BeeUtils.same(event.getRelatedViewName(), VIEW_TRADE_SERIES)) {
+      if (event.isChanged()) {
+        Long seriesId = event.getValue();
+
+        if (BeeUtils.isPositive(seriesId)) {
+          ParameterList params = TradeActKeeper.createArgs(SVC_GET_NEXT_ACT_NUMBER);
+
+          params.addDataItem(COL_TA_SERIES, seriesId);
+          params.addDataItem(Service.VAR_COLUMN, COL_TRADE_NUMBER);
+          params.addDataItem(VAR_VIEW_NAME, getViewName());
+
+          BeeKeeper.getRpc().makePostRequest(params, response -> {
+            if (!response.hasErrors() && !response.isEmpty()) {
+
+              String number = response.getResponseAsString();
+              Data.setValue(getViewName(), getActiveRow(), COL_TRADE_NUMBER, number);
+              getFormView().refreshBySource(COL_TRADE_NUMBER);
+            }
+          });
         }
       }
     }

@@ -286,9 +286,7 @@ class CalendarController extends Flow implements HandlesStateChange, HasCaption,
     }
 
     for (BeeRow row : ucAttendees.getRows()) {
-      if (isEnabled(row)) {
         result.add(row.getLong(attIndex));
-      }
     }
 
     if (result.isEmpty()) {

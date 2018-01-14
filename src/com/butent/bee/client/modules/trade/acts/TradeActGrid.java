@@ -266,6 +266,7 @@ public class TradeActGrid extends AbstractGridInterceptor {
   @Override
   public boolean onStartNewRow(GridView gridView, IsRow oldRow, IsRow newRow, boolean copy) {
     TradeActKeeper.prepareNewTradeAct(newRow, newActKind);
+
     return super.onStartNewRow(gridView, oldRow, newRow, copy);
   }
 

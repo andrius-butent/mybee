@@ -95,6 +95,7 @@ public final class TradeActKeeper {
 
   private static final String STYLE_COMMAND_PREFIX = STYLE_PREFIX + "command-";
   private static final String STYLE_COMMAND_DISABLED = STYLE_COMMAND_PREFIX + "disabled";
+  private static final String STORAGE_KEY_SEPARATOR = "-";
 
   private static final BeeLogger logger = LogUtils.getLogger(TradeActKeeper.class);
 
@@ -535,6 +536,11 @@ public final class TradeActKeeper {
     return cache.getRowSet(VIEW_TRADE_STATUSES);
   }
 
+  static String getStorageKey(String name) {
+    return BeeUtils.join(STORAGE_KEY_SEPARATOR, VIEW_TRADE_ACTS,
+      BeeKeeper.getUser().getUserId(), name);
+  }
+
   static BeeRowSet getUserSeries(boolean checkDefaults) {
     Long userId = BeeKeeper.getUser().getUserId();
     if (!DataUtils.isId(userId)) {
@@ -687,11 +693,20 @@ public final class TradeActKeeper {
       setDefaultOperation(row, kind);
     }
 
-    BeeRowSet userSeries = getUserSeries(true);
-    if (userSeries != null && userSeries.getNumberOfRows() == 1) {
-      Data.setValue(VIEW_TRADE_ACTS, row, COL_TA_SERIES, userSeries.getRow(0).getId());
-      Data.setValue(VIEW_TRADE_ACTS, row, COL_SERIES_NAME,
+    if (kind != TradeActKind.WRITE_OFF && kind != TradeActKind.PURCHASE) {
+      BeeRowSet userSeries = getUserSeries(true);
+      if (userSeries != null && userSeries.getNumberOfRows() == 1) {
+        Data.setValue(VIEW_TRADE_ACTS, row, COL_TA_SERIES, userSeries.getRow(0).getId());
+        Data.setValue(VIEW_TRADE_ACTS, row, COL_SERIES_NAME,
           userSeries.getString(0, userSeries.getColumnIndex(COL_SERIES_NAME)));
+      }
+    } else {
+      Long seriesId = BeeUtils.toLongOrNull(BeeKeeper.getStorage().get(getStorageKey(COL_SERIES)));
+      String seriesName = BeeKeeper.getStorage().get(getStorageKey(COL_SERIES_NAME));
+      if (DataUtils.isId(seriesId) && !BeeUtils.isEmpty(seriesName)) {
+        Data.setValue(VIEW_TRADE_ACTS, row, COL_TA_SERIES, seriesId);
+        Data.setValue(VIEW_TRADE_ACTS, row, COL_SERIES_NAME, seriesName);
+      }
     }
   }
 
