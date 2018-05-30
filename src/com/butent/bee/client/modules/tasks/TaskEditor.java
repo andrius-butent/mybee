@@ -1695,7 +1695,7 @@ class TaskEditor extends ProductSupportInterceptor {
             true, exclusions, filter, null);
     final String obs = dialog.addCheckBox(true);
 
-    final String cid = dialog.addComment(true);
+    final String cid = dialog.addComment(false);
     final String fid = dialog.addFileCollector();
 
     dialog.addAction(Localized.dictionary().crmActionForward(), () -> {
@@ -1713,10 +1713,6 @@ class TaskEditor extends ProductSupportInterceptor {
       }
 
       String comment = dialog.getComment(cid);
-      if (BeeUtils.isEmpty(comment)) {
-        showError(Localized.dictionary().crmEnterComment());
-        return;
-      }
 
       BeeRow newRow = getNewRow();
       RelationUtils.updateRow(Data.getDataInfo(VIEW_TASKS), COL_EXECUTOR, newRow,

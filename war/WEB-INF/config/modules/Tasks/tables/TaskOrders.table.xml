@@ -48,7 +48,7 @@
     <Relation name="DecorationSupplier" relation="Companies" label="Tiekėjas" />
     <Numeric name="DecorationPrice" precision="10" scale="4" label="Kaina" />
     <String name="DecorationSupplierNote" precision="113" label="Pastaba" />
-    <Relation name="Made" relation="CompanyPersons" label="Mantavo" />
+    <Relation name="Made" relation="CompanyPersons" label="Montavo" />
     <String name="Cut" precision="25" label="Kirpti" />
     <String name="Stitching" precision="10" label="Segimas" />
     <String name="OtherStitching" precision="38" />
